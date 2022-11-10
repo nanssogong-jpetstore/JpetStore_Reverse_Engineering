@@ -37,6 +37,8 @@ public class CatalogActionBean extends AbstractActionBean {
 
   private static final long serialVersionUID = 5849523372175050635L;
 
+  private static final String EDIT_PRODUCT = "/WEB-INF/jsp/management/EditItem.jsp";
+  private static final String M_PRODUCT = "/WEB-INF/jsp/management/ProductManagement.jsp";
   private static final String MAIN = "/WEB-INF/jsp/catalog/Main.jsp";
   private static final String VIEW_CATEGORY = "/WEB-INF/jsp/catalog/Category.jsp";
   private static final String VIEW_PRODUCT = "/WEB-INF/jsp/catalog/Product.jsp";
@@ -158,6 +160,12 @@ public class CatalogActionBean extends AbstractActionBean {
     return new ForwardResolution(VIEW_CATEGORY);
   }
 
+  public ForwardResolution viewAllProduct() {
+    productList = catalogService.getAllProductList();
+
+    return new ForwardResolution(M_PRODUCT);
+  }
+
   /**
    * View product.
    *
@@ -181,6 +189,13 @@ public class CatalogActionBean extends AbstractActionBean {
     product = item.getProduct();
     return new ForwardResolution(VIEW_ITEM);
   }
+
+  public ForwardResolution editItem() {
+    itemList = catalogService.getItemListByProduct(productId);
+    product = catalogService.getProduct(productId);
+    return new ForwardResolution(EDIT_PRODUCT);
+  }
+
 
   /**
    * Search products.

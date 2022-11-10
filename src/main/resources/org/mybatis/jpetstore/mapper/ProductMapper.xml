@@ -43,6 +43,13 @@
     WHERE CATEGORY = #{value}
   </select>
 
+  <select id="getAllProductList" resultType="Product">
+    SELECT
+    PRODUCTID,
+    NAME
+    FROM PRODUCT ORDER BY productid
+  </select>
+
   <select id="searchProductList" resultType="Product">
     select
       PRODUCTID,

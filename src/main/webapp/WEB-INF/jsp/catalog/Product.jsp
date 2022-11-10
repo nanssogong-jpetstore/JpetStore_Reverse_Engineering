@@ -61,10 +61,6 @@
         </stripes:link></td>
 		</tr>
 	</c:forEach>
-	<tr>
-		<td>
-		</td>
-	</tr>
 </table>
 
 </div>

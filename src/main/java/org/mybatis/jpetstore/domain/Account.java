@@ -41,6 +41,7 @@ public class Account implements Serializable {
   private String zip;
   private String country;
   private String phone;
+  private String rank;
   private String favouriteCategoryId;
   private String languagePreference;
   private boolean listOption;
@@ -152,6 +153,10 @@ public class Account implements Serializable {
   public void setPhone(String phone) {
     this.phone = phone;
   }
+
+  public String getRank() { return rank; }
+
+  public void setRank(String rank) { this.rank = rank; }
 
   public String getFavouriteCategoryId() {
     return favouriteCategoryId;

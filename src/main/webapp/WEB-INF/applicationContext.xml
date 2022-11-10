@@ -62,6 +62,4 @@
     <!-- scan for mappers and let them be autowired -->
     <mybatis:scan base-package="org.mybatis.jpetstore.mapper" />
 
-
-
 </beans>
