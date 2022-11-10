@@ -14,7 +14,8 @@
 --    limitations under the License.
 --
 
-create table supplier (
+create table SUPPLIER (
+
     suppid int not null,
     name varchar(80) null,
     status varchar(2) not null,
@@ -27,13 +28,13 @@ create table supplier (
     constraint pk_supplier primary key (suppid)
 );
 
-create table signon (
+create table SIGNON (
     username varchar(25) not null,
     password varchar(25)  not null,
     constraint pk_signon primary key (username)
 );
 
-create table account (
+create table ACCOUNT (
     userid varchar(80) not null,
     email varchar(80) not null,
     firstname varchar(80) not null,
@@ -46,10 +47,11 @@ create table account (
     zip varchar(20) not null,
     country varchar(20) not null,
     phone varchar(80) not null,
+    `rank` varchar(80) not null default 'USER',
     constraint pk_account primary key (userid)
 );
 
-create table profile (
+create table PROFILE (
     userid varchar(80) not null,
     langpref varchar(80) not null,
     favcategory varchar(30),
@@ -58,13 +60,13 @@ create table profile (
     constraint pk_profile primary key (userid)
 );
 
-create table bannerdata (
+create table BANNERDATA (
     favcategory varchar(80) not null,
     bannername varchar(255)  null,
     constraint pk_bannerdata primary key (favcategory)
 );
 
-create table orders (
+create table ORDERS (
       orderid int not null,
       userid varchar(80) not null,
       orderdate date not null,
@@ -93,7 +95,7 @@ create table orders (
       constraint pk_orders primary key (orderid)
 );
 
-create table orderstatus (
+create table ORDERSTATUS (
       orderid int not null,
       linenum int not null,
       timestamp date not null,
@@ -101,7 +103,7 @@ create table orderstatus (
       constraint pk_orderstatus primary key (orderid, linenum)
 );
 
-create table lineitem (
+create table LINEITEM (
       orderid int not null,
       linenum int not null,
       itemid varchar(10) not null,
@@ -110,27 +112,27 @@ create table lineitem (
       constraint pk_lineitem primary key (orderid, linenum)
 );
 
-create table category (
+create table CATEGORY (
 	catid varchar(10) not null,
 	name varchar(80) null,
 	descn varchar(255) null,
 	constraint pk_category primary key (catid)
 );
 
-create table product (
+create table PRODUCT (
     productid varchar(10) not null,
     category varchar(10) not null,
     name varchar(80) null,
     descn varchar(255) null,
     constraint pk_product primary key (productid),
         constraint fk_product_1 foreign key (category)
-        references category (catid)
+        references CATEGORY (catid)
 );
 
-create index productCat on product (category);
-create index productName on product (name);
+create index PRODUCTCAT on PRODUCT (category);
+create index PRODUCTNAME on PRODUCT (name);
 
-create table item (
+create table ITEM (
     itemid varchar(10) not null,
     productid varchar(10) not null,
     listprice decimal(10,2) null,
@@ -144,20 +146,20 @@ create table item (
     attr5 varchar(80) null,
     constraint pk_item primary key (itemid),
         constraint fk_item_1 foreign key (productid)
-        references product (productid),
+        references PRODUCT (productid),
         constraint fk_item_2 foreign key (supplier)
-        references supplier (suppid)
+        references SUPPLIER (suppid)
 );
 
-create index itemProd on item (productid);
+create index ITEMPROD on ITEM (productid);
 
-create table inventory (
+create table INVENTORY (
     itemid varchar(10) not null,
     qty int not null,
     constraint pk_inventory primary key (itemid)
 );
 
-CREATE TABLE sequence
+CREATE TABLE SEQUENCE
 (
     name               varchar(30)  not null,
     nextid             int          not null,

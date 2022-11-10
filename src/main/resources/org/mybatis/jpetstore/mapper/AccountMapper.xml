@@ -63,6 +63,7 @@
       ACCOUNT.ZIP,
       ACCOUNT.COUNTRY,
       ACCOUNT.PHONE,
+      ACCOUNT.RANK,
       PROFILE.LANGPREF AS languagePreference,
       PROFILE.FAVCATEGORY AS favouriteCategoryId,
       PROFILE.MYLISTOPT AS listOption,

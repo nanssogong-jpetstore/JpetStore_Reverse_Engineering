@@ -29,12 +29,19 @@
      http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
    <!-- in-memory database and a datasource -->
-    <jdbc:embedded-database id="dataSource">
-        <jdbc:script location="classpath:database/jpetstore-hsqldb-schema.sql"/>
-        <jdbc:script location="classpath:database/jpetstore-hsqldb-dataload.sql"/>
-    </jdbc:embedded-database>
+<!--    <jdbc:embedded-database id="dataSource">-->
+<!--        <jdbc:script location="classpath:database/jpetstore-hsqldb-schema.sql"/>-->
+<!--        <jdbc:script location="classpath:database/jpetstore-hsqldb-dataload.sql"/>-->
+<!--    </jdbc:embedded-database>-->
 
     <!-- transaction manager, use DataSourceTransactionManager" for JDBC local tx -->
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://chatting.cx3635ohpt8d.ap-northeast-2.rds.amazonaws.com:3306/jpetstore?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="chat1234"/>
+    </bean>
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
@@ -49,8 +56,12 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="typeAliasesPackage" value="org.mybatis.jpetstore.domain" />
+
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
     <mybatis:scan base-package="org.mybatis.jpetstore.mapper" />
+
+
+
 </beans>
