@@ -154,9 +154,13 @@ public class Account implements Serializable {
     this.phone = phone;
   }
 
-  public String getRank() { return rank; }
+  public String getRank() {
+    return rank;
+  }
 
-  public void setRank(String rank) { this.rank = rank; }
+  public void setRank(String rank) {
+    this.rank = rank;
+  }
 
   public String getFavouriteCategoryId() {
     return favouriteCategoryId;

@@ -14,7 +14,7 @@
        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
        See the License for the specific language governing permissions and
        limitations under the License.
-
+xmlns:websocket="http://www.springframework.org/schema/websocket"
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,17 +22,22 @@
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
        xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-     http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+     http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+     http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket-4.1.xsd">
 
-   <!-- in-memory database and a datasource -->
-<!--    <jdbc:embedded-database id="dataSource">-->
-<!--        <jdbc:script location="classpath:database/jpetstore-hsqldb-schema.sql"/>-->
-<!--        <jdbc:script location="classpath:database/jpetstore-hsqldb-dataload.sql"/>-->
-<!--    </jdbc:embedded-database>-->
+    <!--in-memory database and a datasource-->
+    <!--<jdbc:embedded-database id="dataSource">
+        <jdbc:script location="classpath:database/jpetstore-hsqldb-schema.sql"/>
+        <jdbc:script location="classpath:database/jpetstore-hsqldb-dataload.sql"/>
+    </jdbc:embedded-database>-->
 
     <!-- transaction manager, use DataSourceTransactionManager" for JDBC local tx -->
 
@@ -42,6 +47,7 @@
         <property name="username" value="root"/>
         <property name="password" value="chat1234"/>
     </bean>
+
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
@@ -61,5 +67,18 @@
 
     <!-- scan for mappers and let them be autowired -->
     <mybatis:scan base-package="org.mybatis.jpetstore.mapper" />
+
+    <!-- WebSocket STOMP S -->
+    <websocket:message-broker application-destination-prefix="/app" user-destination-prefix="/user">
+        <websocket:stomp-endpoint path="/ws">
+            <!-- <websocket:handshake-handler ref=""/> -->
+            <websocket:handshake-interceptors>
+                <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+            </websocket:handshake-interceptors>
+        </websocket:stomp-endpoint>
+
+        <websocket:simple-broker prefix="/topic"/>
+    </websocket:message-broker>
+    <!-- WebSocket STOMP E -->
 
 </beans>

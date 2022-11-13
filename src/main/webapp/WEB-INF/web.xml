@@ -24,7 +24,10 @@
 	<description>Online Pet Store Sample Application</description>
 	<context-param>
 		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-		<param-value>StripesResources</param-value>
+		<param-value>
+			StripesResources.
+			/WEN-INF/servlet-context.xml
+		</param-value>
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
