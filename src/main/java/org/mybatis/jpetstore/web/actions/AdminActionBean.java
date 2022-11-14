@@ -22,6 +22,7 @@ public class AdminActionBean extends AbstractActionBean {
     private static final String M_PRODUCT = "/WEB-INF/jsp/management/ProductManagement.jsp";
     private static final String EDIT_PRODUCT = "/WEB-INF/jsp/management/EditItem.jsp";
     private static final String UPDATEITEMFORM = "/WEB-INF/jsp/management/UpdateItemForm.jsp";
+    private static final String ADDITEMFORM = "/WEB-INF/jsp/management/AddItemForm.jsp";
 
     private String categoryId;
     private Category category;
@@ -125,15 +126,34 @@ public class AdminActionBean extends AbstractActionBean {
         return new ForwardResolution(EDIT_PRODUCT);
     }
 
-    public ForwardResolution updateViewItem() {
+    public ForwardResolution updateItemView() {
         item = adminService.getItem(itemId);
         return new ForwardResolution(UPDATEITEMFORM);
     }
 
     public Resolution updateItem() {
         adminService.updateItem(item);
-
         return new ForwardResolution(EDIT_PRODUCT);
     }
 
+    public Resolution addItemView() {
+        product = adminService.getProduct(productId);
+        return new ForwardResolution(ADDITEMFORM);
+    }
+
+    public Resolution addItem() {
+        item.setProductId(productId);
+        adminService.insertItem(item);
+        itemList = adminService.getItemListByProduct(productId);
+        product = adminService.getProduct(productId);
+        return new ForwardResolution(EDIT_PRODUCT);
+    }
+
+    public Resolution deleteItem() {
+        adminService.deleteItem(itemId);
+        itemList = adminService.getItemListByProduct(productId);
+        product = adminService.getProduct(productId);
+        return new ForwardResolution(EDIT_PRODUCT);
+    }
 }
+

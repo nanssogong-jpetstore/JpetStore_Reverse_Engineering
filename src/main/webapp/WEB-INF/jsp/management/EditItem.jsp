@@ -54,14 +54,15 @@
                                       pattern="$#,##0.00" /></td>
                 <td><stripes:link class="Button"
                                   beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
-                                  event="updateViewItem">
+                                  event="updateItemView">
                     <stripes:param name="itemId" value="${item.itemId}" />
                     UPDATE
                 </stripes:link></td>
                 <td><stripes:link class="Button"
                                   beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
-                                  event="addItemToCart">
-                    <stripes:param name="workingItemId" value="${item.itemId}" />
+                                  event="deleteItem">
+                    <stripes:param name="itemId" value="${item.itemId}" />
+                    <stripes:param name="productId" value="${item.product.productId}" />
                     DELETE
                 </stripes:link></td>
             </tr>
@@ -69,9 +70,9 @@
     </table>
     <div style="margin: 0 auto;">
         <stripes:link class="Button"
-                      beanclass="org.mybatis.jpetstore.web.actions.CartActionBean"
-                      event="addItemToCart">
-            <stripes:param name="workingItemId" value="${item.itemId}" />
+                      beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
+                      event="addItemView">
+            <stripes:param name="productId" value="${actionBean.product.productId}" />
             ADD
         </stripes:link>
     </div>

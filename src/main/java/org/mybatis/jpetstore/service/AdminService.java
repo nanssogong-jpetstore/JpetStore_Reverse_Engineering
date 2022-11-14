@@ -1,8 +1,10 @@
 package org.mybatis.jpetstore.service;
 
+import org.mybatis.jpetstore.domain.Inventory;
 import org.mybatis.jpetstore.domain.Item;
 import org.mybatis.jpetstore.domain.Product;
 import org.mybatis.jpetstore.mapper.CategoryMapper;
+import org.mybatis.jpetstore.mapper.InventoryMapper;
 import org.mybatis.jpetstore.mapper.ItemMapper;
 import org.mybatis.jpetstore.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,12 @@ import java.util.Map;
 @Service
 public class AdminService {
 
-    private final CategoryMapper categoryMapper;
+    private final InventoryMapper inventoryMapper;
     private final ItemMapper itemMapper;
     private final ProductMapper productMapper;
 
-    public AdminService(CategoryMapper categoryMapper, ItemMapper itemMapper, ProductMapper productMapper) {
-        this.categoryMapper = categoryMapper;
+    public AdminService(InventoryMapper inventoryMapper, ItemMapper itemMapper, ProductMapper productMapper) {
+        this.inventoryMapper = inventoryMapper;
         this.itemMapper = itemMapper;
         this.productMapper = productMapper;
     }
@@ -47,5 +49,16 @@ public class AdminService {
         params.put("quantity", item.getQuantity());
         itemMapper.updateByattr1AndQuantity(params);
         itemMapper.updateQuantity(params);
+    }
+
+    public void insertItem(Item item) {
+        itemMapper.insertItem(item);
+        Inventory inventory = new Inventory(item.getItemId(), item.getQuantity());
+        inventoryMapper.insertInventory(inventory);
+    }
+
+    public void deleteItem(String itemId) {
+        itemMapper.deleteItem(itemId);
+        inventoryMapper.deleteInventory(itemId);
     }
 }

@@ -39,4 +39,7 @@ public interface ItemMapper {
 
   Item getItem(String itemId);
 
+  void insertItem(Item item);
+
+  void deleteItem(String itemId);
 }

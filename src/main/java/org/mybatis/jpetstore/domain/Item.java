@@ -49,6 +49,10 @@ public class Item implements Serializable {
     this.itemId = itemId.trim();
   }
 
+  public String getProductId() { return productId; }
+
+  public void setProductId(String productId) { this.productId = productId; }
+
   public int getQuantity() {
     return quantity;
   }

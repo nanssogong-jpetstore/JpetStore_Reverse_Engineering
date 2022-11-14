@@ -34,19 +34,21 @@
             focus="">
         <table>
             <tr>
+                <th>ProductId</th>
                 <th>Item ID</th>
                 <th>Description</th>
                 <th>List Price</th>
                 <th>Quantity</th>
             </tr>
             <tr>
-                <td>${actionBean.item.itemId}</td>
-                <td><stripes:text name="item.attribute1" value="${actionBean.item.attribute1}" /></td>
-                <td><stripes:text name="item.listPrice" value="${actionBean.item.listPrice}" /></td>
-                <td><stripes:text name="item.quantity" value="${actionBean.item.quantity}" /></td>
+                <td>${actionBean.product.productId}</td>
+                <td><stripes:text name="item.itemId" /></td>
+                <td><stripes:text name="item.attribute1" /></td>
+                <td><stripes:text name="item.listPrice" /></td>
+                <td><stripes:text name="item.quantity" /></td>
             </tr>
         </table>
-        <stripes:submit name="updateItem" value="SUBMIT" />
+        <stripes:submit name="addItem" value="SUBMIT" />
     </stripes:form>
 </div>
 

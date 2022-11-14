@@ -92,4 +92,13 @@
     WHERE ITEMID = #{itemId}
   </update>
 
+  <insert id="insertItem" parameterType="Item">
+    INSERT INTO ITEM(ITEMID, PRODUCTID,attr1, listprice)
+    VALUES(#{itemId}, #{productId}, #{attribute1}, #{listPrice})
+  </insert>
+
+  <delete id="deleteItem">
+    DELETE FROM ITEM
+    WHERE ITEMID = #{itemId}
+  </delete>
 </mapper>
