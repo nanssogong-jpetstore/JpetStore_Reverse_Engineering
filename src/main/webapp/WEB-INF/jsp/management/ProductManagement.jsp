@@ -41,7 +41,7 @@
                 </stripes:link></td>
                 <td>${product.name}</td>
                 <td><stripes:link class="Button"
-                                  beanclass="org.mybatis.jpetstore.web.actions.CatalogActionBean"
+                                  beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
                                   event="editItem">
                     <stripes:param name="productId" value="${product.productId}" />
                     EDIT ITEM

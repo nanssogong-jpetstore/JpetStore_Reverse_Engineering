@@ -79,4 +79,17 @@
     WHERE ITEMID = #{itemId}
   </update>
 
+  <update id="updateQuantity">
+    UPDATE INVENTORY SET
+      QTY = #{quantity}
+    WHERE ITEMID = #{itemId}
+  </update>
+
+  <update id="updateByattr1AndQuantity">
+    UPDATE ITEM SET
+      ATTR1 = #{attr1},
+      LISTPRICE = #{listPrice}
+    WHERE ITEMID = #{itemId}
+  </update>
+
 </mapper>

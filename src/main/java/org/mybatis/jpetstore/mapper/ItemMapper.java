@@ -29,6 +29,10 @@ public interface ItemMapper {
 
   void updateInventoryQuantity(Map<String, Object> param);
 
+  void updateQuantity(Map<String, Object> param);
+
+  void updateByattr1AndQuantity(Map<String, Object> param);
+
   int getInventoryQuantity(String itemId);
 
   List<Item> getItemListByProduct(String productId);

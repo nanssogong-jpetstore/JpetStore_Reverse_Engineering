@@ -53,13 +53,13 @@
                 <td><fmt:formatNumber value="${item.listPrice}"
                                       pattern="$#,##0.00" /></td>
                 <td><stripes:link class="Button"
-                                  beanclass="org.mybatis.jpetstore.web.actions.CartActionBean"
-                                  event="addItemToCart">
-                    <stripes:param name="workingItemId" value="${item.itemId}" />
+                                  beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
+                                  event="updateViewItem">
+                    <stripes:param name="itemId" value="${item.itemId}" />
                     UPDATE
                 </stripes:link></td>
                 <td><stripes:link class="Button"
-                                  beanclass="org.mybatis.jpetstore.web.actions.CartActionBean"
+                                  beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
                                   event="addItemToCart">
                     <stripes:param name="workingItemId" value="${item.itemId}" />
                     DELETE

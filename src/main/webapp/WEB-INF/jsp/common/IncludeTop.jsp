@@ -94,7 +94,7 @@
 				<c:if test="${sessionScope.accountBean.authenticated}">
 					<c:if test="${sessionScope.accountBean.account.rank eq 'MANAGEMENT'}" >
 						<stripes:link
-								beanclass="org.mybatis.jpetstore.web.actions.CatalogActionBean"
+								beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
 								event="viewAllProduct">
 							Admin Dashboard
 						</stripes:link>
