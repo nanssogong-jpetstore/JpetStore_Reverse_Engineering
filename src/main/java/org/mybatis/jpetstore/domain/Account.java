@@ -26,6 +26,7 @@ import net.sourceforge.stripes.validation.Validate;
  */
 public class Account implements Serializable {
 
+  ////123124124124
   private static final long serialVersionUID = 8751282105532159742L;
 
   private String username;
