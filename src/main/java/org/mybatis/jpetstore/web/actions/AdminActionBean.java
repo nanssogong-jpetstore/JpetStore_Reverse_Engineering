@@ -2,14 +2,13 @@ package org.mybatis.jpetstore.web.actions;
 
 
 import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.SessionScope;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import org.mybatis.jpetstore.domain.Category;
 import org.mybatis.jpetstore.domain.Item;
 import org.mybatis.jpetstore.domain.Product;
-import org.mybatis.jpetstore.service.AdminService;
+import org.mybatis.jpetstore.service.CatalogService;
 
 import java.util.List;
 
@@ -111,48 +110,53 @@ public class AdminActionBean extends AbstractActionBean {
 
 
     @SpringBean
-    private transient AdminService adminService;
+    private transient CatalogService catalogService;
 
+
+    public AdminActionBean() {
+        System.out.println("Admin Action Bean Start");
+    }
 
     public ForwardResolution viewAllProduct() {
-        productList = adminService.getAllProductList();
+        productList = catalogService.getAllProductList();
 
         return new ForwardResolution(M_PRODUCT);
     }
 
     public ForwardResolution editItem() {
-        itemList = adminService.getItemListByProduct(productId);
-        product = adminService.getProduct(productId);
+        itemList = catalogService.getItemListByProduct(productId);
+        product = catalogService.getProduct(productId);
         return new ForwardResolution(EDIT_PRODUCT);
     }
 
     public ForwardResolution updateItemView() {
-        item = adminService.getItem(itemId);
+        item = catalogService.getItem(itemId);
         return new ForwardResolution(UPDATEITEMFORM);
     }
 
     public Resolution updateItem() {
-        adminService.updateItem(item);
+        catalogService.updateItem(item);
+        itemList = catalogService.getItemListByProduct(productId);
         return new ForwardResolution(EDIT_PRODUCT);
     }
 
     public Resolution addItemView() {
-        product = adminService.getProduct(productId);
+        product = catalogService.getProduct(productId);
         return new ForwardResolution(ADDITEMFORM);
     }
 
     public Resolution addItem() {
         item.setProductId(productId);
-        adminService.insertItem(item);
-        itemList = adminService.getItemListByProduct(productId);
-        product = adminService.getProduct(productId);
+        catalogService.insertItem(item);
+        itemList = catalogService.getItemListByProduct(productId);
+        product = catalogService.getProduct(productId);
         return new ForwardResolution(EDIT_PRODUCT);
     }
 
     public Resolution deleteItem() {
-        adminService.deleteItem(itemId);
-        itemList = adminService.getItemListByProduct(productId);
-        product = adminService.getProduct(productId);
+        catalogService.deleteItem(itemId);
+        itemList = catalogService.getItemListByProduct(productId);
+        product = catalogService.getProduct(productId);
         return new ForwardResolution(EDIT_PRODUCT);
     }
 }
