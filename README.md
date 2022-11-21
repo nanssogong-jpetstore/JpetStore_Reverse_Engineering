@@ -25,7 +25,7 @@ JPetStore 6 is a full web application built on top of MyBatis 3, Spring 5 and St
 
 `chore` : 빌드 업무 수정, 패키지 매니저 수정
 
-## 커밋 에시
+## 커밋 예시
 Feat: "회원 가입 기능 구현"
 
 SMS, 이메일 중복확인 API 개발
