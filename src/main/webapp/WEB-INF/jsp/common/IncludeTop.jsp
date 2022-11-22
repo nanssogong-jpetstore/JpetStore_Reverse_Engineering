@@ -58,7 +58,8 @@
 				beanclass="org.mybatis.jpetstore.web.actions.CartActionBean"
 				event="viewCart">
 			<img align="middle" name="img_cart" src="../images/cart.gif" />
-		</stripes:link> <img align="middle" src="../images/separator.gif" /> <c:if
+		</stripes:link> <img align="middle" src="../images/separator.gif" />
+			<c:if
 				test="${sessionScope.accountBean == null}">
 			<stripes:link
 					beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
@@ -87,7 +88,8 @@
 					My Account
 				</stripes:link>
 			</c:if>
-		</c:if> <img align="middle" src="../images/separator.gif" /> <a
+		</c:if>
+			<img align="middle" src="../images/separator.gif" /> <a
 				href="../help.html">?</a>
 			<img align="middle" src="../images/separator.gif" />
 			<c:if test="${sessionScope.accountBean != null}">
@@ -100,8 +102,29 @@
 						</stripes:link>
 					</c:if>
 				</c:if>
-
 			</c:if>
+			<c:if test="${sessionScope.accountBean != null}">
+				<c:if test="${sessionScope.accountBean.authenticated}">
+					<c:if test="${sessionScope.accountBean.account.rank eq 'MANAGEMENT'}" >
+						<stripes:link
+								beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
+								event="viewAllProduct">
+							Admin Dashboard
+						</stripes:link>
+					</c:if>
+				</c:if>
+			</c:if>
+			<c:if test="${sessionScope.accountBean != null}">
+				<c:if test="${sessionScope.accountBean.authenticated}">
+					<img align="middle" src="../images/separator.gif" />
+					<stripes:link
+							beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
+							event="listAnimalAccount">
+						AnimalMating
+					</stripes:link>
+				</c:if>
+			</c:if>
+
 		</div>
 	</div>
 

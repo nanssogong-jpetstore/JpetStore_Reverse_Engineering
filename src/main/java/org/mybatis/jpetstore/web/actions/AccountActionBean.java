@@ -47,6 +47,7 @@ public class AccountActionBean extends AbstractActionBean {
   private static final String NEW_ACCOUNT = "/WEB-INF/jsp/account/NewAccountForm.jsp";
   private static final String EDIT_ACCOUNT = "/WEB-INF/jsp/account/EditAccountForm.jsp";
   private static final String SIGNON = "/WEB-INF/jsp/account/SignonForm.jsp";
+  private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/account/ListAnimalMating.jsp";
 
   private static final List<String> LANGUAGE_LIST;
   private static final List<String> CATEGORY_LIST;
@@ -127,6 +128,10 @@ public class AccountActionBean extends AbstractActionBean {
    */
   public Resolution editAccountForm() {
     return new ForwardResolution(EDIT_ACCOUNT);
+  }
+
+  public Resolution listAnimalAccount(){
+    return new ForwardResolution(LIST_ANIMAL_MATING);
   }
 
   /**
