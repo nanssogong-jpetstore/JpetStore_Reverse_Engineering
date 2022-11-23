@@ -11,7 +11,7 @@ MyBatis JPetStore
 JPetStore 6 is a full web application built on top of MyBatis 3, Spring 5 and Stripes.
 
 ## 커밋 컨벤션
-`feat` : 새로운 기능 추가
+`feat` : 새로운 기능 추가12
 
 `fix` : 버그 수정
 
