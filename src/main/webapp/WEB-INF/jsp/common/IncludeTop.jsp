@@ -105,20 +105,9 @@
 			</c:if>
 			<c:if test="${sessionScope.accountBean != null}">
 				<c:if test="${sessionScope.accountBean.authenticated}">
-					<c:if test="${sessionScope.accountBean.account.rank eq 'MANAGEMENT'}" >
-						<stripes:link
-								beanclass="org.mybatis.jpetstore.web.actions.AdminActionBean"
-								event="viewAllProduct">
-							Admin Dashboard
-						</stripes:link>
-					</c:if>
-				</c:if>
-			</c:if>
-			<c:if test="${sessionScope.accountBean != null}">
-				<c:if test="${sessionScope.accountBean.authenticated}">
 					<img align="middle" src="../images/separator.gif" />
 					<stripes:link
-							beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
+							beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
 							event="listAnimalAccount">
 						AnimalMating
 					</stripes:link>
