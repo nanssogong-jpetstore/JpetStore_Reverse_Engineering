@@ -106,6 +106,7 @@ public class OrderActionBean extends AbstractActionBean {
    */
   public Resolution listOrders() {
     HttpSession session = context.getRequest().getSession();
+
     AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
     orderList = orderService.getOrdersByUsername(accountBean.getAccount().getUsername());
     return new ForwardResolution(LIST_ORDERS);

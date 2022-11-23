@@ -33,6 +33,7 @@ xmlns:websocket="http://www.springframework.org/schema/websocket"
         http://www.springframework.org/schema/websocket
         http://www.springframework.org/schema/websocket/spring-websocket-4.1.xsd">
 
+
     <!--in-memory database and a datasource-->
     <!--<jdbc:embedded-database id="dataSource">
         <jdbc:script location="classpath:database/jpetstore-hsqldb-schema.sql"/>
@@ -47,6 +48,7 @@ xmlns:websocket="http://www.springframework.org/schema/websocket"
         <property name="username" value="root"/>
         <property name="password" value="chat1234"/>
     </bean>
+
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
