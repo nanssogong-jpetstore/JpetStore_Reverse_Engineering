@@ -4,6 +4,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketHandler;
 
 @Component
 public class StompHandler implements ChannelInterceptor {
