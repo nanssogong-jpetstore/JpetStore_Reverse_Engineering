@@ -56,7 +56,6 @@ xmlns:websocket="http://www.springframework.org/schema/websocket"
 
     <!-- enable component scanning and autowire (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="org.mybatis.jpetstore.service" />
-
     <!-- enable transaction demarcation with annotations -->
     <tx:annotation-driven />
 
@@ -67,13 +66,20 @@ xmlns:websocket="http://www.springframework.org/schema/websocket"
 
     </bean>
 
+    <!--<bean id="/index" class="org.mybatis.jpetstore.Chat.ChatController" />
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/chat/" />
+        <property name="suffix" value=".jsp" />
+    </bean>-->
     <!-- scan for mappers and let them be autowired -->
     <mybatis:scan base-package="org.mybatis.jpetstore.mapper" />
 
-    <!-- WebSocket STOMP S -->
-    <websocket:message-broker application-destination-prefix="/app" user-destination-prefix="/user">
-        <websocket:stomp-endpoint path="/ws">
-            <!-- <websocket:handshake-handler ref=""/> -->
+
+<!--     WebSocket STOMP S-->
+    <!--<websocket:message-broker application-destination-prefix="/app" user-destination-prefix="/user">
+        <websocket:stomp-endpoint path="/ws/chat">
+&lt;!&ndash;             <websocket:handshake-handler ref=""/> &ndash;&gt;
+
             <websocket:handshake-interceptors>
                 <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
             </websocket:handshake-interceptors>
@@ -81,6 +87,13 @@ xmlns:websocket="http://www.springframework.org/schema/websocket"
 
         <websocket:simple-broker prefix="/topic"/>
     </websocket:message-broker>
+-->
+
+<!--    <websocket:handlers allowed-origins="*">-->
+<!--        <websocket:mapping path="/ws/chat" handler="stompHandler" />-->
+<!--        <websocket:sockjs websocket-enabled="true" />-->
+<!--    </websocket:handlers>-->
+<!--    <bean id="stompHandler" class="org.mybatis.jpetstore.Chat.StompHandler" />-->
     <!-- WebSocket STOMP E -->
 
 </beans>
