@@ -106,6 +106,7 @@ public class OrderActionBean extends AbstractActionBean {
    */
   public Resolution listOrders() {
     HttpSession session = context.getRequest().getSession();
+
     AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
     orderList = orderService.getOrdersByUsername(accountBean.getAccount().getUsername());
     return new ForwardResolution(LIST_ORDERS);
@@ -141,7 +142,6 @@ public class OrderActionBean extends AbstractActionBean {
    */
   public Resolution newOrder() {
     HttpSession session = context.getRequest().getSession();
-
     if (shippingAddressRequired) {
       shippingAddressRequired = false;
       return new ForwardResolution(SHIPPING);
@@ -174,6 +174,7 @@ public class OrderActionBean extends AbstractActionBean {
     AccountActionBean accountBean = (AccountActionBean) session.getAttribute("accountBean");
 
     order = orderService.getOrder(order.getOrderId());
+
 
     if (accountBean.getAccount().getUsername().equals(order.getUsername())) {
       return new ForwardResolution(VIEW_ORDER);
