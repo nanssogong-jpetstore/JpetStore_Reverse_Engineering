@@ -118,7 +118,6 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution listAnimalAccount(){
-
         animalMatingList = animalService.getAnimalMatingList();
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
