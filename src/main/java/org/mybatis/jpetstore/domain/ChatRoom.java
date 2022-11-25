@@ -3,7 +3,7 @@ package org.mybatis.jpetstore.domain;
 
 public class ChatRoom {
 
-    private int roomId;
+    private String roomId;
     private String userId;
     private String roomName;
     private String imgurl;
@@ -13,7 +13,7 @@ public class ChatRoom {
 
     }
 
-    public ChatRoom(int roomId, String userId, String roomName, String imgurl, int isRead) {
+    public ChatRoom(String roomId, String userId, String roomName, String imgurl, int isRead) {
         this.roomId = roomId;
         this.userId = userId;
         this.roomName = roomName;
@@ -37,11 +37,11 @@ public class ChatRoom {
         this.imgurl = imgurl;
     }
 
-    public int getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(int roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
