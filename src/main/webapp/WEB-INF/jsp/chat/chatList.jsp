@@ -24,22 +24,21 @@
         <ul id="messageArea">
             <div class="chat-messageParent">
                 <li class="chat-message" style="border-bottom: 1px solid #ececec;">
-                    <i style="background-color: rgb(255, 133, 175); position: absolute;">A</i>
+                    <img style="position:absolute;" src="https://jpet-img.s3.ap-northeast-2.amazonaws.com/3728e44a-48e2-468a-bd69-645326b90118.jpg">
                     <span>ACID</span>
                     <p>ㅎ2</p>
                 </li>
             </div>
             <div class="chat-messageParent">
                 <li class="chat-message" style="border-bottom: 1px solid #ececec;">
-                    <i style="background-color: rgb(255, 133, 175); position: absolute;">A</i>
+                    <img style="position:absolute;" src="	https://jpet-img.s3.ap-northeast-2.amazonaws.com/2b91b771-8e8b-4dc0-8392-e0c9a05db1df.png">
                     <span>ACID</span>
                     <p>ㅎ2</p>
                 </li>
             </div>
             <div class="chat-messageParent">
                 <li class="chat-message" style="border-bottom: 1px solid #ececec;">
-                        <img style="position:absolute;" src="../images/cat.gif">
-                    <%--<i style="background-color: rgb(255, 133, 175); position: absolute;">A</i>--%>
+                        <img style="position:absolute;" src="https://jpet-img.s3.ap-northeast-2.amazonaws.com/d3e92b8b-0fda-45b9-bbac-61c516ad01ce.png">
                     <span>ACID</span>
                     <p>ㅎ2</p>
                 </li>
@@ -47,14 +46,6 @@
 
 
         </ul>
-        <form id="messageForm" name="messageForm">
-            <div class="form-group">
-                <div class="input-group clearfix">
-                    <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
-                    <button type="submit" class="primary">보내기</button>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
