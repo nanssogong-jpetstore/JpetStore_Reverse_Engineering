@@ -16,7 +16,12 @@
 
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
+<script>
+	function showPopup(){
+		window.open("test.html","팝업 테스트","width=400, height=300, top=10, left=10");
+	}
 
+</script>
 <div id="BackLink"><stripes:link
 	beanclass="org.mybatis.jpetstore.web.actions.CatalogActionBean"
 	event="viewProduct">
@@ -61,6 +66,14 @@
 			<stripes:param name="workingItemId" value="${actionBean.item.itemId}" />
        	Add to Cart
        </stripes:link></td>
+		<td>
+			<stripes:link class="Button" onclick="window.open(this.href, '', 'width=400, height=700, left=700, top=100'); return false;"
+						  beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
+						  event="chatStart">
+			<stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
+			<stripes:param name="title" value="${actionBean.item.itemId}" />
+			Chat Start
+		</stripes:link></td>
 	</tr>
 </table>
 

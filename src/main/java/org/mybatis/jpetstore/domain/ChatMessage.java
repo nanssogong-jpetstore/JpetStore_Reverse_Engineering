@@ -1,15 +1,16 @@
 package org.mybatis.jpetstore.domain;
 
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class ChatMessage {
 
     private MessageType type;
-    private String roomId;
+    private int roomId;
     private String sender;
     private String content;
-    private Timestamp createDate;
+    private Date createDate;
 
 
     public MessageType getType() {
@@ -20,11 +21,11 @@ public class ChatMessage {
         this.type = type;
     }
 
-    public String getRoomId() {
+    public int getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
+    public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 
@@ -44,11 +45,11 @@ public class ChatMessage {
         this.content = content;
     }
 
-    public Timestamp getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
