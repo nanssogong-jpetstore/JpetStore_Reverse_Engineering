@@ -6,8 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ include file="../common/IncludeTopMating.jsp"%>
-
+<%@ include file="../common/IncludeTop.jsp"%>
+<head>
+    <link rel="StyleSheet" href="../css/styles.css" type="text/css" media="screen"/>
+</head>
 <div class="container">
     <div class="row">
         <stripes:form

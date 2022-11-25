@@ -29,6 +29,7 @@
 <head>
 	<link rel="StyleSheet" href="../css/jpetstore.css" type="text/css"
 		  media="screen" />
+
 	<meta name="generator"
 		  content="HTML Tidy for Linux/x86 (vers 1st November 2002), see www.w3.org" />
 	<title>JPetStore Demo</title>
@@ -39,9 +40,6 @@
 	<meta http-equiv="expires" content="0" />
 	<meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 	<meta http-equiv="Pragma" content="no-cache" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-	<script src="../js/main.js"></script>
 </head>
 
 <body>
@@ -62,37 +60,37 @@
 			<img align="middle" name="img_cart" src="../images/cart.gif" />
 		</stripes:link> <img align="middle" src="../images/separator.gif" />
 			<c:if
-				test="${sessionScope.accountBean == null}">
-			<stripes:link
-					beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
-					event="signonForm">
-				Sign In
-			</stripes:link>
-		</c:if> <c:if test="${sessionScope.accountBean != null}">
-			<c:if test="${!sessionScope.accountBean.authenticated}">
+					test="${sessionScope.accountBean == null}">
 				<stripes:link
 						beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
 						event="signonForm">
 					Sign In
 				</stripes:link>
+			</c:if> <c:if test="${sessionScope.accountBean != null}">
+				<c:if test="${!sessionScope.accountBean.authenticated}">
+					<stripes:link
+							beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
+							event="signonForm">
+						Sign In
+					</stripes:link>
+				</c:if>
+			</c:if> <c:if test="${sessionScope.accountBean != null}">
+				<c:if test="${sessionScope.accountBean.authenticated}">
+					<stripes:link
+							beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
+							event="signoff">
+						Sign Out
+					</stripes:link>
+					<img align="middle" src="../images/separator.gif" />
+					<stripes:link
+							beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
+							event="editAccountForm">
+						My Account
+					</stripes:link>
+				</c:if>
 			</c:if>
-		</c:if> <c:if test="${sessionScope.accountBean != null}">
-			<c:if test="${sessionScope.accountBean.authenticated}">
-				<stripes:link
-						beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
-						event="signoff">
-					Sign Out
-				</stripes:link>
-				<img align="middle" src="../images/separator.gif" />
-				<stripes:link
-						beanclass="org.mybatis.jpetstore.web.actions.AccountActionBean"
-						event="editAccountForm">
-					My Account
-				</stripes:link>
-			</c:if>
-		</c:if>
 			<img align="middle" src="../images/separator.gif" /> <a
-				href="../help.html">?</a>
+					href="../help.html">?</a>
 			<img align="middle" src="../images/separator.gif" />
 			<c:if test="${sessionScope.accountBean != null}">
 				<c:if test="${sessionScope.accountBean.authenticated}">
@@ -156,4 +154,4 @@
 
 </div>
 
-<div id="Content"><stripes:messages /></div>
+<div id="Content"><stripes:messages />

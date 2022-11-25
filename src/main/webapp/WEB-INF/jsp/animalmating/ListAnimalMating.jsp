@@ -1,14 +1,16 @@
 <%@ include file="../common/IncludeTop.jsp"%>
-
-
-<section class="py-5">
+<head>
+<%--<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />--%>
+<link rel="StyleSheet" href="../css/styles.css" type="text/css" media="screen"/>
+</head>
+<section class="py-5" style="background: #5d5b5b;">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <c:forEach var="mating" items="${actionBean.animalMatingList}">
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
-                        <img style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
+                        <img id="Immg" style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
