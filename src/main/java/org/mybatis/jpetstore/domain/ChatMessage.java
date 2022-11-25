@@ -2,13 +2,13 @@ package org.mybatis.jpetstore.domain;
 
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 public class ChatMessage {
 
     private MessageType type;
     private String roomId;
     private String sender;
+    private String receiver;
     private String content;
     private Date createDate;
 
@@ -35,6 +35,14 @@ public class ChatMessage {
 
     public void setSender(String sender) {
         this.sender = sender;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getContent() {

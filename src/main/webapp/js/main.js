@@ -14,10 +14,12 @@ var colors = [
     '#ffc107', '#ff85af', '#ff9800', '#39bbb0'
 ]
 var roomId = null;
-function connect(myId, title) {
+var target = null;
+function connect(myId, title, name) {
     // username = document.querySelector('#name').value.trim();
     username = myId;
     setRoomId(title);
+    setTarget(name);
     console.log("@@");
     console.log(roomId);
     localStorage.setItem('chatId', username);
@@ -33,6 +35,9 @@ function connect(myId, title) {
     //event.preventDefault();
 }
 
+function setTarget(name) {
+    this.target = name;
+}
 function setRoomId(title) {
     this.roomId = title;
 }
@@ -46,7 +51,11 @@ function onConnected() {
     stompClient.subscribe('/topic/chat/room/'+ getRoomId(), onMessageReceived);
     stompClient.send("/app/chat/enter",
         {},
-        JSON.stringify({sender: username, type: 'ENTER', content: "", roomId: getRoomId()})
+        JSON.stringify({sender: username, receiver: target, type: 'ENTER', content: "", roomId: getRoomId()})
+    )
+    stompClient.send("/app/chat/invite",
+        {},
+        JSON.stringify({sender: target, receiver : username, type: 'ENTER', content: "", roomId: getRoomId()})
     )
     connectingElement.classList.add('hidden');
 }
@@ -61,6 +70,7 @@ function sendMessage(event) {
     if(messageContent && stompClient) {
         var chatMessage = {
             sender: username,
+            receiver: target,
             content: messageInput.value,
             type: 'TALK',
             roomId: getRoomId()

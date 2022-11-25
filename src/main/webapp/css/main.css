@@ -22,12 +22,12 @@ body {
 }
 
 body:before {
-    height: 50%;
+    height: 100%;
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    background: #128ff2;
+    background: #727474;
     content: "";
     z-index: 0;
 }
@@ -208,7 +208,21 @@ button.accent {
     font-style: normal;
     text-transform: uppercase;
 }
-
+#chat-page .chat-message img {
+    width: 55px;
+    height: 55px;
+    overflow: hidden;
+    left: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    line-height: 42px;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    font-style: normal;
+    text-transform: uppercase;
+}
 #chat-page .chat-message span {
     color: #333;
     font-weight: 600;

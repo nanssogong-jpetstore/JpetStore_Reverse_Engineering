@@ -96,4 +96,5 @@ xmlns:websocket="http://www.springframework.org/schema/websocket"
 <!--    <bean id="stompHandler" class="org.mybatis.jpetstore.Chat.StompHandler" />-->
     <!-- WebSocket STOMP E -->
 
+
 </beans>
