@@ -58,6 +58,19 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private FileBean fileBean;
 
+    private List<AnimalMating> animalMatingList;
+    private int page;
+    private int id;
+
+    public int getPage() { return page; }
+
+    public void setPage(int page) { this.page = page; }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
 
 
     public void setFileBean(FileBean fileBean) {
@@ -105,8 +118,17 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution listAnimalAccount(){
 
-
+        animalMatingList = animalService.getAnimalMatingList();
         return new ForwardResolution(LIST_ANIMAL_MATING);
+    }
+
+    public Resolution getMatingInfo() {
+        System.out.println("id = " + id);
+        /*
+        * To. 승현
+        * id값 나오니까 이걸로 상세조회 where id 조건 주면 됨.
+        */
+        return new ForwardResolution("상세 페이지 이동");
     }
 
     public String uploadImgFile() throws IOException {
