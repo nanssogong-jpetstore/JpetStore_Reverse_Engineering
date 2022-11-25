@@ -12,14 +12,16 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import java.io.File;
 
+import static org.mybatis.jpetstore.configuration.Constants.*;
+
 public class AWSS3 {
 
     // Amazon-s3-sdk
     private AmazonS3 s3Client;
-    final private String accessKey = "AKIARWBFNWPQRJJDMTNV"; // 액세스키
-    final private String secretkey = "6YfWxnWVIieIFH/bx6+vdjvefwMwFs7uvgwarFOq"; // 스크릿 엑세스 키
-    private Regions clientRegion = Regions.AP_NORTHEAST_2; // 한국
-    private String bucket = "jpet-img"; // 버킷 명
+    final private String accessKey = ACCESS_KEY; // 액세스키
+    final private String secretkey = SECRET_KEY; // 스크릿 엑세스 키
+    private Regions clientRegion = REGION; // 한국
+    private String bucket = BUCKET; // 버킷 명
 
     private AWSS3() {
         createS3Client();

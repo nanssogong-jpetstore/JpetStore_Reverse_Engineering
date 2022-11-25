@@ -1,7 +1,6 @@
 package org.mybatis.jpetstore.service;
 
 import org.mybatis.jpetstore.domain.AnimalMating;
-import org.mybatis.jpetstore.domain.Product;
 import org.mybatis.jpetstore.mapper.AnimalMapper;
 import org.mybatis.jpetstore.mapper.MatingListMapper;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,7 @@ public class AnimalService {
 
 
     public void insertAnimal(AnimalMating animalMating) {
+
         System.out.println(animalMating.getImgUrl());
         animalMapper.insertAnimal(animalMating);
     }
@@ -30,4 +30,5 @@ public class AnimalService {
     public List<AnimalMating> getAnimalMatingList() {
         return matingListMapper.getAnimalMatingList();
     }
+
 }

@@ -6,3 +6,5 @@
 *.iml
 /build
 .mvn/wrapper/maven-wrapper.jar
+
+/src/main/java/org/mybatis/jpetstore/configuration/Constants.java
