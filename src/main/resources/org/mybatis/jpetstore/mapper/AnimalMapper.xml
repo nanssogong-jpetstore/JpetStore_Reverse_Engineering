@@ -30,5 +30,13 @@
             (#{userId}, #{imgUrl}, #{title}, #{contents}, #{categoryid} ,#{characters})
     </insert>
 
+    <select id="getAnimalMatingList" resultType="AnimalMating">
+
+
+        SELECT id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        ORDER BY createdate desc
+
+    </select>
 
 </mapper>

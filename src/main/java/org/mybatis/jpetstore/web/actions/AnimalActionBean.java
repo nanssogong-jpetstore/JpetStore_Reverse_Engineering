@@ -50,11 +50,8 @@ public class AnimalActionBean extends AbstractActionBean {
         return CATEGORY_LIST;
     }
 
-    private AnimalMating animalMating = new AnimalMating();
+    private AnimalMating animalMating;
 
-    public AnimalMating getAnimalMating() {
-        return this.animalMating;
-    }
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
     private FileBean fileBean;
@@ -72,7 +69,12 @@ public class AnimalActionBean extends AbstractActionBean {
     public void setId(int id) { this.id = id; }
 
     public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
+
     public void setAnimalMatingList(List<AnimalMating> animalMatingList) { this.animalMatingList = animalMatingList; }
+
+    public AnimalMating getAnimalMating() { return animalMating; }
+
+    public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
 
     public void setFileBean(FileBean fileBean) {
         this.fileBean = fileBean;
@@ -110,6 +112,8 @@ public class AnimalActionBean extends AbstractActionBean {
         animalMating.setImgUrl(url);
         animalMating.setUserId(userId);
         animalService.insertAnimal(animalMating);
+        animalMatingList = animalService.getAnimalMatingList();
+
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
@@ -131,7 +135,7 @@ public class AnimalActionBean extends AbstractActionBean {
         return new ForwardResolution("상세 페이지 이동");
     }
 
-    public String uploadImgFile() throws IOException {
+    private String uploadImgFile() throws IOException {
         try {
             System.out.println(fileBean.getFileName());
             String fName = fileBean.getFileName();

@@ -12,14 +12,10 @@ import java.util.List;
 public class AnimalService {
 
     private final AnimalMapper animalMapper;
-    private final MatingListMapper matingListMapper;
 
-    public AnimalService(AnimalMapper animalMapper, MatingListMapper matingListMapper) {
+    public AnimalService(AnimalMapper animalMapper) {
         this.animalMapper = animalMapper;
-        this.matingListMapper = matingListMapper;
     }
-
-
 
     public void insertAnimal(AnimalMating animalMating) {
 
@@ -27,8 +23,6 @@ public class AnimalService {
         animalMapper.insertAnimal(animalMating);
     }
 
-    public List<AnimalMating> getAnimalMatingList() {
-        return matingListMapper.getAnimalMatingList();
-    }
+    public List<AnimalMating> getAnimalMatingList() { return animalMapper.getAnimalMatingList(); }
 
 }
