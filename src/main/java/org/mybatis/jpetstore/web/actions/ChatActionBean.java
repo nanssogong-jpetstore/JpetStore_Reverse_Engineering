@@ -21,12 +21,14 @@ public class ChatActionBean extends AbstractActionBean {
     private static final long serialVersionUID = -7713371873197427738L;
 
     private static final String CHAT = "/WEB-INF/jsp/chat/chat.jsp";
+    private static final String CHATLIST = "/WEB-INF/jsp/chat/chatList.jsp";
 
     @SpringBean
     private transient AccountService accountService;
 
     private String username;
     private String title;
+    private String name;
 
 
     public String getTitle() {
@@ -40,6 +42,8 @@ public class ChatActionBean extends AbstractActionBean {
         return username;
     }
 
+    public String getName() { return name; }
+    public void setName() { this.name = name; }
 
 
     @Validate(required = true, on = { "signon", "newAccount", "editAccount" })
@@ -52,6 +56,10 @@ public class ChatActionBean extends AbstractActionBean {
         System.out.println("userName " + username);
         System.out.println("title " + title);
         return new ForwardResolution(CHAT);
+    }
+
+    public ForwardResolution chatList() {
+        return new ForwardResolution(CHATLIST);
     }
 
     @GetMapping("hello")

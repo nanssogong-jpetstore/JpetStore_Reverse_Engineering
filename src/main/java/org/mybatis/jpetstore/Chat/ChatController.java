@@ -31,12 +31,20 @@ public class ChatController {
 //        }
 //        sendingOperations.convertAndSend("/topic/chat/room/"+roomId, message);
         sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
+
         return chatMessage;
     }
 
     @MessageMapping("/chat/message")
     public ChatMessage sendMessage(ChatMessage chatMessage) {
         System.out.println("send method");
+        sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
+        return chatMessage;
+    }
+
+    @MessageMapping("/chat/invite")
+    public ChatMessage inviteRoom(ChatMessage chatMessage) {
+        System.out.println("Invite User");
         sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
         return chatMessage;
     }

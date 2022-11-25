@@ -5,6 +5,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xmlns:beans="http://www.springframework.org/schema/c"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc
@@ -38,4 +39,12 @@
         <websocket:simple-broker prefix="/topic"/>
     </websocket:message-broker>-->
 
+    <!-- websocket -->
+
+    <!--<websocket:handlers>
+        <websocket:mapping handler="myHandler" path="/alarm" />
+        <websocket:sockjs websocket-enabled="true"/>
+    </websocket:handlers>
+
+    <bean id="myHandler" class="org.mybatis.jpetstore.Chat.GreetingHandler" />-->
 </beans>

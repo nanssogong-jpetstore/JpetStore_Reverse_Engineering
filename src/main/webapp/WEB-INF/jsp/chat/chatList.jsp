@@ -14,25 +14,37 @@
     <title>${actionBean.title} 대화방</title>
     <link rel="stylesheet" href="../css/main.css" />
 </head>
-<script>
-    window.onload = function() {
-        var id = '${actionBean.username}';
-        var title = '${actionBean.title}';
-        var name = '${actionBean.name}';
-        connect(id, title, name);
-    }
-</script>
 
 <body>
-<div id="chat-page" class="hidden">
+<div id="chat-page">
     <div class="chat-container">
         <div class="chat-header">
-            <h2>${actionBean.title} 교배 룸</h2>
-        </div>
-        <div class="connecting">
-            연결중...
+            <h2>나의 채팅 목록</h2>
         </div>
         <ul id="messageArea">
+            <div class="chat-messageParent">
+                <li class="chat-message" style="border-bottom: 1px solid #ececec;">
+                    <i style="background-color: rgb(255, 133, 175); position: absolute;">A</i>
+                    <span>ACID</span>
+                    <p>ㅎ2</p>
+                </li>
+            </div>
+            <div class="chat-messageParent">
+                <li class="chat-message" style="border-bottom: 1px solid #ececec;">
+                    <i style="background-color: rgb(255, 133, 175); position: absolute;">A</i>
+                    <span>ACID</span>
+                    <p>ㅎ2</p>
+                </li>
+            </div>
+            <div class="chat-messageParent">
+                <li class="chat-message" style="border-bottom: 1px solid #ececec;">
+                        <img style="position:absolute;" src="../images/cat.gif">
+                    <%--<i style="background-color: rgb(255, 133, 175); position: absolute;">A</i>--%>
+                    <span>ACID</span>
+                    <p>ㅎ2</p>
+                </li>
+            </div>
+
 
         </ul>
         <form id="messageForm" name="messageForm">

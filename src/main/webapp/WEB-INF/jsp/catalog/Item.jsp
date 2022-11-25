@@ -72,6 +72,7 @@
 						  event="chatStart">
 			<stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
 			<stripes:param name="title" value="${actionBean.item.itemId}" />
+			<stripes:param name="name" value="${actionBean.product.name}" />
 			Chat Start
 		</stripes:link></td>
 	</tr>
