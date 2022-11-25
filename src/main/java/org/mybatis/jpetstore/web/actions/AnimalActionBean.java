@@ -72,7 +72,7 @@ public class AnimalActionBean extends AbstractActionBean {
     public void setId(int id) { this.id = id; }
 
     public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
-
+    public void setAnimalMatingList(List<AnimalMating> animalMatingList) { this.animalMatingList = animalMatingList; }
 
     public void setFileBean(FileBean fileBean) {
         this.fileBean = fileBean;
