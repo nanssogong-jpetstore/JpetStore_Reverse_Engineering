@@ -1,18 +1,31 @@
 package org.mybatis.jpetstore.web.actions;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import net.sourceforge.stripes.action.FileBean;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.SessionScope;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import org.mybatis.jpetstore.configuration.AWSS3;
 import org.mybatis.jpetstore.domain.AnimalMating;
 import org.mybatis.jpetstore.service.AnimalService;
 import org.mybatis.jpetstore.service.CatalogService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @SessionScope
 public class AnimalActionBean extends AbstractActionBean {
@@ -20,7 +33,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private static final String ADD_ANIMAL_MATING="/WEB-INF/jsp/animalmating/AddAnimalForm.jsp";
     private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
-
+    private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
     private static final List<String> CATEGORY_LIST;
 
 
@@ -39,6 +52,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private AnimalMating animalMating;
 
+    private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
     private FileBean fileBean;
 
@@ -71,35 +85,30 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
 
+
+
+    @Autowired
+    public AWSS3 awsS3 = AWSS3.getInstance();
+
+    private String bucketName="jpet-img";
+
+
+
+    public File convert(FileBean file) throws IOException {
+        File convFile = new File(file.getFileName());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getInputStream().available());
+        fos.close();
+        return convFile;
+    }
+
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
-
-        if(fileBean==null){
-            setMessage("PLEASE POST IMG FILE");
-            return new ForwardResolution(ERROR);
-        }
-        if(animalMating.getTitle()==null){
-            setMessage("PLEASE ENTER A TITLE");
-            return new ForwardResolution(ERROR);
-        }
-        if(animalMating.getCharacters()==null){
-            setMessage("PLEASE ENTER ANIMAL CHARACTERS");
-            return new ForwardResolution(ERROR);
-        }
-        if(animalMating.getContents()==null){
-            setMessage("PLEASE ENTER CONTENTS");
-            return new ForwardResolution(ERROR);
-        }
-
-        String url=animalService.uploadImgFile(fileBean);
-        if(url==null){
-            setMessage("IMG 업로드에 실패하였습니다.");
-            return new ForwardResolution(ERROR);
-        }
-
+        String url=uploadImgFile();
         animalMating.setImgUrl(url);
         animalMating.setUserId(userId);
         animalService.insertAnimal(animalMating);
@@ -119,12 +128,57 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution getMatingInfo() {
         System.out.println("id = " + id);
-        /*
-        * To. 승현
-        * id값 나오니까 이걸로 상세조회 where id 조건 주면 됨.
-        */
-        return new ForwardResolution("상세 페이지 이동");
+        animalMating = animalService.getAnimalMattingDetail(id);
+        return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
+
+    private String uploadImgFile() throws IOException {
+        try {
+            System.out.println(fileBean.getFileName());
+            String fName = fileBean.getFileName();
+            System.out.println(fName.indexOf("."));
+
+            if (fName.indexOf(".") != -1) {
+                String ext = fName.split("\\.")[1];
+                String contentType="";
+                switch (ext) {
+                    case "jpeg":
+                        contentType = "image/jpeg";
+                        break;
+                    case "png":
+                        contentType = "image/png";
+                        break;
+                    case "txt":
+                        contentType = "text/plain";
+                        break;
+                    case "csv":
+                        contentType = "text/csv";
+                        break;
+                }
+
+                ObjectMetadata metadata=new ObjectMetadata();
+                metadata.setContentType(contentType);
+                PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, UUID.randomUUID() + "." + ext, fileBean.getInputStream(),metadata);
+                putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+                awsS3.uploadToS3(putObjectRequest);
+                logger.info("===================== Upload File - Done! =====================");
+                return "https://jpet-img.s3.ap-northeast-2.amazonaws.com/"+putObjectRequest.getKey();
+
+            }
+        } catch (AmazonServiceException ase) {
+            logger.info("Caught an AmazonServiceException from PUT requests, rejected reasons:");
+            logger.info("Error Message:    " + ase.getMessage());
+            logger.info("HTTP Status Code: " + ase.getStatusCode());
+            logger.info("AWS Error Code:   " + ase.getErrorCode());
+            logger.info("Error Type:       " + ase.getErrorType());
+            logger.info("Request ID:       " + ase.getRequestId());
+        } catch (AmazonClientException ace) {
+            logger.info("Caught an AmazonClientException: ");
+            logger.info("Error Message: " + ace.getMessage());
+        }
+        return null;
+    }
+
 
 
 }

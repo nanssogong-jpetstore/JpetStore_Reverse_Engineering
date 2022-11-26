@@ -39,4 +39,11 @@
 
     </select>
 
+    <select id="getAnimalMattingDetail" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters, createdate
+        from MATINGANIMAL
+        where id=#{id}
+    </select>
+
+
 </mapper>
