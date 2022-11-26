@@ -22,4 +22,5 @@ public class AnimalMating implements Serializable {
     private String categoryid;
     private Timestamp createdate;
 
+
 }
