@@ -18,7 +18,8 @@
   <div class="article_header" style="position: relative; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid gray;">
     <h2>${actionBean.animalMating.title}</h2>
     <h6>작성자: ${actionBean.animalMating.userId} <button>1:1채팅</button></h6>
-    작성일: ${actionBean.animalMating.createdate}
+    작성일: ${actionBean.animalMating.createdate} <br>
+    조회수 : ${actionBean.animalMating.view}
   </div>
   <div class="article_container">
     성격 : ${actionBean.animalMating.characters}

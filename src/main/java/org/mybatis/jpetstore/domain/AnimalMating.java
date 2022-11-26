@@ -20,7 +20,8 @@ public class AnimalMating implements Serializable {
     private String contents;
     private String characters;
     private String categoryid;
-    private Timestamp createdate;
+    private String createdate;
+    private int view;
 
 
 }

@@ -107,4 +107,7 @@ public class AnimalService {
         return null;
     }
 
+    public void plusViewCount(int id) {
+        animalMapper.plusViewCount(id);
+    }
 }

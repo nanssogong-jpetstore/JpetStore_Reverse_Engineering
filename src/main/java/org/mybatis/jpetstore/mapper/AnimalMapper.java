@@ -8,4 +8,6 @@ public interface AnimalMapper {
     void insertAnimal(AnimalMating animalMating);
     List<AnimalMating> getAnimalMatingList();
     AnimalMating getAnimalMattingDetail(int id);
+
+    void plusViewCount(int id);
 }
