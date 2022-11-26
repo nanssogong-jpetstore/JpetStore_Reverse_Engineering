@@ -40,7 +40,7 @@ public class AnimalService {
     public List<AnimalMating> getAnimalMatingList() {
         return animalMapper.getAnimalMatingList();
     }
-
+    public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
 
     public AWSS3 awsS3 = AWSS3.getInstance();
 
