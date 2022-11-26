@@ -128,6 +128,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution getMatingInfo() {
         System.out.println("id = " + id);
+        animalService.plusViewCount(id);
         animalMating = animalService.getAnimalMattingDetail(id);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
