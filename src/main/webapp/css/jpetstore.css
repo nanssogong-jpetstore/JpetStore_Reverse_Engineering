@@ -141,7 +141,7 @@ body>#Logo {
 }
 
 #Menu {
-  width: 41%;
+  width: 33%;
   height: 9ex;
   margin: 0ex 0ex 0ex 0ex;
   padding: 0ex 0ex 0ex 0ex;
@@ -169,11 +169,11 @@ body>#Menu {
   height: 9ex;
 }
 
- {
+{
 }
 
 #Search {
-  width: 25%;
+  width: 33%;
   height: 9ex;
   margin: 0ex 0ex 0ex 0ex;
   padding: 0ex 0ex 0ex 0ex;

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+       Copyright 2010-2022 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.mybatis.jpetstore.mapper.AnimalMapper">
+
+    <cache />
+
+    <insert id="insertAnimal" parameterType="AnimalMating">
+        INSERT INTO MATINGANIMAL
+            (userid, imgUrl, title, contents, categoryid, characters)
+        VALUES
+            (#{userId}, #{imgUrl}, #{title}, #{contents}, #{categoryid} ,#{characters})
+    </insert>
+
+    <update id="plusViewCount" parameterType="AnimalMating">
+        UPDATE MATINGANIMAL SET view=view+1 where id=#{id}
+    </update>
+
+
+    <select id="getAnimalMatingList" resultType="AnimalMating">
+
+
+        SELECT id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        ORDER BY createdate desc
+
+    </select>
+
+    <select id="getAnimalMattingDetail" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters, case
+        when YEAR(createDate) = YEAR(now()) then
+        case
+        when (TIMESTAMPDIFF(DAY, createDate, now())) > 1
+        then concat(YEAR(createDate), '년 ', MONTH(createDate), '월 ', DAY(createDate), '일 ',HOUR(createdate),'시 ',MINUTE(createdate),'분')
+        when TIMESTAMPDIFF(minute, createDate, now()) <![CDATA[<]]> 1
+        then concat(TIMESTAMPDIFF(second, createDate, now()),'초 전')
+        when TIMESTAMPDIFF(hour, createDate, now()) > 24
+        then concat(TIMESTAMPDIFF(DAY, createDate, now()), '일 전')
+        when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 1
+        then concat(TIMESTAMPDIFF(minute, createDate, now()), '분 전')
+        when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 24
+        then concat(TIMESTAMPDIFF(hour, createDate, now()), '시간 전')
+        end end as createDate,view
+        from MATINGANIMAL
+        where id=#{id}
+    </select>
+
+
+</mapper>

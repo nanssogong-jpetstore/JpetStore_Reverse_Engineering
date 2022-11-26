@@ -17,8 +17,10 @@ package org.mybatis.jpetstore.web.actions;
 
 import java.util.List;
 
+import com.google.gson.Gson;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.SessionScope;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 
@@ -26,6 +28,9 @@ import org.mybatis.jpetstore.domain.Category;
 import org.mybatis.jpetstore.domain.Item;
 import org.mybatis.jpetstore.domain.Product;
 import org.mybatis.jpetstore.service.CatalogService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * The Class CatalogActionBean.
@@ -143,6 +148,24 @@ public class CatalogActionBean extends AbstractActionBean {
   @DefaultHandler
   public ForwardResolution viewMain() {
     return new ForwardResolution(MAIN);
+  }
+
+  public Resolution categoryAPI() {
+    return new Resolution() {
+      @Override
+      public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+        String categoryId = httpServletRequest.getParameter("categoryId");
+
+        if(categoryId != null)
+          productList = catalogService.getProductListByCategory(categoryId);
+
+        Gson gson = new Gson();
+        String categoryJson = gson.toJson(productList);
+        httpServletResponse.setCharacterEncoding("utf-8");
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.getWriter().write(categoryJson);
+      }
+    };
   }
 
   /**

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xmlns:beans="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket-4.1.xsd">
+
+    <context:component-scan base-package="org.mybatis.jpetstore.Chat"/>
+
+    <mvc:annotation-driven/>
+    <mvc:default-servlet-handler/>
+    <mvc:resources mapping="/resources/**" location="/resources/images/"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/chat/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--     WebSocket STOMP S-->
+    <!--<websocket:message-broker application-destination-prefix="/app" user-destination-prefix="/user">
+        <websocket:stomp-endpoint path="/jpetstore_war/ws/chat">
+            &lt;!&ndash; <websocket:handshake-handler ref=""/> &ndash;&gt;
+
+            <websocket:handshake-interceptors>
+                <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+            </websocket:handshake-interceptors>
+        </websocket:stomp-endpoint>
+
+        <websocket:simple-broker prefix="/topic"/>
+    </websocket:message-broker>-->
+
+    <!-- websocket -->
+
+    <!--<websocket:handlers>
+        <websocket:mapping handler="myHandler" path="/alarm" />
+        <websocket:sockjs websocket-enabled="true"/>
+    </websocket:handlers>
+
+    <bean id="myHandler" class="org.mybatis.jpetstore.Chat.GreetingHandler" />-->
+</beans>

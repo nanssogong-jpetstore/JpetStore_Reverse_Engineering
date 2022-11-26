@@ -77,7 +77,6 @@
 }
 
 body {
-  margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
@@ -296,7 +295,7 @@ figure {
   margin: 0 0 1rem;
 }
 
-img,
+#Immg,
 svg {
   vertical-align: middle;
 }
@@ -341,7 +340,7 @@ button:focus:not(:focus-visible) {
   outline: 0;
 }
 
-input,
+/*input,
 button,
 select,
 optgroup,
@@ -350,7 +349,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-}
+}*/
 
 button,
 select {
@@ -666,7 +665,7 @@ progress {
   }
 }
 .row {
-  --bs-gutter-x: 1.5rem;
+  --bs-gutter-x: 78rem;
   --bs-gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
@@ -1557,7 +1556,7 @@ progress {
 
   .row-cols-xl-4 > * {
     flex: 0 0 auto;
-    width: 25%;
+    width: 20%;
   }
 
   .row-cols-xl-5 > * {
@@ -7490,10 +7489,6 @@ textarea.form-control-lg {
   padding-bottom: 1.5rem !important;
 }
 
-.py-5 {
-  padding-top: 3rem !important;
-  padding-bottom: 3rem !important;
-}
 
 .pt-0 {
   padding-top: 0 !important;
