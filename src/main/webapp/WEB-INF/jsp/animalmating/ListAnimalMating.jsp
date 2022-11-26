@@ -7,6 +7,12 @@
     <div class="container px-4 px-lg-5 mt-5">
         <h2>Animal Mating</h2>
         <hr>
+            <div id = "SearchMating"><stripes:form
+                beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean">
+                <stripes:text name="keyword" size="14" />
+                <stripes:submit name="searchMating" value="Search" />
+                </stripes:form>
+        </div>
         <br/>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <c:forEach var="mating" items="${actionBean.animalMatingList}">

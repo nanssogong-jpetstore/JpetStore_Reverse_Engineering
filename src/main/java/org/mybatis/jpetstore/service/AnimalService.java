@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,5 +110,13 @@ public class AnimalService {
 
     public void plusViewCount(int id) {
         animalMapper.plusViewCount(id);
+    }
+
+    public List<AnimalMating> searchAnimalMatingList(String keywords){
+        List<AnimalMating> animalMatings = new ArrayList<>();
+        for (String keyword : keywords.split("\\s")){
+            animalMatings.addAll(animalMapper.searchAnimalMatingList("%" + keyword.toLowerCase() + "%"));
+        }
+        return animalMatings;
     }
 }

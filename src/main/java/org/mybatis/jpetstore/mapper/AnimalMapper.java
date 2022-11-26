@@ -10,4 +10,6 @@ public interface AnimalMapper {
     AnimalMating getAnimalMattingDetail(int id);
 
     void plusViewCount(int id);
+
+    List<AnimalMating> searchAnimalMatingList(String keywords);
 }

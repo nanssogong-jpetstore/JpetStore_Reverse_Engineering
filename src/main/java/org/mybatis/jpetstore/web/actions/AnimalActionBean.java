@@ -68,6 +68,14 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public void setId(int id) { this.id = id; }
 
+    public String getKeyword(){
+        return  keyword;
+    }
+
+    public void setKeyword(String keyword){
+        this.keyword = keyword;
+    }
+
     public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
 
     public void setAnimalMatingList(List<AnimalMating> animalMatingList) { this.animalMatingList = animalMatingList; }
@@ -84,7 +92,7 @@ public class AnimalActionBean extends AbstractActionBean {
         return fileBean;
     }
 
-
+    private String keyword;
 
 
     @Autowired
@@ -178,6 +186,16 @@ public class AnimalActionBean extends AbstractActionBean {
             logger.info("Error Message: " + ace.getMessage());
         }
         return null;
+    }
+
+    public ForwardResolution searchMating(){
+        if (keyword == null || keyword.length() < 1) {
+            setMessage("Please enter a keyword to search for, then press the search button.");
+            return new ForwardResolution(ERROR);
+        } else {
+            animalMatingList = animalService.searchAnimalMatingList(keyword.toLowerCase());
+            return new ForwardResolution(LIST_ANIMAL_MATING);
+        }
     }
 
 
