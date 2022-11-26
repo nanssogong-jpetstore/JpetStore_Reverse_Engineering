@@ -22,6 +22,14 @@
 <mapper namespace="org.mybatis.jpetstore.mapper.ChatMessageMapper">
 
     <cache />
+    <insert id="insertMessage" parameterType="ChatMessage">
+        INSERT INTO CHATMESSAGE(type, roomId, sender, receiver, content, createDate)
+        VALUES (#{type}, #{roomId}, #{sender}, #{receiver}, #{content}, NOW())
+    </insert>
 
+    <select id="getMessages" resultType="ChatMessage">
+        SELECT type, roomId, sender, receiver, content, createDate
+        FROM CHATMESSAGE WHERE roomId = #{roomId} ORDER BY createDate ASC
+    </select>
 
 </mapper>

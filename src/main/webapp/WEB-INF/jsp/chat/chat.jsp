@@ -1,3 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="stripes"
+           uri="http://stripes.sourceforge.net/stripes.tld"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%--
   Created by IntelliJ IDEA.
   User: zxz46
@@ -19,10 +23,35 @@
         var id = '${actionBean.username}';
         var title = '${actionBean.title}';
         var name = '${actionBean.name}';
-        connect(id, title, name);
+        var matingId = '${actionBean.id}';
+        connect(id, title, name, matingId);
+    }
+
+    function getAvatarColor(messageSender) {
+        var hash = 0;
+        for( var i = 0; i < messageSender.length; i++) {
+            hash = 31 * hash + messageSender.charCodeAt(i);
+        }
+        var index = Math.abs(hash % colors.length);
+        return colors[index];
     }
 </script>
+<style>
+    a.Button, a.Button:link, a.Button:visited {
+        padding: .3ex;
+        color: #fff;
+        background-color: #005e21;
+        text-decoration: none;
+        font-family: helvetica, tahoma, arial, verdana, sans-serif;
+        font-size: 1.5ex;
+    }
 
+    a.Button:hover {
+        color: #000;
+        background-color: #54c07a;
+    }
+
+</style>
 <body>
 <div id="chat-page" class="hidden">
     <div class="chat-container">
@@ -33,7 +62,28 @@
             연결중...
         </div>
         <ul id="messageArea">
-
+            <c:forEach var="chatlist" items="${actionBean.chatMessageList}">
+                <c:choose>
+                    <c:when test="${chatlist.sender eq sessionScope.accountBean.account.username}">
+                        <div class="chat-messageParent" style="text-align: right;">
+                            <li class="chat-message">
+                                <span>${chatlist.sender}</span>
+                                    <i style="background-color: #2196F3; position: relative;">${chatlist.profile}</i>
+                                <p>${chatlist.content}</p>
+                            </li>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="chat-messageParent">
+                            <li class="chat-message">
+                                <span>${chatlist.sender}</span>
+                                <i style="background-color: #ff5652; position: absolute;">${chatlist.profile}</i>
+                                <p>${chatlist.content}</p>
+                            </li>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
         </ul>
         <form id="messageForm" name="messageForm">
             <div class="form-group">
@@ -43,6 +93,16 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div>
+        <h6>
+        <stripes:link class="Button"
+                      beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
+                      event="chatList">
+            <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
+            Go To Back
+        </stripes:link>
+        </h6>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>

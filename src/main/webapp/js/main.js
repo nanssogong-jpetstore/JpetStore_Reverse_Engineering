@@ -15,11 +15,13 @@ var colors = [
 ]
 var roomId = null;
 var target = null;
-function connect(myId, title, name) {
+var postId = null;
+function connect(myId, title, name, matingId) {
     // username = document.querySelector('#name').value.trim();
     username = myId;
     setRoomId(title);
     setTarget(name);
+    setPostId(matingId);
     console.log("@@");
     console.log(roomId);
     localStorage.setItem('chatId', username);
@@ -41,22 +43,31 @@ function setTarget(name) {
 function setRoomId(title) {
     this.roomId = title;
 }
+function setPostId(matingId) {
+    this.postId = matingId;
+}
 
+function getPostId() {
+    return this.postId;
+}
 function getRoomId() {
     return this.roomId;
+}
+function getTarget() {
+    return this.target;
 }
 
 function onConnected() {
     console.log("Hello My")
-    stompClient.subscribe('/topic/chat/room/'+ getRoomId(), onMessageReceived);
+    stompClient.subscribe('/topic/chat/room/'+ getRoomId() + getPostId(), onMessageReceived);
     stompClient.send("/app/chat/enter",
         {},
-        JSON.stringify({sender: username, receiver: target, type: 'ENTER', content: "", roomId: getRoomId()})
+        JSON.stringify({sender: username, receiver: getTarget(), type: 'ENTER', content: "", roomId: getRoomId() + getPostId()})
     )
-    stompClient.send("/app/chat/invite",
+    /*stompClient.send("/app/chat/invite",
         {},
-        JSON.stringify({sender: target, receiver : username, type: 'ENTER', content: "", roomId: getRoomId()})
-    )
+        JSON.stringify({sender: getTarget(), receiver : username, type: 'ENTER', content: "", roomId: getRoomId() + getPostId()})
+    )*/
     connectingElement.classList.add('hidden');
 }
 
@@ -73,7 +84,7 @@ function sendMessage(event) {
             receiver: target,
             content: messageInput.value,
             type: 'TALK',
-            roomId: getRoomId()
+            roomId: getRoomId() + getPostId()
         };
         stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
@@ -89,8 +100,8 @@ function onMessageReceived(payload) {
     var messageElement = document.createElement('li');
 
     if(message.type === 'ENTER') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
+        /*messageElement.classList.add('event-message');
+        message.content = message.sender + ' joined!';*/
     }else if(message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
@@ -101,7 +112,7 @@ function onMessageReceived(payload) {
         var avatarElement = document.createElement('i');
         var avatarText = document.createTextNode(message.sender[0]);
         avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+        ;/*getAvatarColor(message.sender);*/
 
 
 
@@ -109,12 +120,14 @@ function onMessageReceived(payload) {
         var usernameElement = document.createElement('span');
         var usernameText = document.createTextNode(message.sender);
         if(message.sender === username) {
+            avatarElement.style['background-color'] = '#2196F3';
             messageDiv.style['text-align'] = 'right';
             avatarElement.style['position'] = 'relative';
             usernameElement.appendChild(usernameText);
             messageElement.appendChild(usernameElement);
             messageElement.appendChild(avatarElement);
         }else {
+            avatarElement.style['background-color'] = '#ff5652';
             avatarElement.style['position'] = 'absolute';
             messageElement.appendChild(avatarElement);
             usernameElement.appendChild(usernameText);

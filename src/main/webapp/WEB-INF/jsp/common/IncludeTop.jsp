@@ -91,7 +91,7 @@
 			</c:if>
 			<img align="middle" src="../images/separator.gif" /> <a
 					href="../help.html">?</a>
-			<img align="middle" src="../images/separator.gif" />
+
 			<c:if test="${sessionScope.accountBean != null}">
 				<c:if test="${sessionScope.accountBean.authenticated}">
 					<c:if test="${sessionScope.accountBean.account.rank eq 'MANAGEMENT'}" >
@@ -150,7 +150,19 @@
 			event="viewCategory">
 		<stripes:param name="categoryId" value="BIRDS" />
 		<img src="../images/sm_birds.gif" />
-	</stripes:link></div>
+	</stripes:link>
+<c:if test="${sessionScope.accountBean != null}">
+	<c:if test="${sessionScope.accountBean.authenticated}">
+		<img src="../images/separator.gif" />
+		<stripes:link class="Button" onclick="window.open(this.href, '', 'width=400, height=700, left=700, top=100'); return false;"
+					  beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
+					  event="chatList">
+			<stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
+			CHAT
+		</stripes:link>
+	</c:if>
+</c:if>
+	</div>
 
 </div>
 
