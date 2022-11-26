@@ -13,14 +13,15 @@
                 <div class="col mb-5">
                     <div class="card h-100" style="box-shadow: 5px 5px 5px 5px gray;">
                         <!-- Product image-->
-                        <img id="Immg" style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
+                        <img id="Img" style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">${mating.categoryid}</h5>
+                                <h5 class="fw-bolder">CATEGORY <br> ${mating.categoryid}</h5>
+                                <h6 class="fw-bolder">TITLE : ${mating.title}</h6>
                                 <!-- Product price-->
-                                ${mating.userId}
+                                USERNAME : ${mating.userId}
                             </div>
                         </div>
                         <!-- Product actions-->
@@ -30,7 +31,7 @@
                                         beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
                                         event="getMatingInfo">
                                 <stripes:param name="id" value="${mating.id}" />
-                                INFOMATION
+                                INFORMATION
                                 </stripes:link>
                                 <%--<a class="btn btn-outline-dark mt-auto" href="#">INFOMATION</a>--%>
                             </div>
