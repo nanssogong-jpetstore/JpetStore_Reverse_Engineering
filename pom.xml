@@ -279,6 +279,11 @@
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
+      <dependency>
+          <groupId>cn.featherfly.constant</groupId>
+          <artifactId>constant-core</artifactId>
+          <version>1.6.8</version>
+      </dependency>
   </dependencies>
 
   <build>
@@ -368,6 +373,14 @@
           </execution>
         </executions>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>11</source>
+                <target>11</target>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
 

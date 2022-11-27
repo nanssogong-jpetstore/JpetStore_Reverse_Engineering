@@ -477,6 +477,34 @@ summary {
   display: list-item;
   cursor: pointer;
 }
+.page{
+  text-align: center;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 30px;
+}
+
+.paging {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.paging li {
+  display: inline;
+  text-align: center;
+}
+
+.paging a {
+  float: left;
+  display: block;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 5px 12px;
+  color: #96a0ad;
+  line-height: 1.5;
+}
 
 progress {
   vertical-align: baseline;

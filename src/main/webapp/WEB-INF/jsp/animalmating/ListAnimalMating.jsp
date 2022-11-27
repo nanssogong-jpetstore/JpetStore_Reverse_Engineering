@@ -7,6 +7,15 @@
     <div class="container px-4 px-lg-5 mt-5">
         <h2>Animal Mating</h2>
         <hr>
+            <div id = "SearchMating"><stripes:form
+                beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean">
+                <stripes:select name="searchOption" value="${searchOption}">
+                    <stripes:options-collection collection="${actionBean.searchOptionList}"  />
+                </stripes:select>
+                <stripes:text name="keyword" size="14" />
+                <stripes:submit name="searchMating" value="Search" />
+                </stripes:form>
+        </div>
         <br/>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <c:forEach var="mating" items="${actionBean.animalMatingList}">
@@ -43,14 +52,44 @@
                     <!-- Product actions-->
         </div>
     </div>
-    <div style="position: absolute; top:75px; right: 45%;">
+
+    <div class="page">
+        <ul class="paging">
+
+            <li> <stripes:link class="arrow left"
+                               beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                               event="paging">
+                <stripes:param name="cpage" value="${actionBean.preBlock}" />
+                &lt;&lt;
+            </stripes:link></li>
+            <c:forEach var="i" begin="1" end="${ actionBean.pageCount }" step="1">
+                <li>
+                    <stripes:link class="num"
+                                  beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                                  event="paging">
+                        <stripes:param name="cpage" value="${i}" />
+                        ${i}
+                    </stripes:link>
+                </li>
+            </c:forEach>
+            <li> <stripes:link class="arrow right"
+                               beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                               event="paging">
+                <stripes:param name="cpage" value="${actionBean.nextBlock}" />
+                &gt;&gt;
+            </stripes:link></li>
+
+        </ul>
+    </div>
+
+    <div style="position: absolute; top:75px; right: 40%;">
         <stripes:link class="Button"
                       beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
                       event="addAnimalMatingView">
             AddAnimal
         </stripes:link>
     </div>
-    <div style="position: absolute; top:75px; left: 45%;">
+    <div style="position: absolute; top:75px; left: 40%;">
         <stripes:link class="Button"
                       beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
                       event="recommendAnimalMatingView">

@@ -24,4 +24,33 @@
     <cache />
 
 
+    <insert id="insertChatRoom" parameterType="ChatRoom">
+        insert into CHATROOM
+            (roomId, userId, roomName, imgurl)
+        values(#{roomId}, #{userId}, #{roomName}, #{imgurl})
+    </insert>
+
+    <select id="getChatRoom" resultType="ChatRoom">
+        SELECT roomId, userId, roomName, imgurl
+        FROM CHATROOM
+        WHERE roomId = #{roomId}
+    </select>
+
+    <select id="getChatRoomList" resultType="ChatRoom">
+        SELECT cr.roomId AS roomId , cru.userId AS userId, cr.roomName AS roomName, cr.imgurl AS imgurl, cru.isRead AS isRead
+        FROM CHATROOM AS cr
+                 JOIN CHATROOMUSER AS cru
+                      ON cr.roomId = cru.roomId
+        WHERE cru.userId != #{userId};
+    </select>
+
+    <update id="readMessage" parameterType="ChatRoomUser">
+        UPDATE CHATROOMUSER SET
+            isRead = 1 WHERE roomId = #{roomId} AND userId = #{userId}
+    </update>
+
+    <update id="noneReadMessage" parameterType="ChatRoomUser">
+        UPDATE CHATROOMUSER SET
+            isRead = 0 WHERE roomId = #{roomId} AND userId = #{userId}
+    </update>
 </mapper>

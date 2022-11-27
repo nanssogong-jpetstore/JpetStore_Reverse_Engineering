@@ -3,16 +3,21 @@ package org.mybatis.jpetstore.Chat;
 import org.mybatis.jpetstore.domain.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class ChatController {
     private final SimpMessageSendingOperations sendingOperations;
+    private final ChatService chatService;
 
-    public ChatController(SimpMessageSendingOperations sendingOperations) {
+    public ChatController(SimpMessageSendingOperations sendingOperations, ChatService chatService) {
         this.sendingOperations = sendingOperations;
+        this.chatService = chatService;
     }
 
     @MessageMapping("/chat/enter")
@@ -30,6 +35,9 @@ public class ChatController {
 //            message = params.get("message").toString();
 //        }
 //        sendingOperations.convertAndSend("/topic/chat/room/"+roomId, message);
+
+        /*List<ChatMessage> chatMessageList = chatService.getMessages(chatMessage.getRoomId());
+        model.addAttribute("chatMessageList", chatMessageList);*/
         sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
 
         return chatMessage;
@@ -37,7 +45,7 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public ChatMessage sendMessage(ChatMessage chatMessage) {
-        System.out.println("send method");
+        chatService.insertMessage(chatMessage);
         sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
         return chatMessage;
     }
