@@ -36,6 +36,9 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
     private static final List<String> CATEGORY_LIST;
 
+    private static List<String> searchOptionList;
+    private String searchOption;
+
 
     @SpringBean
     private transient AnimalService animalService;
@@ -44,6 +47,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
+        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName"));
     }
 
     public List<String> getCategories() {
@@ -59,22 +63,41 @@ public class AnimalActionBean extends AbstractActionBean {
     private List<AnimalMating> animalMatingList;
     private int page;
     private int id;
+    private String keyword;
 
     public int getPage() { return page; }
 
-    public void setPage(int page) { this.page = page; }
+    public String getKeyword() {
+        return keyword;
+    }
 
-    public int getId() { return id; }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public List<String> getSearchOptionList() {
+        return searchOptionList;
+    }
 
-    public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
+    public void setSearchOption(String searchOption) {
+        this.searchOption = searchOption;
+    }
 
-    public void setAnimalMatingList(List<AnimalMating> animalMatingList) { this.animalMatingList = animalMatingList; }
+    public List<AnimalMating> getAnimalMatingList() {
+        return animalMatingList;
+    }
 
-    public AnimalMating getAnimalMating() { return animalMating; }
+    public void setAnimalMatingList(List<AnimalMating> animalMatingList) {
+        this.animalMatingList = animalMatingList;
+    }
 
-    public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
+    public AnimalMating getAnimalMating() {
+        return animalMating;
+    }
+
+    public void setAnimalMating(AnimalMating animalMating) {
+        this.animalMating = animalMating;
+    }
 
     public void setFileBean(FileBean fileBean) {
         this.fileBean = fileBean;
@@ -180,6 +203,26 @@ public class AnimalActionBean extends AbstractActionBean {
         return null;
     }
 
-
+    public ForwardResolution searchMating() {
+        if (keyword == null || keyword.length() < 1) {
+            animalMatingList = animalService.getAnimalMatingList();
+            return new ForwardResolution(LIST_ANIMAL_MATING);
+        } else {
+            if (searchOption.equals("Title")) {
+                animalMatingList = animalService.searchAnimalMatingTitle(keyword);
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            } else if (searchOption.equals("Contents")) {
+                animalMatingList = animalService.searchAnimalMatingContents(keyword);
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            } else if (searchOption.equals("UserName")) {
+                animalMatingList = animalService.searchAnimalMatingUser(keyword);
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            }
+            else {
+                animalMatingList = animalService.getAnimalMatingList();
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            }
+        }
+    }
 
 }
