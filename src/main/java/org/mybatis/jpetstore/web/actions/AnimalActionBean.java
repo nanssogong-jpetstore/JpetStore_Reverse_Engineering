@@ -203,6 +203,7 @@ public class AnimalActionBean extends AbstractActionBean {
         return null;
     }
 
+
     public ForwardResolution searchMating() {
         if (keyword == null || keyword.length() < 1) {
             animalMatingList = animalService.getAnimalMatingList();
