@@ -215,19 +215,25 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public ForwardResolution searchMating() {
-        if (searchOption.equals("Title")) {
-            animalMatingList = animalService.searchAnimalMatingTitle(keyword);
-            return new ForwardResolution(LIST_ANIMAL_MATING);
-        } else if (searchOption.equals("Contents")) {
-            animalMatingList = animalService.searchAnimalMatingContents(keyword);
-            return new ForwardResolution(LIST_ANIMAL_MATING);
-        } else if (searchOption.equals("UserName")) {
-            animalMatingList = animalService.searchAnimalMatingUser(keyword);
-            return new ForwardResolution(LIST_ANIMAL_MATING);
-        }
-        else {
+        if (keyword == null || keyword.length() < 1) {
             animalMatingList = animalService.getAnimalMatingList();
             return new ForwardResolution(LIST_ANIMAL_MATING);
+        } else {
+            if (searchOption.equals("Title")) {
+                animalMatingList = animalService.searchAnimalMatingTitle(keyword);
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            } else if (searchOption.equals("Contents")) {
+                animalMatingList = animalService.searchAnimalMatingContents(keyword);
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            } else if (searchOption.equals("UserName")) {
+                animalMatingList = animalService.searchAnimalMatingUser(keyword);
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            }
+            else {
+                animalMatingList = animalService.getAnimalMatingList();
+                return new ForwardResolution(LIST_ANIMAL_MATING);
+            }
         }
     }
+
 }
