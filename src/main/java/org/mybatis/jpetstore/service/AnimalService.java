@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -37,8 +39,13 @@ public class AnimalService {
 
     }
 
-    public List<AnimalMating> getAnimalMatingList() {
-        return animalMapper.getAnimalMatingList();
+    public List<AnimalMating> getAnimalMatingList(int start, int end) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        System.out.println("start : " + start);
+        System.out.println("end : " + end);
+        return animalMapper.getAnimalMatingList(condition);
     }
     public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
 
@@ -56,6 +63,10 @@ public class AnimalService {
     }
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
+
+    public int getCount() {
+        return animalMapper.getAnimalMatingCount();
+    }
 
     public String uploadImgFile(FileBean fileBean) throws IOException {
         try {

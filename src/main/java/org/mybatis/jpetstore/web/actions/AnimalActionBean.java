@@ -49,37 +49,45 @@ public class AnimalActionBean extends AbstractActionBean {
     private FileBean fileBean;
 
     private List<AnimalMating> animalMatingList;
-    private int page;
+
+    public static final int PAGESIZE = 8;
     private int id;
-
-    public int getPage() { return page; }
-
-    public void setPage(int page) { this.page = page; }
+    private int cpage;
+    private int psStr;
+    private int pageCount;
+    private int postCount;
+    private int preBlock;
+    private int nextBlock;
 
     public int getId() { return id; }
-
     public void setId(int id) { this.id = id; }
 
-    public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
+    public int getCpage() { return cpage; }
+    public void setCpage(int cpage) { this.cpage = cpage; }
 
+    public int getPsStr() { return psStr; }
+    public void setPsStr(int psStr) { this.psStr = psStr; }
+
+    public int getPostCount() { return postCount; }
+    public void setPostCount(int postCount) { this.postCount = postCount; }
+
+    public int getPageCount() { return pageCount; }
+    public void setPageCount(int pageCount) { this.pageCount = pageCount; }
+
+    public int getPreBlock() { return preBlock; }
+    public void setPreBlock(int preBlock) { this.preBlock = preBlock; }
+
+    public int getNextBlock() { return nextBlock; }
+    public void setNextBlock(int nextBlock) { this.nextBlock = nextBlock; }
+
+    public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
     public void setAnimalMatingList(List<AnimalMating> animalMatingList) { this.animalMatingList = animalMatingList; }
 
     public AnimalMating getAnimalMating() { return animalMating; }
-
     public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
 
-    public void setFileBean(FileBean fileBean) {
-        this.fileBean = fileBean;
-    }
-
-    public FileBean getFileBean() {
-        return fileBean;
-    }
-
-
-
-
-
+    public void setFileBean(FileBean fileBean) { this.fileBean = fileBean; }
+    public FileBean getFileBean() { return fileBean; }
 
 
     public File convert(FileBean file) throws IOException {
@@ -117,7 +125,10 @@ public class AnimalActionBean extends AbstractActionBean {
         animalMating.setImgUrl(url);
         animalMating.setUserId(userId);
         animalService.insertAnimal(animalMating);
-        animalMatingList = animalService.getAnimalMatingList();
+
+        int temp = getPagingEnd(1);
+        int start = getPagingStart(temp);
+        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
 
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
@@ -127,7 +138,14 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution listAnimalAccount(){
-        animalMatingList = animalService.getAnimalMatingList();
+
+        cpage = 1;
+        int temp = getPagingEnd(cpage);
+        int start = getPagingStart(temp);
+
+        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
+
+
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
@@ -138,7 +156,36 @@ public class AnimalActionBean extends AbstractActionBean {
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
+    public Resolution paging() {
+        System.out.println("cpage = " + cpage);
+        int temp = getPagingEnd(cpage);
+        int start = getPagingStart(temp);
+        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
+        return new ForwardResolution(LIST_ANIMAL_MATING);
+    }
 
+    private int getPagingEnd(int cpage) {
+        this.cpage = cpage;
+
+        psStr = PAGESIZE;
+        postCount = animalService.getCount();
+
+        pageCount = (postCount - 1) / PAGESIZE + 1;
+        if(cpage < 1)
+            cpage = 1;
+        else if(cpage > pageCount)
+            cpage = pageCount;
+
+        preBlock = (cpage -1)/PAGESIZE * PAGESIZE;
+        nextBlock = preBlock + PAGESIZE + 1;
+
+        return PAGESIZE* cpage;
+
+    }
+
+    private int getPagingStart(int end) {
+        return end - PAGESIZE + 1;
+    }
 
 
 }

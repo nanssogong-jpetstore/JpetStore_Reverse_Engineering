@@ -35,13 +35,18 @@
     </update>
 
 
-    <select id="getAnimalMatingList" resultType="AnimalMating">
+    <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
 
 
         SELECT id, userid, imgurl, title, contents, categoryid, characters
         FROM MATINGANIMAL
-        ORDER BY createdate desc
+        ORDER BY createdate desc limit #{start}, #{end}
 
+    </select>
+
+    <select id="getAnimalMatingCount" resultType="Integer">
+        SELECT  count(*)
+        FROM MATINGANIMAL
     </select>
 
     <select id="getAnimalMattingDetail" resultType="AnimalMating">
