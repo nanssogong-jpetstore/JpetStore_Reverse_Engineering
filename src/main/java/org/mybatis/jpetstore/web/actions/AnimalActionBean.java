@@ -31,10 +31,13 @@ import java.util.UUID;
 public class AnimalActionBean extends AbstractActionBean {
     private static final long serialVersionUID = -6687732592582712578L;
 
-    private static final String ADD_ANIMAL_MATING="/WEB-INF/jsp/animalmating/AddAnimalForm.jsp";
-    private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
-    private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
+    private static final String ADD_ANIMAL_MATING = "/WEB-INF/jsp/animalmating/AddAnimalForm.jsp";
+    private static final String LIST_ANIMAL_MATING = "/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
+    private static final String DETAIL_ANIMAL_MATING = "/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
     private static final List<String> CATEGORY_LIST;
+
+    private static List<String> searchOptionList;
+    private String searchOption;
 
 
     @SpringBean
@@ -44,6 +47,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
+        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName"));
     }
 
     public List<String> getCategories() {
@@ -59,30 +63,55 @@ public class AnimalActionBean extends AbstractActionBean {
     private List<AnimalMating> animalMatingList;
     private int page;
     private int id;
+    private String keyword;
 
-    public int getPage() { return page; }
-
-    public void setPage(int page) { this.page = page; }
-
-    public int getId() { return id; }
-
-    public void setId(int id) { this.id = id; }
-
-    public String getKeyword(){
-        return  keyword;
+    public int getPage() {
+        return page;
     }
 
-    public void setKeyword(String keyword){
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
         this.keyword = keyword;
     }
 
-    public List<AnimalMating> getAnimalMatingList() { return animalMatingList; }
+    public List<String> getSearchOptionList() {
+        return searchOptionList;
+    }
 
-    public void setAnimalMatingList(List<AnimalMating> animalMatingList) { this.animalMatingList = animalMatingList; }
+    public void setSearchOption(String searchOption) {
+        this.searchOption = searchOption;
+    }
 
-    public AnimalMating getAnimalMating() { return animalMating; }
+    public List<AnimalMating> getAnimalMatingList() {
+        return animalMatingList;
+    }
 
-    public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
+    public void setAnimalMatingList(List<AnimalMating> animalMatingList) {
+        this.animalMatingList = animalMatingList;
+    }
+
+    public AnimalMating getAnimalMating() {
+        return animalMating;
+    }
+
+    public void setAnimalMating(AnimalMating animalMating) {
+        this.animalMating = animalMating;
+    }
 
     public void setFileBean(FileBean fileBean) {
         this.fileBean = fileBean;
@@ -92,14 +121,11 @@ public class AnimalActionBean extends AbstractActionBean {
         return fileBean;
     }
 
-    private String keyword;
-
 
     @Autowired
     public AWSS3 awsS3 = AWSS3.getInstance();
 
-    private String bucketName="jpet-img";
-
+    private String bucketName = "jpet-img";
 
 
     public File convert(FileBean file) throws IOException {
@@ -115,8 +141,8 @@ public class AnimalActionBean extends AbstractActionBean {
     public Resolution uploadImg() throws Exception {
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
-        String userId=accountBean.getUsername();
-        String url=uploadImgFile();
+        String userId = accountBean.getUsername();
+        String url = uploadImgFile();
         animalMating.setImgUrl(url);
         animalMating.setUserId(userId);
         animalService.insertAnimal(animalMating);
@@ -125,11 +151,11 @@ public class AnimalActionBean extends AbstractActionBean {
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
-    public Resolution addAnimalMatingView(){
+    public Resolution addAnimalMatingView() {
         return new ForwardResolution(ADD_ANIMAL_MATING);
     }
 
-    public Resolution listAnimalAccount(){
+    public Resolution listAnimalAccount() {
         animalMatingList = animalService.getAnimalMatingList();
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
@@ -149,7 +175,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
             if (fName.indexOf(".") != -1) {
                 String ext = fName.split("\\.")[1];
-                String contentType="";
+                String contentType = "";
                 switch (ext) {
                     case "jpeg":
                         contentType = "image/jpeg";
@@ -165,13 +191,13 @@ public class AnimalActionBean extends AbstractActionBean {
                         break;
                 }
 
-                ObjectMetadata metadata=new ObjectMetadata();
+                ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentType(contentType);
-                PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, UUID.randomUUID() + "." + ext, fileBean.getInputStream(),metadata);
+                PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, UUID.randomUUID() + "." + ext, fileBean.getInputStream(), metadata);
                 putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
                 awsS3.uploadToS3(putObjectRequest);
                 logger.info("===================== Upload File - Done! =====================");
-                return "https://jpet-img.s3.ap-northeast-2.amazonaws.com/"+putObjectRequest.getKey();
+                return "https://jpet-img.s3.ap-northeast-2.amazonaws.com/" + putObjectRequest.getKey();
 
             }
         } catch (AmazonServiceException ase) {
@@ -188,16 +214,20 @@ public class AnimalActionBean extends AbstractActionBean {
         return null;
     }
 
-    public ForwardResolution searchMating(){
-        if (keyword == null || keyword.length() < 1) {
-            animalMatingList = animalService.getAnimalMatingList();
+    public ForwardResolution searchMating() {
+        if (searchOption.equals("Title")) {
+            animalMatingList = animalService.searchAnimalMatingTitle(keyword);
             return new ForwardResolution(LIST_ANIMAL_MATING);
-        } else {
-            animalMatingList = animalService.searchAnimalMatingList(keyword.toLowerCase());
+        } else if (searchOption.equals("Contents")) {
+            animalMatingList = animalService.searchAnimalMatingContents(keyword);
+            return new ForwardResolution(LIST_ANIMAL_MATING);
+        } else if (searchOption.equals("UserName")) {
+            animalMatingList = animalService.searchAnimalMatingUser(keyword);
+            return new ForwardResolution(LIST_ANIMAL_MATING);
+        }
+        else {
+            animalMatingList = animalService.getAnimalMatingList();
             return new ForwardResolution(LIST_ANIMAL_MATING);
         }
     }
-
-
-
 }

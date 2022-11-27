@@ -9,6 +9,9 @@
         <hr>
             <div id = "SearchMating"><stripes:form
                 beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean">
+                <stripes:select name="searchOption" value="${searchOption}">
+                    <stripes:options-collection collection="${actionBean.searchOptionList}"  />
+                </stripes:select>
                 <stripes:text name="keyword" size="14" />
                 <stripes:submit name="searchMating" value="Search" />
                 </stripes:form>
