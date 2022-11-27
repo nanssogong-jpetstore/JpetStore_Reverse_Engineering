@@ -1,9 +1,12 @@
 package org.mybatis.jpetstore.domain;
 
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class ChatMessage {
+public class ChatMessage implements Serializable {
+
+    private static final long serialVersionUID = 6620528781626504362L;
 
     private MessageType type;
     private String roomId;
@@ -11,8 +14,19 @@ public class ChatMessage {
     private String receiver;
     private String content;
     private Date createDate;
+    private String profile;
 
+    public ChatMessage() {
 
+    }
+
+    public ChatMessage(MessageType type, String roomId, String sender, String receiver, String content) {
+        this.type = type;
+        this.roomId = roomId;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+    }
     public MessageType getType() {
         return type;
     }
@@ -61,6 +75,10 @@ public class ChatMessage {
         this.createDate = createDate;
     }
 
+    public String getProfile() { return profile; }
+
+    public void setProfile(String profile) { this.profile = profile; }
+
     public enum MessageType {
         ENTER("ENTER"),
         TALK("TALK"),
@@ -77,4 +95,5 @@ public class ChatMessage {
         }
         public String getValue() { return this.value; }
     }
+
 }

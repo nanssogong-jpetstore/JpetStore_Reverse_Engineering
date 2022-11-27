@@ -1,16 +1,20 @@
 package org.mybatis.jpetstore.domain;
 
-public class ChatRoomUser {
-    private int roomId;
+import java.io.Serializable;
+
+public class ChatRoomUser  implements Serializable {
+
+    private static final long serialVersionUID = 6620528781626504362L;
+    private String roomId;
     private String userId;
     private int isRead;
 
 
-    public int getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(int roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 

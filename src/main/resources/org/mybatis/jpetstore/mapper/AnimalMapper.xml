@@ -68,5 +68,23 @@
         where id=#{id}
     </select>
 
+    <select id="searchAnimalMatingTitle" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        WHERE lower(title) like #{value}
+    </select>
+
+    <select id="searchAnimalMatingContents" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        WHERE lower(contents) like #{value}
+    </select>
+
+    <select id="searchAnimalMatingUser" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        WHERE lower(userid) like #{value}
+    </select>
+
 
 </mapper>

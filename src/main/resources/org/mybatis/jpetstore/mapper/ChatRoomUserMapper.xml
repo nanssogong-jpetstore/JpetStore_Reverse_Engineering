@@ -23,5 +23,10 @@
 
     <cache />
 
-
+    <insert id="inviteUser" parameterType="ChatRoomUser">
+        INSERT INTO CHATROOMUSER
+            (roomId, userId, isRead)
+        VALUES
+            (#{roomId}, #{userId}, 1)
+    </insert>
 </mapper>
