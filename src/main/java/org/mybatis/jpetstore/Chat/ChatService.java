@@ -24,10 +24,6 @@ public class ChatService {
 
     @Transactional
     public void insertMessage(ChatMessage chatMessage) {
-        ChatRoomUser chatRoomUser = new ChatRoomUser();
-        chatRoomUser.setUserId(chatMessage.getSender());
-        chatRoomUser.setRoomId(chatMessage.getRoomId());
-        chatRoomMapper.noneReadMessage(chatRoomUser);
         chatMessageMapper.insertMessage(chatMessage);
     }
 }

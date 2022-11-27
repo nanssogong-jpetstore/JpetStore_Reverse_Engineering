@@ -16,6 +16,39 @@ var colors = [
 var roomId = null;
 var target = null;
 var postId = null;
+
+Notification.requestPermission().then(function(result) {
+    console.log(result);
+});
+
+function greeting(payload){
+    var data = JSON.parse(payload.body);
+    let date = new Date().toLocaleString();
+    let notification;
+    let notificationPermission = Notification.permission;
+    if (notificationPermission === "granted") {
+        //Notification을 이미 허용한 사람들에게 보여주는 알람창
+        if(username === data.receiver) {
+            notification = new Notification(`새 메시지가 도착했습니다.`, {
+                body: data.content,
+                icon: 'hello.png',
+            });
+        }
+    } else if (notificationPermission !== 'denied') {
+        //Notification을 거부했을 경우 재 허용 창 띄우기
+        Notification.requestPermission(function (permission) {
+            if (permission === "granted") {
+                notification = new Notification(`Hello,World!!😍`, {
+                    body: `첫방문일시: ${date}`,
+                    icon: 'hello.png',
+                });
+            }else {
+                alert("알람 허용이 거부되었습니다.")
+            }
+        });
+    }
+}
+
 function connect(myId, title, name, matingId) {
     // username = document.querySelector('#name').value.trim();
     username = myId;
@@ -94,7 +127,7 @@ function sendMessage(event) {
 
 function onMessageReceived(payload) {
     console.log("@@");
-    console.log(payload);
+    console.log(payload.body);
     var message = JSON.parse(payload.body);
     var messageDiv = document.createElement("div");
     var messageElement = document.createElement('li');
@@ -112,10 +145,7 @@ function onMessageReceived(payload) {
         var avatarElement = document.createElement('i');
         var avatarText = document.createTextNode(message.sender[0]);
         avatarElement.appendChild(avatarText);
-        ;/*getAvatarColor(message.sender);*/
-
-
-
+        /*getAvatarColor(message.sender);*/
 
         var usernameElement = document.createElement('span');
         var usernameText = document.createTextNode(message.sender);
@@ -133,7 +163,7 @@ function onMessageReceived(payload) {
             usernameElement.appendChild(usernameText);
             messageElement.appendChild(usernameElement);
         }
-
+        greeting(payload);
     }
 
     var textElement = document.createElement('p');
