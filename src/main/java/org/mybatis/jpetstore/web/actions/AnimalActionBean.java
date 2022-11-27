@@ -190,8 +190,8 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public ForwardResolution searchMating(){
         if (keyword == null || keyword.length() < 1) {
-            setMessage("Please enter a keyword to search for, then press the search button.");
-            return new ForwardResolution(ERROR);
+            animalMatingList = animalService.getAnimalMatingList();
+            return new ForwardResolution(LIST_ANIMAL_MATING);
         } else {
             animalMatingList = animalService.searchAnimalMatingList(keyword.toLowerCase());
             return new ForwardResolution(LIST_ANIMAL_MATING);
