@@ -47,7 +47,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
-        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName"));
+        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName", "All"));
     }
 
     public List<String> getCategories() {
@@ -64,7 +64,6 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public static final int PAGESIZE = 8;
     private int id;
-<<<<<<< HEAD
     private int cpage;
     private int psStr;
     private int pageCount;
@@ -101,10 +100,9 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public void setFileBean(FileBean fileBean) { this.fileBean = fileBean; }
     public FileBean getFileBean() { return fileBean; }
-=======
+
     private String keyword;
 
-    public int getPage() { return page; }
 
     public String getKeyword() {
         return keyword;
@@ -122,31 +120,6 @@ public class AnimalActionBean extends AbstractActionBean {
         this.searchOption = searchOption;
     }
 
-    public List<AnimalMating> getAnimalMatingList() {
-        return animalMatingList;
-    }
-
-    public void setAnimalMatingList(List<AnimalMating> animalMatingList) {
-        this.animalMatingList = animalMatingList;
-    }
-
-    public AnimalMating getAnimalMating() {
-        return animalMating;
-    }
-
-    public void setAnimalMating(AnimalMating animalMating) {
-        this.animalMating = animalMating;
-    }
-
-    public void setFileBean(FileBean fileBean) {
-        this.fileBean = fileBean;
-    }
-
-    public FileBean getFileBean() {
-        return fileBean;
-    }
-
-
 
 
     @Autowired
@@ -154,7 +127,6 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private String bucketName="jpet-img";
 
->>>>>>> ec1cbe389b7f150c962f2afe6f7dbdf779db4456
 
 
     public File convert(FileBean file) throws IOException {
@@ -176,7 +148,7 @@ public class AnimalActionBean extends AbstractActionBean {
         animalMating.setUserId(userId);
         animalService.insertAnimal(animalMating);
 
-        int temp = getPagingEnd(1);
+        int temp = getPagingEnd(1, searchOption);
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
 
@@ -190,7 +162,7 @@ public class AnimalActionBean extends AbstractActionBean {
     public Resolution listAnimalAccount(){
 
         cpage = 1;
-        int temp = getPagingEnd(cpage);
+        int temp = getPagingEnd(cpage, searchOption);
         int start = getPagingStart(temp);
 
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
@@ -206,20 +178,23 @@ public class AnimalActionBean extends AbstractActionBean {
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
-<<<<<<< HEAD
     public Resolution paging() {
         System.out.println("cpage = " + cpage);
-        int temp = getPagingEnd(cpage);
+        int temp = getPagingEnd(cpage, searchOption);
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
-    private int getPagingEnd(int cpage) {
+    private int getPagingEnd(int cpage, String searchOption) {
         this.cpage = cpage;
 
         psStr = PAGESIZE;
-        postCount = animalService.getCount();
+        if(searchOption == null) {
+            searchOption = "all";
+        }
+
+        postCount = animalService.getCount(searchOption);
 
         pageCount = (postCount - 1) / PAGESIZE + 1;
         if(cpage < 1)
@@ -237,7 +212,7 @@ public class AnimalActionBean extends AbstractActionBean {
     private int getPagingStart(int end) {
         return end - PAGESIZE + 1;
     }
-=======
+
     private String uploadImgFile() throws IOException {
         try {
             System.out.println(fileBean.getFileName());
@@ -261,7 +236,7 @@ public class AnimalActionBean extends AbstractActionBean {
                         contentType = "text/csv";
                         break;
                 }
->>>>>>> ec1cbe389b7f150c962f2afe6f7dbdf779db4456
+
 
                 ObjectMetadata metadata=new ObjectMetadata();
                 metadata.setContentType(contentType);
@@ -287,22 +262,24 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public ForwardResolution searchMating() {
+        int temp = getPagingEnd(cpage, searchOption);
+        int start = getPagingStart(temp);
         if (keyword == null || keyword.length() < 1) {
-            animalMatingList = animalService.getAnimalMatingList();
+            animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
             return new ForwardResolution(LIST_ANIMAL_MATING);
         } else {
             if (searchOption.equals("Title")) {
-                animalMatingList = animalService.searchAnimalMatingTitle(keyword);
+                animalMatingList = animalService.searchAnimalMatingTitle(start, PAGESIZE, keyword);
                 return new ForwardResolution(LIST_ANIMAL_MATING);
             } else if (searchOption.equals("Contents")) {
-                animalMatingList = animalService.searchAnimalMatingContents(keyword);
+                animalMatingList = animalService.searchAnimalMatingContents(start, PAGESIZE, keyword);
                 return new ForwardResolution(LIST_ANIMAL_MATING);
             } else if (searchOption.equals("UserName")) {
-                animalMatingList = animalService.searchAnimalMatingUser(keyword);
+                animalMatingList = animalService.searchAnimalMatingUser(start, PAGESIZE, keyword);
                 return new ForwardResolution(LIST_ANIMAL_MATING);
             }
             else {
-                animalMatingList = animalService.getAnimalMatingList();
+                animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
                 return new ForwardResolution(LIST_ANIMAL_MATING);
             }
         }

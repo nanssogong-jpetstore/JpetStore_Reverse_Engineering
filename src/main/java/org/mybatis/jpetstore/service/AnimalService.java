@@ -15,11 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
 import java.util.ArrayList;
->>>>>>> ec1cbe389b7f150c962f2afe6f7dbdf779db4456
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -68,8 +65,22 @@ public class AnimalService {
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
 
-    public int getCount() {
-        return animalMapper.getAnimalMatingCount();
+    public int getCount(String keyword) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("value", "%" + keyword + "%");
+        if(keyword.equals("All")) {
+            return animalMapper.getAnimalMatingCount();
+        }else if(keyword.equals("UserName")) {
+            return animalMapper.searchAnimalMatingUserCount(condition);
+        }else if(keyword.equals("Title")) {
+            return animalMapper.searchAnimalMatingTitleCount(condition);
+        }else if(keyword.equals("Contents")) {
+            return animalMapper.searchAnimalMatingContentsCount(condition);
+        }else {
+            return animalMapper.getAnimalMatingCount();
+        }
+
+
     }
 
     public String uploadImgFile(FileBean fileBean) throws IOException {
@@ -127,27 +138,32 @@ public class AnimalService {
     }
 
     //제목기준 검색
-    public List<AnimalMating> searchAnimalMatingTitle(String keywords){
-        List<AnimalMating> animalMatings = new ArrayList<>();
-        for (String keyword : keywords.split("\\s")){
-            animalMatings.addAll(animalMapper.searchAnimalMatingTitle("%" + keyword.toLowerCase() + "%"));
-        }
-        return animalMatings;
+    public List<AnimalMating> searchAnimalMatingTitle(int start, int end, String keywords){
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        condition.put("value", "%" + keywords + "%");
+
+        return animalMapper.searchAnimalMatingTitle(condition);
     }
     //내용기준 검색
-    public List<AnimalMating> searchAnimalMatingContents(String keywords){
-        List<AnimalMating> animalMatings = new ArrayList<>();
-        for (String keyword : keywords.split("\\s")){
-            animalMatings.addAll(animalMapper.searchAnimalMatingContents("%" + keyword.toLowerCase() + "%"));
-        }
-        return animalMatings;
+    public List<AnimalMating> searchAnimalMatingContents(int start, int end, String keywords){
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        condition.put("value", "%" + keywords + "%");
+
+
+        return animalMapper.searchAnimalMatingContents(condition);
     }
     //유저이름으로 검색
-    public List<AnimalMating> searchAnimalMatingUser(String keywords){
+    public List<AnimalMating> searchAnimalMatingUser(int start, int end, String keywords){
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        condition.put("value", "%" + keywords + "%");
         List<AnimalMating> animalMatings = new ArrayList<>();
-        for (String keyword : keywords.split("\\s")){
-            animalMatings.addAll(animalMapper.searchAnimalMatingUser(keyword.toLowerCase()));
-        }
-        return animalMatings;
+
+        return animalMapper.searchAnimalMatingUser(condition);
     }
 }

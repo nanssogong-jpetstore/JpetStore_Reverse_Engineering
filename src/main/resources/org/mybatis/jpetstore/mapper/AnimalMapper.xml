@@ -68,23 +68,39 @@
         where id=#{id}
     </select>
 
-    <select id="searchAnimalMatingTitle" resultType="AnimalMating">
+    <select id="searchAnimalMatingTitle" parameterType="hashMap" resultType="AnimalMating">
         select id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        WHERE lower(title) like #{value} ORDER BY createdate desc limit #{start}, #{end}
+    </select>
+
+    <select id="searchAnimalMatingContents" parameterType="hashMap" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        WHERE lower(contents) like #{value} ORDER BY createdate desc limit #{start}, #{end}
+    </select>
+
+    <select id="searchAnimalMatingUser" parameterType="hashMap" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters
+        FROM MATINGANIMAL
+        WHERE lower(userid) like #{value} ORDER BY createdate desc limit #{start}, #{end}
+    </select>
+    <select id="searchAnimalMatingTitleCount" parameterType="hashMap" resultType="Integer">
+        select count(*)
         FROM MATINGANIMAL
         WHERE lower(title) like #{value}
     </select>
 
-    <select id="searchAnimalMatingContents" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+    <select id="searchAnimalMatingContentsCount" parameterType="hashMap" resultType="Integer">
+        select count(*)
         FROM MATINGANIMAL
         WHERE lower(contents) like #{value}
     </select>
 
-    <select id="searchAnimalMatingUser" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+    <select id="searchAnimalMatingUserCount" parameterType="hashMap" resultType="Integer">
+        select count(*)
         FROM MATINGANIMAL
         WHERE lower(userid) like #{value}
     </select>
-
 
 </mapper>
