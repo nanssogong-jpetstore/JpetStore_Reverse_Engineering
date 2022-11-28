@@ -40,10 +40,18 @@
             <h3>AnimalCategory</h3>
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <tr>
-                    <td>Animal Category:</td>
+                    <td>Animal Category</td>
                     <td>
                         <stripes:select name="animalMating.categoryid">
                             <stripes:options-collection collection="${actionBean.categories}"  />
+                        </stripes:select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Animal Sex</td>
+                    <td>
+                        <stripes:select name="animalMating.sex">
+                            <stripes:options-collection collection="${actionBean.sex}"  />
                         </stripes:select>
                     </td>
                 </tr>

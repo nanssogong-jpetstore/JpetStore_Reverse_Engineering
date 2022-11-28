@@ -38,7 +38,7 @@
     <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
 
 
-        SELECT id, userid, imgurl, title, contents, categoryid, characters
+        SELECT id, userid, imgurl, title, contents, categoryid, characters,sex
         FROM MATINGANIMAL
         ORDER BY createdate desc limit #{start}, #{end}
 

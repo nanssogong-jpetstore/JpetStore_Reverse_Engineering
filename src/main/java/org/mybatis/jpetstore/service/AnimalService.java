@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.mybatis.jpetstore.configuration.Constants.BUCKET;
+
 
 @Service
 public class AnimalService {
@@ -52,7 +54,7 @@ public class AnimalService {
 
     public AWSS3 awsS3 = AWSS3.getInstance();
 
-    private String bucketName="jpet-img";
+    private String bucketName=BUCKET;
 
     private FileBean fileBean;
     public void setFileBean(FileBean fileBean) {
