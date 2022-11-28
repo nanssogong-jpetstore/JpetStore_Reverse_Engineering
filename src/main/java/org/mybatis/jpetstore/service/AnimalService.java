@@ -40,6 +40,11 @@ public class AnimalService {
 
     }
 
+    public void editAnimal(AnimalMating animalMating){
+        animalMapper.editAnimal(animalMating);
+
+    }
+
     public List<AnimalMating> getAnimalMatingList(int start, int end) {
         Map<String, Object> condition = new HashMap<>();
         condition.put("start", start - 1);

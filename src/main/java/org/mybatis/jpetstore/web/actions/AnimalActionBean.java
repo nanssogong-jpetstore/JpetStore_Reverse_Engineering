@@ -34,6 +34,7 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final String ADD_ANIMAL_MATING="/WEB-INF/jsp/animalmating/AddAnimalForm.jsp";
     private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
     private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
+    private static final String EDIT_ANIMAL_MATING="/WEB-INF/jsp/animalmating/EditAnimalForm.jsp";
     private static final List<String> CATEGORY_LIST;
 
     private static List<String> searchOptionList;
@@ -70,6 +71,8 @@ public class AnimalActionBean extends AbstractActionBean {
     private int postCount;
     private int preBlock;
     private int nextBlock;
+
+    private String chooseWork;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -120,6 +123,10 @@ public class AnimalActionBean extends AbstractActionBean {
         this.searchOption = searchOption;
     }
 
+    public void setChooseWork(String chooseWork){this.chooseWork = chooseWork;}
+
+    public String getChooseWork(){return chooseWork;}
+
 
 
     @Autowired
@@ -146,8 +153,11 @@ public class AnimalActionBean extends AbstractActionBean {
         String url=uploadImgFile();
         animalMating.setImgUrl(url);
         animalMating.setUserId(userId);
-        animalService.insertAnimal(animalMating);
-
+        if(getChooseWork().equals("add")){
+            animalService.insertAnimal(animalMating);
+        }else{
+            animalService.editAnimal(animalMating);
+        }
         int temp = getPagingEnd(1, searchOption);
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
@@ -156,9 +166,15 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution addAnimalMatingView(){
+        setChooseWork("add");
         return new ForwardResolution(ADD_ANIMAL_MATING);
     }
 
+    public Resolution editAnimalMatingView(){
+        animalMating = animalService.getAnimalMattingDetail(id);
+        setChooseWork("edit");
+        return new ForwardResolution(EDIT_ANIMAL_MATING);
+    }
     public Resolution listAnimalAccount(){
 
         cpage = 1;
