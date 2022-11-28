@@ -138,6 +138,7 @@ public class AnimalActionBean extends AbstractActionBean {
         String userId=accountBean.getUsername();
         if(fileBean==null){
             setMessage("PLEASE POST IMG FILE");
+            return new ForwardResolution(ERROR);
         }
         else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null){
             setMessage("내용을 모두 입력해주세요");
