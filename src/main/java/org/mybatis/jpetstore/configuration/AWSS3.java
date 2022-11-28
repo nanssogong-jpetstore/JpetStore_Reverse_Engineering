@@ -45,7 +45,7 @@ public class AWSS3 {
                 .withRegion(clientRegion).build();
     }
 
-    // upload 메서드 | 단일 파일 업로드
+    // upload 메서드 | 단일 파일 업로드!
     public void upload(File file, String key) {
         uploadToS3(new PutObjectRequest(this.bucket, key, file));
     }
