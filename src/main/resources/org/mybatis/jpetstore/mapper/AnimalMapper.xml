@@ -25,9 +25,9 @@
 
     <insert id="insertAnimal" parameterType="AnimalMating">
         INSERT INTO MATINGANIMAL
-            (userid, imgUrl, title, contents, categoryid, characters)
+            (userid, imgUrl, title, contents, categoryid, characters,sex)
         VALUES
-            (#{userId}, #{imgUrl}, #{title}, #{contents}, #{categoryid} ,#{characters})
+            (#{userId}, #{imgUrl}, #{title}, #{contents}, #{categoryid} ,#{characters},#{sex})
     </insert>
 
     <update id="plusViewCount" parameterType="AnimalMating">
@@ -109,7 +109,8 @@
                                 title = #{title},
                                 contents = #{contents},
                                 categoryid = #{categoryid},
-                                characters = #{characters}
+                                characters = #{characters},
+                                sex=#{sex}
         WHERE id = #{id}
     </update>
 

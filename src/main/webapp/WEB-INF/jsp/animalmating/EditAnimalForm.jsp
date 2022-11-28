@@ -39,6 +39,14 @@
                         </stripes:select>
                     </td>
                 </tr>
+                <tr>
+                    <td>Animal Sex</td>
+                    <td>
+                        <stripes:select name="animalMating.sex">
+                            <stripes:options-collection collection="${actionBean.sex}"  />
+                        </stripes:select>
+                    </td>
+                </tr>
             </table >
             <h3>ChangeImg</h3>
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
