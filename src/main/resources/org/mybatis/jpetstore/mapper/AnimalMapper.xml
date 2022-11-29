@@ -22,12 +22,18 @@
 <mapper namespace="org.mybatis.jpetstore.mapper.AnimalMapper">
 
     <cache />
-
+    <insert id="addCharacter" parameterType="hashMap">
+        INSERT INTO ANIMALCHARACTER (animalId, `character`)
+        VALUES (#{id},#{character})
+    </insert>
     <insert id="insertAnimal" parameterType="AnimalMating">
         INSERT INTO MATINGANIMAL
             (userid, imgUrl, title, contents, categoryid, characters,sex)
         VALUES
             (#{userId}, #{imgUrl}, #{title}, #{contents}, #{categoryid} ,#{characters},#{sex})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
     </insert>
 
     <update id="plusViewCount" parameterType="AnimalMating">
