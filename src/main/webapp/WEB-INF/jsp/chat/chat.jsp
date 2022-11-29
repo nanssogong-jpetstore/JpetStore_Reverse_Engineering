@@ -24,7 +24,11 @@
         var title = '${actionBean.title}';
         var name = '${actionBean.name}';
         var matingId = '${actionBean.id}';
-        connect(id, title, name, matingId);
+        var roomId = '${actionBean.roomId}';
+        if(roomId === 'empty') {
+            roomId = title + id;
+        }
+        connect(id, roomId, name);
     }
 
     function getAvatarColor(messageSender) {
@@ -68,7 +72,7 @@
                         <div class="chat-messageParent" style="text-align: right;">
                             <li class="chat-message">
                                 <span>${chatlist.sender}</span>
-                                    <i style="background-color: #2196F3; position: relative;">${chatlist.profile}</i>
+                                    <i style="background-color: #2196F3; position: relative;">${actionBean.firstName_sender}</i>
                                 <p>${chatlist.content}</p>
                             </li>
                         </div>
@@ -77,7 +81,7 @@
                         <div class="chat-messageParent">
                             <li class="chat-message">
                                 <span>${chatlist.sender}</span>
-                                <i style="background-color: #ff5652; position: absolute;">${chatlist.profile}</i>
+                                <i style="background-color: #ff5652; position: absolute;">${actionBean.firstName_receiver}</i>
                                 <p>${chatlist.content}</p>
                             </li>
                         </div>

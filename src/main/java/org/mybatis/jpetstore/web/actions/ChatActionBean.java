@@ -8,16 +8,9 @@ import net.sourceforge.stripes.validation.Validate;
 import org.mybatis.jpetstore.domain.ChatMessage;
 import org.mybatis.jpetstore.domain.ChatRoom;
 import org.mybatis.jpetstore.service.AccountService;
-import org.mybatis.jpetstore.service.CatalogService;
 import org.mybatis.jpetstore.service.ChatService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @SessionScope
@@ -35,11 +28,17 @@ public class ChatActionBean extends AbstractActionBean {
     private String name; //receiver
     private String id; //교배 게시물 번호
     private String imgurl;
+    private String roomId;
+    private String firstName_sender;
+    private String firstName_receiver;
 
     private ChatRoom chatRoom;
     private List<ChatRoom> chatRoomList;
     private ChatMessage chatMessage;
     private List<ChatMessage> chatMessageList;
+
+    public String getRoomId() { return roomId; }
+    public void setRoomId(String roomId) { this.roomId = roomId; }
 
     public String getTitle() {
         return title;
@@ -61,6 +60,12 @@ public class ChatActionBean extends AbstractActionBean {
     public String getImgurl() { return imgurl; }
     public void setImgurl(String imgurl) { this.imgurl = imgurl; }
 
+    public String getFirstName_sender() { return firstName_sender; }
+    public void setFirstName_sender(String firstName_receiver) { this.firstName_receiver = firstName_receiver; }
+
+    public String getFirstName_receiver() { return firstName_receiver; }
+    public void setFirstName_receiver(String firstName_receiver) { this.firstName_receiver = firstName_receiver; }
+
     public ChatRoom getChatRoom() { return chatRoom; }
     public void setChatRoom(ChatRoom chatRoom) { this.chatRoom = chatRoom; }
 
@@ -68,11 +73,7 @@ public class ChatActionBean extends AbstractActionBean {
     public void setChatRoomList(List<ChatRoom> chatRoomList) { this.chatRoomList = chatRoomList; }
 
     public ChatMessage getChatMessage() { return chatMessage; }
-    public void setChatMessage(ChatMessage chatMessage) {
-        this.chatMessage = chatMessage;
-        this.chatMessage.setProfile(String.valueOf(chatMessage.getSender().toUpperCase().charAt(0)));
-
-    }
+    public void setChatMessage(ChatMessage chatMessage) { this.chatMessage = chatMessage; }
     
     public List<ChatMessage> getChatMessageList() { return chatMessageList; }
     public void setChatMessageList(List<ChatMessage> chatMessageList) { this.chatMessageList = chatMessageList; }
@@ -86,18 +87,29 @@ public class ChatActionBean extends AbstractActionBean {
     private transient ChatService chatService;
 
 
-    public ForwardResolution chatStart() {
-        System.out.println("userName " + username);
-        System.out.println("title " + title);
+    public ForwardResolution initChat() {
+        System.out.println("target user : " + name);
+        String chatRoomId = title+username;
 
-        if(chatService.validateChatRoom(id)) {
-            ChatRoom chatRoom = new ChatRoom(id, username, title+id, imgurl, 1);
+        if(chatService.validateChatRoom(chatRoomId)) {
+            ChatRoom chatRoom = new ChatRoom(id, chatRoomId, username, title, imgurl, 1);
             chatService.makeChatRoom(chatRoom, name);
         }
+        firstName_sender = getFirstName(username);
+        firstName_receiver = getFirstName(name);
+        ChatMessage chatMessage = new ChatMessage(ChatMessage.MessageType.ENTER, chatRoomId, username, name, null);
+        //chatService.readMessage(chatMessage);
+        chatMessageList = chatService.getMessages(chatRoomId);
+        return new ForwardResolution(CHAT);
+    }
 
-        ChatMessage chatMessage = new ChatMessage(ChatMessage.MessageType.ENTER, id, username, name, null);
-        chatService.readMessage(chatMessage);
-        chatMessageList = chatService.getMessages(title+id);
+    public ForwardResolution chatStart() {
+        System.out.println("id = " + id);
+        System.out.println("userName " + username);
+        System.out.println("title " + title);
+        firstName_sender = getFirstName(username);
+        firstName_receiver = getFirstName(name);
+        chatMessageList = chatService.getMessages(roomId);
 
         return new ForwardResolution(CHAT);
     }
@@ -112,4 +124,7 @@ public class ChatActionBean extends AbstractActionBean {
         System.out.println("hello");
     }
 
+    private String getFirstName(String name) {
+        return String.valueOf(name.toUpperCase().charAt(0));
+    }
 }

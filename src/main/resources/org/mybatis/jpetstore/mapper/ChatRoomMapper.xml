@@ -19,29 +19,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.mybatis.jpetstore.mapper.ChatRoomMapper">
+<mapper namespace="org.mybatis.jpetstore.mapper.ChatMapper">
 
     <cache />
 
 
     <insert id="insertChatRoom" parameterType="ChatRoom">
         insert into CHATROOM
-            (roomId, userId, roomName, imgurl)
-        values(#{roomId}, #{userId}, #{roomName}, #{imgurl})
+            (postId, roomId, userId, roomName, imgurl)
+        values(#{postId}, #{roomId}, #{userId}, #{roomName}, #{imgurl})
     </insert>
 
     <select id="getChatRoom" resultType="ChatRoom">
-        SELECT roomId, userId, roomName, imgurl
+        SELECT postId, roomId, userId, roomName, imgurl
         FROM CHATROOM
         WHERE roomId = #{roomId}
     </select>
 
     <select id="getChatRoomList" resultType="ChatRoom">
-        SELECT cr.roomId AS roomId , cru.userId AS userId, cr.roomName AS roomName, cr.imgurl AS imgurl, cru.isRead AS isRead
+        SELECT cr.postId AS postId, cr.roomId AS roomId, cr.userId AS userId, cru.receiver AS receiver, cr.roomName AS roomName, cr.imgurl AS imgurl, cm.content AS content
         FROM CHATROOM AS cr
                  JOIN CHATROOMUSER AS cru
                       ON cr.roomId = cru.roomId
-        WHERE cru.userId != #{userId};
+                 LEFT JOIN (SELECT *
+                            FROM ( SELECT sender, roomId, content FROM CHATMESSAGE ORDER BY createDate DESC LIMIT 18446744073709551615) AS order_chatmessage
+                            GROUP BY order_chatmessage.roomId) AS cm
+                           ON cr.roomId = cm.roomId
+        WHERE cru.userId = #{userId};
     </select>
 
     <update id="readMessage" parameterType="ChatRoomUser">
@@ -53,4 +57,23 @@
         UPDATE CHATROOMUSER SET
             isRead = 0 WHERE roomId = #{roomId} AND userId = #{userId}
     </update>
+
+    <insert id="inviteUser" parameterType="ChatRoomUser">
+        INSERT INTO CHATROOMUSER
+            (roomId, userId, receiver, isRead)
+        VALUES
+            (#{roomId}, #{userId}, #{receiver}, 1)
+    </insert>
+
+    <insert id="insertMessage" parameterType="ChatMessage">
+        INSERT INTO CHATMESSAGE(type, roomId, sender, receiver, content, createDate)
+        VALUES (#{type}, #{roomId}, #{sender}, #{receiver}, #{content}, NOW())
+    </insert>
+
+    <select id="getMessages" resultType="ChatMessage">
+        SELECT type, roomId, sender, receiver, content, createDate
+        FROM CHATMESSAGE WHERE roomId = #{roomId} ORDER BY createDate ASC
+    </select>
+
+
 </mapper>
