@@ -51,15 +51,13 @@
             <h3>ChangeImg</h3>
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <tr>
-                    <td>ChangeImg:</td>
                     <td>
-                        <img id="img" style="height:10%;" src="${actionBean.animalMating.imgUrl}" alt="..." />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <stripes:file name="fileBean" style="text-align: left" />
-                        <stripes:submit name="uploadImg" value="edit"/>
+                        <details>
+                            <summary>ChangeImg</summary>
+                            <stripes:label for="editFile"/>
+                            <stripes:file name="fileBean" style="text-align: left" id="editFile" />
+                            <stripes:submit name="uploadImg" value="edit"/>
+                        </details>
                     </td>
                 </tr>
 
