@@ -50,7 +50,7 @@
     </select>
 
     <select id="getAnimalMattingDetail" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters, case
+        select id, userid, imgurl, title, contents, categoryid, characters, sex, case
         when YEAR(createDate) = YEAR(now()) then
         case
         when (TIMESTAMPDIFF(DAY, createDate, now())) > 1

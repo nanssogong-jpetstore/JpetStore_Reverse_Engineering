@@ -26,6 +26,7 @@
       <stripes:param name="title" value="${actionBean.animalMating.title}" />
       <stripes:param name="name" value="${actionBean.animalMating.userId}" />
       <stripes:param name="id" value="${actionBean.animalMating.id}" />
+        <stripes:param name="sex" value="${actionBean.animalMating.sex}" />
       <stripes:param name="imgurl" value="${actionBean.animalMating.imgUrl}" />
 
       Chat Start
@@ -34,11 +35,12 @@
     조회수 : ${actionBean.animalMating.view}
   </div>
   <div class="article_container">
+    성별 : ${actionBean.animalMating.sex} <br>
     성격 : ${actionBean.animalMating.characters}
     <hr>
     <br>
     ${actionBean.animalMating.contents}<br><br>
-    <img id="deimg" style="height:70%;" src="${actionBean.animalMating.imgUrl}" alt="..." />
+    <img id="deimg" style="height:300px; width: 300px;" src="${actionBean.animalMating.imgUrl}" alt="..." />
     <br><br>
   </div>
 
