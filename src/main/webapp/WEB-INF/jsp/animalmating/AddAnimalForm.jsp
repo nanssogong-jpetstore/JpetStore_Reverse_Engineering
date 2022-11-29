@@ -29,6 +29,14 @@
                 </tr>
                 <tr>
                     <th>Characters</th>
+                        <td>
+                            <c:forEach var="characters" items="${actionBean.characters}">
+                                <stripes:checkbox name="animalMating.characterList" value="${characters}"/>${characters}
+                            </c:forEach>
+                        </td>
+                </tr>
+                <tr>
+                    <th>CharacterDetail</th>
                     <td><stripes:text class="form-control"  name="animalMating.characters" maxlength="50"/></td>
                 </tr>
                 <tr>

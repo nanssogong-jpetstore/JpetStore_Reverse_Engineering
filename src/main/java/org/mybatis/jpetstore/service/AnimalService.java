@@ -35,11 +35,9 @@ public class AnimalService {
 
 
 
-    public void insertAnimal(AnimalMating animalMating) {
-
-        System.out.println(animalMating.getImgUrl());
+    public int insertAnimal(AnimalMating animalMating) {
         animalMapper.insertAnimal(animalMating);
-
+        return animalMating.getId();
     }
 
     public void editAnimal(AnimalMating animalMating){
@@ -51,8 +49,6 @@ public class AnimalService {
         Map<String, Object> condition = new HashMap<>();
         condition.put("start", start - 1);
         condition.put("end", end);
-        System.out.println("start : " + start);
-        System.out.println("end : " + end);
         return animalMapper.getAnimalMatingList(condition);
     }
     public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
@@ -172,5 +168,14 @@ public class AnimalService {
         List<AnimalMating> animalMatings = new ArrayList<>();
 
         return animalMapper.searchAnimalMatingUser(condition);
+    }
+
+    public void addCharacter(int id, List<String> animalCharacters) {
+        Map<String,Object> animalCharacter = new HashMap<>();
+        for (int i=0;i<animalCharacters.size();i++) {
+            animalCharacter.put("id",id);
+            animalCharacter.put("character",animalCharacters.get(i));
+            animalMapper.addCharacter(animalCharacter);
+        }
     }
 }

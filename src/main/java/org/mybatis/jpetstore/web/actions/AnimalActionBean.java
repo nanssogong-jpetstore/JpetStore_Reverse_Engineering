@@ -1,10 +1,5 @@
 package org.mybatis.jpetstore.web.actions;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import net.sourceforge.stripes.action.FileBean;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -19,13 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @SessionScope
 public class AnimalActionBean extends AbstractActionBean {
@@ -37,6 +28,7 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final String EDIT_ANIMAL_MATING="/WEB-INF/jsp/animalmating/EditAnimalForm.jsp";
     private static final List<String> CATEGORY_LIST;
     private static final List<String> SEX_LIST;
+    private static final List<String> CHARACTER_LIST;
 
     private static List<String> searchOptionList;
     private String searchOption;
@@ -50,6 +42,11 @@ public class AnimalActionBean extends AbstractActionBean {
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
         SEX_LIST = Collections.unmodifiableList(Arrays.asList("MALE","FEMALE"));
+        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intellengent","loyal","timid","lazy","troublesome",
+                "fierce","loud","kind","messy","shy","courious","caustious"));
+    }
+    public List<String> getCharacters(){
+        return CHARACTER_LIST;
     }
 
     public List<String> getCategories() {
@@ -136,13 +133,14 @@ public class AnimalActionBean extends AbstractActionBean {
     @Autowired
     public AWSS3 awsS3 = AWSS3.getInstance();
 
-    private String bucketName="jpet-img";
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
+
+
         if(fileBean==null){
             setMessage("PLEASE POST IMG FILE");
             return new ForwardResolution(ERROR);
@@ -154,8 +152,10 @@ public class AnimalActionBean extends AbstractActionBean {
         String url=animalService.uploadImgFile(fileBean);
         animalMating.setImgUrl(url);
         animalMating.setUserId(userId);
+
         if(getChooseWork().equals("add")){
-            animalService.insertAnimal(animalMating);
+            int id= animalService.insertAnimal(animalMating);
+            animalService.addCharacter(id,animalMating.getCharacterList());
         }else{
             animalService.editAnimal(animalMating);
         }
@@ -189,15 +189,12 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution getMatingInfo() {
-        System.out.println("id = " + id);
         animalService.plusViewCount(id);
         animalMating = animalService.getAnimalMattingDetail(id);
-        System.out.println(animalMating.getSex());
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
     public Resolution paging() {
-        System.out.println("cpage = " + cpage);
         int temp = getPagingEnd(cpage, searchOption);
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
