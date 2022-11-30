@@ -16,6 +16,16 @@ var colors = [
 var roomId = null;
 var target = null;
 
+function disconnect(myId, roomId) {
+    window.onbeforeunload = function() {
+        stompClient.send("/app/chat/exit",
+            {},
+            JSON.stringify({sender: myId, roomId: roomId })
+        )
+
+    }
+}
+
 Notification.requestPermission().then(function(result) {
     console.log(result);
 });

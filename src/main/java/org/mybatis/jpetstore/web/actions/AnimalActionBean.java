@@ -29,6 +29,7 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final List<String> CATEGORY_LIST;
     private static final List<String> SEX_LIST;
     private static final List<String> CHARACTER_LIST;
+    private static final List<String> STATUS_LIST;
 
     private static List<String> searchOptionList;
     private String searchOption;
@@ -42,8 +43,10 @@ public class AnimalActionBean extends AbstractActionBean {
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
         SEX_LIST = Collections.unmodifiableList(Arrays.asList("MALE","FEMALE"));
-        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intellengent","loyal","timid","lazy","troublesome",
-                "fierce","loud","kind","messy","shy","courious","caustious"));
+        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intelligent","loyal","timid","lazy","troublesome",
+                "fierce","loud","kind","messy","shy","curious","cautious"));
+        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName", "All"));
+        STATUS_LIST=Collections.unmodifiableList(Arrays.asList("RESERVED","COMPLETED"));
     }
     public List<String> getCharacters(){
         return CHARACTER_LIST;
@@ -55,8 +58,16 @@ public class AnimalActionBean extends AbstractActionBean {
     public List<String> getSex(){
         return SEX_LIST;
     }
+    public List<String> getStatus(){
+        return STATUS_LIST;
+    }
 
     private AnimalMating animalMating;
+
+
+
+    private AnimalMating animalMatingDetail;
+
 
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
@@ -78,6 +89,7 @@ public class AnimalActionBean extends AbstractActionBean {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
+    //테스트
     public int getCpage() { return cpage; }
     public void setCpage(int cpage) { this.cpage = cpage; }
 
@@ -101,6 +113,14 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public AnimalMating getAnimalMating() { return animalMating; }
     public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
+
+    public AnimalMating getAnimalMatingDetail() {
+        return animalMatingDetail;
+    }
+
+    public void setAnimalMatingDetail(AnimalMating animalMatingDetail) {
+        this.animalMatingDetail = animalMatingDetail;
+    }
 
     public void setFileBean(FileBean fileBean) { this.fileBean = fileBean; }
     public FileBean getFileBean() { return fileBean; }
@@ -136,6 +156,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
+        clear();
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
@@ -145,7 +166,7 @@ public class AnimalActionBean extends AbstractActionBean {
             setMessage("PLEASE POST IMG FILE");
             return new ForwardResolution(ERROR);
         }
-        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null){
+        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null||animalMating.getCharacterList().size()==0){
             setMessage("내용을 모두 입력해주세요");
             return new ForwardResolution(ERROR);
         }
@@ -168,6 +189,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution addAnimalMatingView(){
         setChooseWork("add");
+        clear();
         return new ForwardResolution(ADD_ANIMAL_MATING);
     }
 
@@ -184,13 +206,12 @@ public class AnimalActionBean extends AbstractActionBean {
 
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
 
-
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
     public Resolution getMatingInfo() {
         animalService.plusViewCount(id);
-        animalMating = animalService.getAnimalMattingDetail(id);
+        animalMatingDetail = animalService.getAnimalMattingDetail(id);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
@@ -252,6 +273,9 @@ public class AnimalActionBean extends AbstractActionBean {
                 return new ForwardResolution(LIST_ANIMAL_MATING);
             }
         }
+    }
+    public void clear(){
+        animalMating=new AnimalMating();
     }
 
 }

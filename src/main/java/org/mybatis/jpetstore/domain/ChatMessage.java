@@ -16,6 +16,7 @@ public class ChatMessage implements Serializable {
     private String content;
     private Timestamp createDate;
     private String profile;
+    private int status;
 
     public ChatMessage() {
 
@@ -79,6 +80,10 @@ public class ChatMessage implements Serializable {
     public String getProfile() { return profile; }
 
     public void setProfile(String profile) { this.profile = profile; }
+
+    public int getStatus() { return status; }
+
+    public void setStatus(int status) { this.status = status; }
 
     public enum MessageType {
         ENTER("ENTER"),

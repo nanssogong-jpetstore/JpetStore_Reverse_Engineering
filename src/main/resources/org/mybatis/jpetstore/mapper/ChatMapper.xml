@@ -36,8 +36,13 @@
         WHERE roomId = #{roomId}
     </select>
 
+    <select id="getChatRoomUser" parameterType="ChatMessage" resultType="ChatRoomUser">
+        SELECT `status`
+        FROM CHATROOMUSER
+        WHERE roomId = #{roomId} AND userId = #{receiver};
+    </select>
     <select id="getChatRoomList" resultType="ChatRoom">
-        SELECT cr.postId AS postId, cr.roomId AS roomId, cr.userId AS userId, cru.receiver AS receiver, cr.roomName AS roomName, cr.imgurl AS imgurl, cm.content AS content, cm.createDate AS createDate
+        SELECT cr.postId AS postId, cr.roomId AS roomId, cr.userId AS userId, cru.receiver AS receiver, cr.roomName AS roomName, cr.imgurl AS imgurl, cm.content AS content, cm.createDate AS createDate, cru.isRead as isRead
         FROM CHATROOM AS cr
                  JOIN CHATROOMUSER AS cru
                       ON cr.roomId = cru.roomId
@@ -51,6 +56,16 @@
     <update id="readMessage" parameterType="ChatRoomUser">
         UPDATE CHATROOMUSER SET
             isRead = 1 WHERE roomId = #{roomId} AND userId = #{userId}
+    </update>
+
+    <update id="enterRoom" parameterType="ChatRoomUser">
+        UPDATE CHATROOMUSER SET
+            status = 1 WHERE roomId = #{roomId} AND userId = #{userId}
+    </update>
+
+    <update id="exitRoom" parameterType="ChatRoomUser">
+        UPDATE CHATROOMUSER SET
+            status = 0 WHERE roomId = #{roomId} AND userId = #{userId}
     </update>
 
     <update id="noneReadMessage" parameterType="ChatRoomUser">
