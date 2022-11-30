@@ -64,6 +64,11 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private AnimalMating animalMating;
 
+
+
+    private AnimalMating animalMatingDetail;
+
+
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
     private FileBean fileBean;
@@ -108,6 +113,14 @@ public class AnimalActionBean extends AbstractActionBean {
     public AnimalMating getAnimalMating() { return animalMating; }
     public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
 
+    public AnimalMating getAnimalMatingDetail() {
+        return animalMatingDetail;
+    }
+
+    public void setAnimalMatingDetail(AnimalMating animalMatingDetail) {
+        this.animalMatingDetail = animalMatingDetail;
+    }
+
     public void setFileBean(FileBean fileBean) { this.fileBean = fileBean; }
     public FileBean getFileBean() { return fileBean; }
 
@@ -142,6 +155,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
+        clear();
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
@@ -174,6 +188,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution addAnimalMatingView(){
         setChooseWork("add");
+        clear();
         return new ForwardResolution(ADD_ANIMAL_MATING);
     }
 
@@ -195,7 +210,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution getMatingInfo() {
         animalService.plusViewCount(id);
-        animalMating = animalService.getAnimalMattingDetail(id);
+        animalMatingDetail = animalService.getAnimalMattingDetail(id);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
@@ -257,6 +272,9 @@ public class AnimalActionBean extends AbstractActionBean {
                 return new ForwardResolution(LIST_ANIMAL_MATING);
             }
         }
+    }
+    public void clear(){
+        animalMating=new AnimalMating();
     }
 
 }
