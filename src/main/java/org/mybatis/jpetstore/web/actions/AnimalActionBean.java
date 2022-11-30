@@ -154,11 +154,14 @@ public class AnimalActionBean extends AbstractActionBean {
         animalMating.setUserId(userId);
 
         if(getChooseWork().equals("add")){
-            int id= animalService.insertAnimal(animalMating);
+            int id = animalService.insertAnimal(animalMating);
             animalService.addCharacter(id,animalMating.getCharacterList());
         }else{
-            animalService.editAnimal(animalMating);
+            int id = animalService.editAnimal(animalMating);
+            animalService.editCharacter(id,animalMating.getCharacterList());
+            animalService.deleteOldCharacter(id,animalMating.getCharacterList());
         }
+
         int temp = getPagingEnd(1, searchOption);
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
