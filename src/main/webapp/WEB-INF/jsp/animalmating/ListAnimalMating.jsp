@@ -30,7 +30,7 @@
                                 <h5 class="fw-bolder">CATEGORY <br> ${mating.categoryid}</h5>
                                 <h6 class="fw-bolder">TITLE : ${mating.title}</h6>
                                 <!-- Product price-->
-                                <b>SEX:</b>${mating.sex}
+                                <b>GENDER:</b>${mating.sex}
                             </div>
                         </div>
                         <!-- Product actions-->

@@ -29,6 +29,7 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final List<String> CATEGORY_LIST;
     private static final List<String> SEX_LIST;
     private static final List<String> CHARACTER_LIST;
+    private static final List<String> STATUS_LIST;
 
     private static List<String> searchOptionList;
     private String searchOption;
@@ -42,8 +43,10 @@ public class AnimalActionBean extends AbstractActionBean {
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
         SEX_LIST = Collections.unmodifiableList(Arrays.asList("MALE","FEMALE"));
-        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intellengent","loyal","timid","lazy","troublesome",
-                "fierce","loud","kind","messy","shy","courious","caustious"));
+        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intelligent","loyal","timid","lazy","troublesome",
+                "fierce","loud","kind","messy","shy","curious","cautious"));
+        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName", "All"));
+        STATUS_LIST=Collections.unmodifiableList(Arrays.asList("RESERVED","COMPLETED"));
     }
     public List<String> getCharacters(){
         return CHARACTER_LIST;
@@ -54,6 +57,9 @@ public class AnimalActionBean extends AbstractActionBean {
     }
     public List<String> getSex(){
         return SEX_LIST;
+    }
+    public List<String> getStatus(){
+        return STATUS_LIST;
     }
 
     private AnimalMating animalMating;
@@ -145,7 +151,7 @@ public class AnimalActionBean extends AbstractActionBean {
             setMessage("PLEASE POST IMG FILE");
             return new ForwardResolution(ERROR);
         }
-        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null){
+        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null||animalMating.getCharacterList().size()==0){
             setMessage("내용을 모두 입력해주세요");
             return new ForwardResolution(ERROR);
         }
@@ -191,6 +197,7 @@ public class AnimalActionBean extends AbstractActionBean {
     public Resolution getMatingInfo() {
         animalService.plusViewCount(id);
         animalMating = animalService.getAnimalMattingDetail(id);
+        System.out.println(animalMating.getStatus());
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
