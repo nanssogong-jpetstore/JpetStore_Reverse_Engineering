@@ -58,6 +58,16 @@
 </style>
 <body>
 <div id="chat-page" class="hidden">
+    <div>
+        <h5>
+            <stripes:link class="Button"
+                          beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
+                          event="chatList">
+                <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
+                Go To Back
+            </stripes:link>
+        </h5>
+    </div>
     <div class="chat-container">
         <div class="chat-header">
             <h2>${actionBean.title} 교배 룸</h2>
@@ -98,16 +108,7 @@
             </div>
         </form>
     </div>
-    <div>
-        <h6>
-        <stripes:link class="Button"
-                      beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
-                      event="chatList">
-            <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
-            Go To Back
-        </stripes:link>
-        </h6>
-    </div>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>

@@ -41,7 +41,17 @@
 	<meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 	<meta http-equiv="Pragma" content="no-cache" />
 </head>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="../js/alarm.js"></script>
+<script type="text/javascript">
+	<c:if test="${sessionScope.accountBean != null}">
+		<c:if test="${sessionScope.accountBean.authenticated}">
+			var id = '${sessionScope.accountBean.account.username}';
+			connect(id);
+		</c:if>
+	</c:if>
+</script>
 <body>
 
 <div id="Header">

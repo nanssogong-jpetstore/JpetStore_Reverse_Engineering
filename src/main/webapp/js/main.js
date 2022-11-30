@@ -26,33 +26,6 @@ function setRoomId(title) { this.roomId = title; }
 
 function getRoomId() { return this.roomId; }
 
-function greeting(payload){
-    var data = JSON.parse(payload.body);
-    let date = new Date().toLocaleString();
-    let notification;
-    let notificationPermission = Notification.permission;
-    if (notificationPermission === "granted") {
-        //Notification을 이미 허용한 사람들에게 보여주는 알람창
-        if(username === data.receiver) {
-            notification = new Notification(`새 메시지가 도착했습니다.`, {
-                body: data.content,
-                icon: 'hello.png',
-            });
-        }
-    } else if (notificationPermission !== 'denied') {
-        //Notification을 거부했을 경우 재 허용 창 띄우기
-        Notification.requestPermission(function (permission) {
-            if (permission === "granted") {
-                notification = new Notification(`Hello,World!!😍`, {
-                    body: `첫방문일시: ${date}`,
-                    icon: 'hello.png',
-                });
-            }else {
-                alert("알람 허용이 거부되었습니다.")
-            }
-        });
-    }
-}
 
 function connect(myId, roomId, name) {
     // username = document.querySelector('#name').value.trim();
@@ -106,6 +79,7 @@ function sendMessage(event) {
             roomId: getRoomId()
         };
         stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/alarm/message", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
@@ -149,7 +123,7 @@ function onMessageReceived(payload) {
             usernameElement.appendChild(usernameText);
             messageElement.appendChild(usernameElement);
         }
-        greeting(payload);
+
     }
 
     var textElement = document.createElement('p');

@@ -37,15 +37,15 @@
     </select>
 
     <select id="getChatRoomList" resultType="ChatRoom">
-        SELECT cr.postId AS postId, cr.roomId AS roomId, cr.userId AS userId, cru.receiver AS receiver, cr.roomName AS roomName, cr.imgurl AS imgurl, cm.content AS content
+        SELECT cr.postId AS postId, cr.roomId AS roomId, cr.userId AS userId, cru.receiver AS receiver, cr.roomName AS roomName, cr.imgurl AS imgurl, cm.content AS content, cm.createDate AS createDate
         FROM CHATROOM AS cr
                  JOIN CHATROOMUSER AS cru
                       ON cr.roomId = cru.roomId
                  LEFT JOIN (SELECT *
-                            FROM ( SELECT sender, roomId, content FROM CHATMESSAGE ORDER BY createDate DESC LIMIT 18446744073709551615) AS order_chatmessage
+                            FROM ( SELECT sender, roomId, content, createDate FROM CHATMESSAGE ORDER BY createDate DESC LIMIT 18446744073709551615) AS order_chatmessage
                             GROUP BY order_chatmessage.roomId) AS cm
                            ON cr.roomId = cm.roomId
-        WHERE cru.userId = #{userId};
+        WHERE cru.userId = #{userId} ORDER BY cm.createDate DESC;
     </select>
 
     <update id="readMessage" parameterType="ChatRoomUser">
