@@ -75,19 +75,19 @@
     </select>
 
     <select id="searchAnimalMatingTitle" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(title) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
     <select id="searchAnimalMatingContents" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(contents) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
     <select id="searchAnimalMatingUser" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(userid) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
