@@ -15,46 +15,24 @@ var colors = [
 ]
 var roomId = null;
 var target = null;
-var postId = null;
 
 Notification.requestPermission().then(function(result) {
     console.log(result);
 });
+function setTarget(name) { this.target = name; }
+function getTarget() { return this.target; }
 
-function greeting(payload){
-    var data = JSON.parse(payload.body);
-    let date = new Date().toLocaleString();
-    let notification;
-    let notificationPermission = Notification.permission;
-    if (notificationPermission === "granted") {
-        //Notification을 이미 허용한 사람들에게 보여주는 알람창
-        if(username === data.receiver) {
-            notification = new Notification(`새 메시지가 도착했습니다.`, {
-                body: data.content,
-                icon: 'hello.png',
-            });
-        }
-    } else if (notificationPermission !== 'denied') {
-        //Notification을 거부했을 경우 재 허용 창 띄우기
-        Notification.requestPermission(function (permission) {
-            if (permission === "granted") {
-                notification = new Notification(`Hello,World!!😍`, {
-                    body: `첫방문일시: ${date}`,
-                    icon: 'hello.png',
-                });
-            }else {
-                alert("알람 허용이 거부되었습니다.")
-            }
-        });
-    }
-}
+function setRoomId(title) { this.roomId = title; }
 
-function connect(myId, title, name, matingId) {
+function getRoomId() { return this.roomId; }
+
+
+function connect(myId, roomId, name) {
     // username = document.querySelector('#name').value.trim();
     username = myId;
-    setRoomId(title);
+    setRoomId(roomId);
     setTarget(name);
-    setPostId(matingId);
+
     console.log("@@");
     console.log(roomId);
     localStorage.setItem('chatId', username);
@@ -70,32 +48,13 @@ function connect(myId, title, name, matingId) {
     //event.preventDefault();
 }
 
-function setTarget(name) {
-    this.target = name;
-}
-function setRoomId(title) {
-    this.roomId = title;
-}
-function setPostId(matingId) {
-    this.postId = matingId;
-}
-
-function getPostId() {
-    return this.postId;
-}
-function getRoomId() {
-    return this.roomId;
-}
-function getTarget() {
-    return this.target;
-}
 
 function onConnected() {
     console.log("Hello My")
-    stompClient.subscribe('/topic/chat/room/'+ getRoomId() + getPostId(), onMessageReceived);
+    stompClient.subscribe('/topic/chat/room/'+ getRoomId(), onMessageReceived);
     stompClient.send("/app/chat/enter",
         {},
-        JSON.stringify({sender: username, receiver: getTarget(), type: 'ENTER', content: "", roomId: getRoomId() + getPostId()})
+        JSON.stringify({sender: username, receiver: getTarget(), type: 'ENTER', content: "", roomId: getRoomId() })
     )
     /*stompClient.send("/app/chat/invite",
         {},
@@ -117,9 +76,10 @@ function sendMessage(event) {
             receiver: target,
             content: messageInput.value,
             type: 'TALK',
-            roomId: getRoomId() + getPostId()
+            roomId: getRoomId()
         };
         stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/alarm/message", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
@@ -163,7 +123,7 @@ function onMessageReceived(payload) {
             usernameElement.appendChild(usernameText);
             messageElement.appendChild(usernameElement);
         }
-        greeting(payload);
+
     }
 
     var textElement = document.createElement('p');
