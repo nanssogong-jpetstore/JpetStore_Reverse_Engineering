@@ -22,7 +22,27 @@
                 <div class="col mb-5">
                     <div class="card h-100" style="box-shadow: 5px 5px 5px 5px gray;">
                         <!-- Product image-->
-                        <img id="Img" style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
+                        <c:choose>
+                            <c:when test="${mating.status eq 'COMPLETED'}">
+                                <img id="Img" style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
+                                <span style="background-color:#495057; color:white">
+                                    <b>Completed</b>
+                                </span>
+                            </c:when>
+                            <c:when test="${mating.status eq 'RESERVED'}">
+                                <img id="Img" style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
+                                <span style="background-color:#ffc720; color:black">
+                                    <b>Reserved</b>
+                                </span>
+                            </c:when>
+                            <c:otherwise>
+                                <img id="Img" style="height:70%;" class="card-img-top" src="${mating.imgUrl}" alt="..." />
+                                <span style="background-color:#146c43; color:black">
+                                    <b>Before Matching</b>
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
+
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
