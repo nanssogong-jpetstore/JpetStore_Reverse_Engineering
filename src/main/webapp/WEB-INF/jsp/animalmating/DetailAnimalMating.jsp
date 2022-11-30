@@ -22,7 +22,7 @@
       <c:if test="${sessionScope.accountBean.account.username ne actionBean.animalMating.userId}">
     `  <stripes:link class="Button" onclick="window.open(this.href, '', 'width=400, height=700, left=700, top=100'); return false;"
                                                              beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
-                                                             event="initChat">
+                                                             event="chatStart">
       <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
       <stripes:param name="title" value="${actionBean.animalMating.title}" />
       <stripes:param name="name" value="${actionBean.animalMating.userId}" />
@@ -30,13 +30,14 @@
         <stripes:param name="sex" value="${actionBean.animalMating.sex}" />
       <stripes:param name="imgurl" value="${actionBean.animalMating.imgUrl}" />
       <stripes:param name="roomId" value="empty" />
-
+        <stripes:param name="status" value="${actionBean.animalMating.status}" />
       Chat Start
       </stripes:link>`
     </c:if>
     </h6>
     작성일: ${actionBean.animalMating.createdate} <br>
-    조회수 : ${actionBean.animalMating.view}
+    조회수 : ${actionBean.animalMating.view}<br>
+    상태 : ${actionBean.animalMating.status}
   </div>
   <div class="article_container">
     성별 : ${actionBean.animalMating.sex} <br>
