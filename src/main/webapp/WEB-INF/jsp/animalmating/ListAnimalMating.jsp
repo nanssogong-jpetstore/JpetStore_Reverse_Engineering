@@ -30,7 +30,7 @@
                                 <h5 class="fw-bolder">CATEGORY <br> ${mating.categoryid}</h5>
                                 <h6 class="fw-bolder">TITLE : ${mating.title}</h6>
                                 <!-- Product price-->
-                                USERNAME : ${mating.userId}
+                                <b>SEX:</b>${mating.sex}
                             </div>
                         </div>
                         <!-- Product actions-->
@@ -43,6 +43,14 @@
                                 INFORMATION
                                 </stripes:link>
                                 <%--<a class="btn btn-outline-dark mt-auto" href="#">INFOMATION</a>--%>
+                                <c:if test = "${sessionScope.accountBean.username == mating.userId}">
+                                    <stripes:link
+                                            beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                                            event="editAnimalMatingView">
+                                        <stripes:param name="id" value="${mating.id}" />
+                                        Edit
+                                    </stripes:link>
+                                </c:if>
                             </div>
                         </div>
                     </div>

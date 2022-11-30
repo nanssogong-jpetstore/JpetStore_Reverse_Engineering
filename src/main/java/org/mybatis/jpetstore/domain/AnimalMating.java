@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +22,9 @@ public class AnimalMating implements Serializable {
     private String characters;
     private String categoryid;
     private String createdate;
+    private String sex;
     private int view;
+    private List<String> characterList;
 
 
 }

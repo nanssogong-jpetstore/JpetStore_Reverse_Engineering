@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface AnimalMapper {
-    void insertAnimal(AnimalMating animalMating);
+    int insertAnimal(AnimalMating animalMating);
+    void editAnimal(AnimalMating animalMating);
     List<AnimalMating> getAnimalMatingList(Map<String, Object> map);
     AnimalMating getAnimalMattingDetail(int id);
     Integer getAnimalMatingCount();
@@ -18,5 +19,5 @@ public interface AnimalMapper {
     Integer searchAnimalMatingContentsCount(Map<String, Object> map);
     Integer searchAnimalMatingUserCount(Map<String, Object> map);
 
-
+    void addCharacter(Map<String, Object> animalCharacter);
 }

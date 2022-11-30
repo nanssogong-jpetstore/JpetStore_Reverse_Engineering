@@ -1,10 +1,5 @@
 package org.mybatis.jpetstore.web.actions;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import net.sourceforge.stripes.action.FileBean;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -19,13 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @SessionScope
 public class AnimalActionBean extends AbstractActionBean {
@@ -34,7 +25,10 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final String ADD_ANIMAL_MATING="/WEB-INF/jsp/animalmating/AddAnimalForm.jsp";
     private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
     private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
+    private static final String EDIT_ANIMAL_MATING="/WEB-INF/jsp/animalmating/EditAnimalForm.jsp";
     private static final List<String> CATEGORY_LIST;
+    private static final List<String> SEX_LIST;
+    private static final List<String> CHARACTER_LIST;
 
     private static List<String> searchOptionList;
     private String searchOption;
@@ -47,11 +41,19 @@ public class AnimalActionBean extends AbstractActionBean {
 
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
-        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName", "All"));
+        SEX_LIST = Collections.unmodifiableList(Arrays.asList("MALE","FEMALE"));
+        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intellengent","loyal","timid","lazy","troublesome",
+                "fierce","loud","kind","messy","shy","courious","caustious"));
+    }
+    public List<String> getCharacters(){
+        return CHARACTER_LIST;
     }
 
     public List<String> getCategories() {
         return CATEGORY_LIST;
+    }
+    public List<String> getSex(){
+        return SEX_LIST;
     }
 
     private AnimalMating animalMating;
@@ -62,7 +64,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private List<AnimalMating> animalMatingList;
 
-    public static final int PAGESIZE = 8;
+    public static final int PAGESIZE = 10;
     private int id;
     private int cpage;
     private int psStr;
@@ -70,6 +72,8 @@ public class AnimalActionBean extends AbstractActionBean {
     private int postCount;
     private int preBlock;
     private int nextBlock;
+
+    private String chooseWork;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -120,34 +124,41 @@ public class AnimalActionBean extends AbstractActionBean {
         this.searchOption = searchOption;
     }
 
+    public void setChooseWork(String chooseWork){this.chooseWork = chooseWork;}
+
+    public String getChooseWork(){return chooseWork;}
+
 
 
     @Autowired
     public AWSS3 awsS3 = AWSS3.getInstance();
 
-    private String bucketName="jpet-img";
-
-
-
-    public File convert(FileBean file) throws IOException {
-        File convFile = new File(file.getFileName());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getInputStream().available());
-        fos.close();
-        return convFile;
-    }
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
-        String url=uploadImgFile();
+
+
+        if(fileBean==null){
+            setMessage("PLEASE POST IMG FILE");
+            return new ForwardResolution(ERROR);
+        }
+        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null){
+            setMessage("내용을 모두 입력해주세요");
+            return new ForwardResolution(ERROR);
+        }
+        String url=animalService.uploadImgFile(fileBean);
         animalMating.setImgUrl(url);
         animalMating.setUserId(userId);
-        animalService.insertAnimal(animalMating);
 
+        if(getChooseWork().equals("add")){
+            int id= animalService.insertAnimal(animalMating);
+            animalService.addCharacter(id,animalMating.getCharacterList());
+        }else{
+            animalService.editAnimal(animalMating);
+        }
         int temp = getPagingEnd(1, searchOption);
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
@@ -156,9 +167,15 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution addAnimalMatingView(){
+        setChooseWork("add");
         return new ForwardResolution(ADD_ANIMAL_MATING);
     }
 
+    public Resolution editAnimalMatingView(){
+        animalMating = animalService.getAnimalMattingDetail(id);
+        setChooseWork("edit");
+        return new ForwardResolution(EDIT_ANIMAL_MATING);
+    }
     public Resolution listAnimalAccount(){
 
         cpage = 1;
@@ -172,14 +189,12 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution getMatingInfo() {
-        System.out.println("id = " + id);
         animalService.plusViewCount(id);
         animalMating = animalService.getAnimalMattingDetail(id);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
     public Resolution paging() {
-        System.out.println("cpage = " + cpage);
         int temp = getPagingEnd(cpage, searchOption);
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
@@ -213,53 +228,6 @@ public class AnimalActionBean extends AbstractActionBean {
         return end - PAGESIZE + 1;
     }
 
-    private String uploadImgFile() throws IOException {
-        try {
-            System.out.println(fileBean.getFileName());
-            String fName = fileBean.getFileName();
-            System.out.println(fName.indexOf("."));
-
-            if (fName.indexOf(".") != -1) {
-                String ext = fName.split("\\.")[1];
-                String contentType="";
-                switch (ext) {
-                    case "jpeg":
-                        contentType = "image/jpeg";
-                        break;
-                    case "png":
-                        contentType = "image/png";
-                        break;
-                    case "txt":
-                        contentType = "text/plain";
-                        break;
-                    case "csv":
-                        contentType = "text/csv";
-                        break;
-                }
-
-
-                ObjectMetadata metadata=new ObjectMetadata();
-                metadata.setContentType(contentType);
-                PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, UUID.randomUUID() + "." + ext, fileBean.getInputStream(),metadata);
-                putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
-                awsS3.uploadToS3(putObjectRequest);
-                logger.info("===================== Upload File - Done! =====================");
-                return "https://jpet-img.s3.ap-northeast-2.amazonaws.com/"+putObjectRequest.getKey();
-
-            }
-        } catch (AmazonServiceException ase) {
-            logger.info("Caught an AmazonServiceException from PUT requests, rejected reasons:");
-            logger.info("Error Message:    " + ase.getMessage());
-            logger.info("HTTP Status Code: " + ase.getStatusCode());
-            logger.info("AWS Error Code:   " + ase.getErrorCode());
-            logger.info("Error Type:       " + ase.getErrorType());
-            logger.info("Request ID:       " + ase.getRequestId());
-        } catch (AmazonClientException ace) {
-            logger.info("Caught an AmazonClientException: ");
-            logger.info("Error Message: " + ace.getMessage());
-        }
-        return null;
-    }
 
 
     public ForwardResolution searchMating() {

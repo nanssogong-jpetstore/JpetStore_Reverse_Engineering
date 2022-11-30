@@ -22,12 +22,18 @@
 <mapper namespace="org.mybatis.jpetstore.mapper.AnimalMapper">
 
     <cache />
-
+    <insert id="addCharacter" parameterType="hashMap">
+        INSERT INTO ANIMALCHARACTER (animalId, `character`)
+        VALUES (#{id},#{character})
+    </insert>
     <insert id="insertAnimal" parameterType="AnimalMating">
         INSERT INTO MATINGANIMAL
-            (userid, imgUrl, title, contents, categoryid, characters)
+            (userid, imgUrl, title, contents, categoryid, characters,sex)
         VALUES
-            (#{userId}, #{imgUrl}, #{title}, #{contents}, #{categoryid} ,#{characters})
+            (#{userId}, #{imgUrl}, #{title}, #{contents}, #{categoryid} ,#{characters},#{sex})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
     </insert>
 
     <update id="plusViewCount" parameterType="AnimalMating">
@@ -38,7 +44,7 @@
     <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
 
 
-        SELECT id, userid, imgurl, title, contents, categoryid, characters
+        SELECT id, userid, imgurl, title, contents, categoryid, characters,sex
         FROM MATINGANIMAL
         ORDER BY createdate desc limit #{start}, #{end}
 
@@ -50,7 +56,7 @@
     </select>
 
     <select id="getAnimalMattingDetail" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters, case
+        select id, userid, imgurl, title, contents, categoryid, characters, sex, case
         when YEAR(createDate) = YEAR(now()) then
         case
         when (TIMESTAMPDIFF(DAY, createDate, now())) > 1
@@ -102,5 +108,16 @@
         FROM MATINGANIMAL
         WHERE lower(userid) like #{value}
     </select>
+
+    <update id="editAnimal" parameterType="AnimalMating">
+        UPDATE MATINGANIMAL SET
+                                imgurl = #{imgUrl},
+                                title = #{title},
+                                contents = #{contents},
+                                categoryid = #{categoryid},
+                                characters = #{characters},
+                                sex=#{sex}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

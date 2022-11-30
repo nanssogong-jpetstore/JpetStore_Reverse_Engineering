@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 임현우
-  Date: 2022-11-23
-  Time: 오전 1:01
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ include file="../common/IncludeTop.jsp"%>
 <head>
     <link rel="StyleSheet" href="../css/styles.css" type="text/css" media="screen"/>
@@ -13,8 +5,8 @@
 <div class="container">
     <div class="row">
         <stripes:form
-            beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-            enctype="multipart-form/data">
+                beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                enctype="multipart-form/data">
             <h3>AnimalInfo</h3>
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <thead>
@@ -29,14 +21,6 @@
                 </tr>
                 <tr>
                     <th>Characters</th>
-                        <td>
-                            <c:forEach var="characters" items="${actionBean.characters}">
-                                <stripes:checkbox name="animalMating.characterList" value="${characters}"/>${characters}
-                            </c:forEach>
-                        </td>
-                </tr>
-                <tr>
-                    <th>CharacterDetail</th>
                     <td><stripes:text class="form-control"  name="animalMating.characters" maxlength="50"/></td>
                 </tr>
                 <tr>
@@ -48,7 +32,7 @@
             <h3>AnimalCategory</h3>
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <tr>
-                    <td>Animal Category</td>
+                    <td>Animal Category:</td>
                     <td>
                         <stripes:select name="animalMating.categoryid">
                             <stripes:options-collection collection="${actionBean.categories}"  />
@@ -63,10 +47,24 @@
                         </stripes:select>
                     </td>
                 </tr>
+            </table >
+            <h3>ChangeImg</h3>
+            <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+                <tr>
+                    <td>ChangeImg:</td>
+                    <td>
+                        <img id="img" style="height:10%;" src="${actionBean.animalMating.imgUrl}" alt="..." />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <stripes:file name="fileBean" style="text-align: left" />
+                        <stripes:submit name="uploadImg" value="edit"/>
+                    </td>
+                </tr>
+
             </table>
-        <stripes:file name="fileBean"/>
-        <stripes:submit name="uploadImg" value="upload"/>
         </stripes:form>
-</div>
+    </div>
 </div>
 <%@ include file="../common/IncludeBottom.jsp"%>
