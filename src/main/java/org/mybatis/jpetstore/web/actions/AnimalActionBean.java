@@ -141,17 +141,22 @@ public class AnimalActionBean extends AbstractActionBean {
         String userId=accountBean.getUsername();
 
 
-        if(fileBean==null){
+        if(fileBean==null&&chooseWork.equals("add")){
             setMessage("PLEASE POST IMG FILE");
             return new ForwardResolution(ERROR);
+        }else if(fileBean==null&&chooseWork.equals("edit")){
+            animalMating.setUserId(userId);
         }
         else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null){
             setMessage("내용을 모두 입력해주세요");
             return new ForwardResolution(ERROR);
+        }else{
+            String url=animalService.uploadImgFile(fileBean);
+            animalMating.setImgUrl(url);
+            animalMating.setUserId(userId);
         }
-        String url=animalService.uploadImgFile(fileBean);
-        animalMating.setImgUrl(url);
-        animalMating.setUserId(userId);
+
+
 
         if(getChooseWork().equals("add")){
             int id = animalService.insertAnimal(animalMating);

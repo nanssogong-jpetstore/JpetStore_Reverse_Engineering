@@ -189,15 +189,18 @@ public class AnimalService {
 
     public void deleteOldCharacter(int id, List<String> animalCharacters) {
         List<String> deleteCharacters = animalMapper.listDelCharacter(id);
-        Collection<String> characters = new ArrayList(animalCharacters);
-        deleteCharacters.removeAll(characters);
+
+        if(animalCharacters.containsAll((deleteCharacters))==false){
+            Collection<String> characters = new ArrayList(animalCharacters);
+            deleteCharacters.removeAll(characters);
 
 
-        Map<String, Object> deleteanimalCharacter = new HashMap<>();
-        for (int i = 0; i < deleteCharacters.size(); i++) {
-            deleteanimalCharacter.put("id", id);
-            deleteanimalCharacter.put("character", deleteCharacters.get(i));
-            animalMapper.deleteOldCharacter(deleteanimalCharacter);
+            Map<String, Object> deleteanimalCharacter = new HashMap<>();
+            for (int i = 0; i < deleteCharacters.size(); i++) {
+                deleteanimalCharacter.put("id", id);
+                deleteanimalCharacter.put("character", deleteCharacters.get(i));
+                animalMapper.deleteOldCharacter(deleteanimalCharacter);
+            }
         }
     }
 }
