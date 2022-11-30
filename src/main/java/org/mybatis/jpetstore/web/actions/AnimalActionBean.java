@@ -84,6 +84,7 @@ public class AnimalActionBean extends AbstractActionBean {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
+    //테스트
     public int getCpage() { return cpage; }
     public void setCpage(int cpage) { this.cpage = cpage; }
 
