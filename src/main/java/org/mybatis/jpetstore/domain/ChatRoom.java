@@ -6,24 +6,31 @@ import java.io.Serializable;
 public class ChatRoom implements Serializable {
 
     private static final long serialVersionUID = 6620528781626504362L;
-
+    private String postId;
     private String roomId;
     private String userId;
     private String roomName;
     private String imgurl;
     private int isRead;
+    private String receiver;
+    private String content;
 
     public ChatRoom() {
 
     }
 
-    public ChatRoom(String roomId, String userId, String roomName, String imgurl, int isRead) {
+    public ChatRoom(String postId, String roomId, String userId, String roomName, String imgurl, int isRead) {
+        this.postId = postId;
         this.roomId = roomId;
         this.userId = userId;
         this.roomName = roomName;
         this.imgurl = imgurl;
         this.isRead = isRead;
     }
+
+    public String getPostId() { return postId; }
+
+    public void setPostId(String postId) { this.postId = postId; }
 
     public String getUserId() {
         return userId;
@@ -65,5 +72,10 @@ public class ChatRoom implements Serializable {
         this.isRead = isRead;
     }
 
+    public String getReceiver() { return receiver; }
+    public void setReceiver(String receiver) { this.receiver = receiver; }
+
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 
 }

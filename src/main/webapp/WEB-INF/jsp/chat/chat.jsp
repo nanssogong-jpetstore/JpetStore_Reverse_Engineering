@@ -24,7 +24,11 @@
         var title = '${actionBean.title}';
         var name = '${actionBean.name}';
         var matingId = '${actionBean.id}';
-        connect(id, title, name, matingId);
+        var roomId = '${actionBean.roomId}';
+        if(roomId === 'empty') {
+            roomId = title + id;
+        }
+        connect(id, roomId, name);
     }
 
     function getAvatarColor(messageSender) {
@@ -54,6 +58,16 @@
 </style>
 <body>
 <div id="chat-page" class="hidden">
+    <div>
+        <h5>
+            <stripes:link class="Button"
+                          beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
+                          event="chatList">
+                <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
+                Go To Back
+            </stripes:link>
+        </h5>
+    </div>
     <div class="chat-container">
         <div class="chat-header">
             <h2>${actionBean.title} 교배 룸</h2>
@@ -68,7 +82,7 @@
                         <div class="chat-messageParent" style="text-align: right;">
                             <li class="chat-message">
                                 <span>${chatlist.sender}</span>
-                                    <i style="background-color: #2196F3; position: relative;">${chatlist.profile}</i>
+                                    <i style="background-color: #2196F3; position: relative;">${actionBean.firstName_sender}</i>
                                 <p>${chatlist.content}</p>
                             </li>
                         </div>
@@ -77,7 +91,7 @@
                         <div class="chat-messageParent">
                             <li class="chat-message">
                                 <span>${chatlist.sender}</span>
-                                <i style="background-color: #ff5652; position: absolute;">${chatlist.profile}</i>
+                                <i style="background-color: #ff5652; position: absolute;">${actionBean.firstName_receiver}</i>
                                 <p>${chatlist.content}</p>
                             </li>
                         </div>
@@ -94,16 +108,7 @@
             </div>
         </form>
     </div>
-    <div>
-        <h6>
-        <stripes:link class="Button"
-                      beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
-                      event="chatList">
-            <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
-            Go To Back
-        </stripes:link>
-        </h6>
-    </div>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>

@@ -32,14 +32,17 @@
                                   event="chatStart">
                         <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
                         <stripes:param name="title" value="${chat.roomName}" />
-                        <stripes:param name="name" value="${chat.userId}" />
-                        <stripes:param name="id" value="${chat.roomId}" />
+                        <stripes:param name="roomId" value="${chat.roomId}" />
+                        <stripes:param name="name" value="${chat.receiver}" />
+                        <stripes:param name="id" value="${chat.postId}" />
                         <stripes:param name="imgurl" value="${chat.imgurl}" />
                 <div class="chat-messageParent">
                     <li class="chat-message" style="border-bottom: 1px solid #ececec;">
                         <img style="position:absolute;" src="${chat.imgurl}">
+
                         <span>${chat.roomName}</span>
-                        <p>ㅎ2</p>
+                        <p>[${chat.receiver}]</p>
+                        <p>${chat.content}</p>
                     </li>
                 </div>
                 </stripes:link>

@@ -50,6 +50,13 @@ public class ChatController {
         return chatMessage;
     }
 
+    @MessageMapping("/alarm/message")
+    public ChatMessage messageGreeting(ChatMessage chatMessage) {
+
+        sendingOperations.convertAndSend("/topic/chat/alarm/"+ chatMessage.getReceiver(), chatMessage);
+        return chatMessage;
+    }
+
     @MessageMapping("/chat/invite")
     public ChatMessage inviteRoom(ChatMessage chatMessage) {
         System.out.println("Invite User");

@@ -7,6 +7,7 @@ public class ChatRoomUser  implements Serializable {
     private static final long serialVersionUID = 6620528781626504362L;
     private String roomId;
     private String userId;
+    private String receiver;
     private int isRead;
 
 
@@ -24,6 +25,14 @@ public class ChatRoomUser  implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public int getIsRead() {

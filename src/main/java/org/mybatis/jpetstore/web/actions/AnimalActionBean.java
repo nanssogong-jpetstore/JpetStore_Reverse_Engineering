@@ -229,6 +229,7 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
 
+
     public ForwardResolution searchMating() {
         int temp = getPagingEnd(cpage, searchOption);
         int start = getPagingStart(temp);

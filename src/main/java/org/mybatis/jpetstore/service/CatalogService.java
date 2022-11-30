@@ -50,6 +50,7 @@ public class CatalogService {
     this.productMapper = productMapper;
   }
 
+
   public List<Category> getCategoryList() {
     return categoryMapper.getCategoryList();
   }
