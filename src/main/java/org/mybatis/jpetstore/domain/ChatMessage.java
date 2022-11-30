@@ -3,6 +3,7 @@ package org.mybatis.jpetstore.domain;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class ChatMessage implements Serializable {
 
@@ -13,7 +14,7 @@ public class ChatMessage implements Serializable {
     private String sender;
     private String receiver;
     private String content;
-    private Date createDate;
+    private Timestamp createDate;
     private String profile;
 
     public ChatMessage() {
@@ -67,11 +68,11 @@ public class ChatMessage implements Serializable {
         this.content = content;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
