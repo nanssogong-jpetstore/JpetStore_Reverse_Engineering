@@ -15,5 +15,7 @@ public interface ChatMapper {
     void inviteUser(ChatRoomUser chatRoomUser);
     void insertMessage(ChatMessage chatMessage);
     List<ChatMessage> getMessages(String roomId);
-
+    void enterRoom(ChatRoomUser chatRoomUser);
+    void exitRoom(ChatRoomUser chatRoomUser);
+    ChatRoomUser getChatRoomUser(ChatMessage chatMessage);
 }

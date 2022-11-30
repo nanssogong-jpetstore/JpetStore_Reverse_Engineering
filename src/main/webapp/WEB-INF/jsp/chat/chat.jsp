@@ -19,7 +19,9 @@
     <link rel="stylesheet" href="../css/main.css" />
 </head>
 <script>
+
     window.onload = function() {
+
         var id = '${actionBean.username}';
         var title = '${actionBean.title}';
         var name = '${actionBean.name}';
@@ -28,6 +30,7 @@
         if(roomId === 'empty') {
             roomId = title + id;
         }
+        disconnect(id, roomId);
         connect(id, roomId, name);
     }
 

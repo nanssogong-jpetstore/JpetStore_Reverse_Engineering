@@ -44,7 +44,7 @@
     <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
 
 
-        SELECT id, userid, imgurl, title, contents, categoryid, characters,sex
+        SELECT id, userid, imgurl, title, contents, categoryid, characters,status,sex
         FROM MATINGANIMAL
         ORDER BY createdate desc limit #{start}, #{end}
 
@@ -69,25 +69,25 @@
         then concat(TIMESTAMPDIFF(minute, createDate, now()), '분 전')
         when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 24
         then concat(TIMESTAMPDIFF(hour, createDate, now()), '시간 전')
-        end end as createDate,view
+        end end as createDate,view,status
         from MATINGANIMAL
         where id=#{id}
     </select>
 
     <select id="searchAnimalMatingTitle" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(title) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
     <select id="searchAnimalMatingContents" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(contents) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
     <select id="searchAnimalMatingUser" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(userid) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>

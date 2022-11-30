@@ -23,22 +23,16 @@ public class ChatController {
     @MessageMapping("/chat/enter")
     public ChatMessage enter(ChatMessage chatMessage) {
         System.out.println("enter method");
-//        String id = params.get("id").toString();
-//        String roomId = params.get("roomId").toString();
-//        String message = "";
-//        if(ChatMessage.MessageType.ENTER.equals(params.get("type").toString())) {
-//            if(messageService.validateChatRoom(id, roomId))
-//                message = id + "님이 입장하셨습니다.";
-//        }
-//
-//        if(params.get("message").toString() != null) {
-//            message = params.get("message").toString();
-//        }
-//        sendingOperations.convertAndSend("/topic/chat/room/"+roomId, message);
-
-        /*List<ChatMessage> chatMessageList = chatService.getMessages(chatMessage.getRoomId());
-        model.addAttribute("chatMessageList", chatMessageList);*/
+        chatService.enterRoom(chatMessage);
+        chatService.readMessage(chatMessage);
         sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
+
+        return chatMessage;
+    }
+
+    @MessageMapping("/chat/exit")
+    public ChatMessage exit(ChatMessage chatMessage) {
+        chatService.exitRoom(chatMessage);
 
         return chatMessage;
     }
@@ -52,20 +46,13 @@ public class ChatController {
 
     @MessageMapping("/alarm/message")
     public ChatMessage messageGreeting(ChatMessage chatMessage) {
+        chatMessage.setStatus(chatService.getReceiverStatus(chatMessage).getStatus());
+        if(chatMessage.getStatus() == 0) {
+            chatService.noneReadMessage(chatMessage);
+            sendingOperations.convertAndSend("/topic/chat/alarm/"+ chatMessage.getReceiver(), chatMessage);
+        }
 
-        sendingOperations.convertAndSend("/topic/chat/alarm/"+ chatMessage.getReceiver(), chatMessage);
         return chatMessage;
     }
 
-    @MessageMapping("/chat/invite")
-    public ChatMessage inviteRoom(ChatMessage chatMessage) {
-        System.out.println("Invite User");
-        sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
-        return chatMessage;
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "ss";
-    }
 }

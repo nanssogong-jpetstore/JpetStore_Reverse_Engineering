@@ -24,6 +24,7 @@ public class AnimalMating implements Serializable {
     private String createdate;
     private String sex;
     private int view;
+    private String status;
     private List<String> characterList;
 
 

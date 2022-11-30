@@ -9,7 +9,7 @@ public class ChatRoomUser  implements Serializable {
     private String userId;
     private String receiver;
     private int isRead;
-
+    private int status;
 
     public String getRoomId() {
         return roomId;
@@ -42,4 +42,8 @@ public class ChatRoomUser  implements Serializable {
     public void setIsRead(int isRead) {
         this.isRead = isRead;
     }
+
+    public int getStatus() { return status; }
+
+    public void setStatus(int status) { this.status = status; }
 }
