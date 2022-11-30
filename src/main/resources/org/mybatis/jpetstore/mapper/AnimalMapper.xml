@@ -26,6 +26,20 @@
         INSERT INTO ANIMALCHARACTER (animalId, `character`)
         VALUES (#{id},#{character})
     </insert>
+
+    <insert id="editCharacter" parameterType="hashMap">
+        INSERT INTO ANIMALCHARACTER (animalId,`character`)
+        SELECT #{id},#{character} FROM dual WHERE NOT exists(
+                SELECT animalId, `character`FROM ANIMALCHARACTER WHERE animalId = #{id} AND `character` = #{character}
+            )
+    </insert>
+    <select id="listDelCharacter" parameterType="int" resultType="String">
+        SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
+    </select>
+    <delete id="deleteOldCharacter" parameterType="hashMap">
+        DELETE FROM ANIMALCHARACTER WHERE animalId = #{id} AND `character`=#{character}
+    </delete>
+
     <insert id="insertAnimal" parameterType="AnimalMating">
         INSERT INTO MATINGANIMAL
             (userid, imgUrl, title, contents, categoryid, characters,sex)
@@ -35,7 +49,6 @@
             select last_insert_id()
         </selectKey>
     </insert>
-
     <update id="plusViewCount" parameterType="AnimalMating">
         UPDATE MATINGANIMAL SET view=view+1 where id=#{id}
     </update>

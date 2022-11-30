@@ -15,11 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.mybatis.jpetstore.configuration.Constants.BUCKET;
 
@@ -40,9 +36,9 @@ public class AnimalService {
         return animalMating.getId();
     }
 
-    public void editAnimal(AnimalMating animalMating){
+    public int editAnimal(AnimalMating animalMating){
         animalMapper.editAnimal(animalMating);
-
+        return animalMating.getId();
     }
 
     public List<AnimalMating> getAnimalMatingList(int start, int end) {
@@ -178,4 +174,34 @@ public class AnimalService {
             animalMapper.addCharacter(animalCharacter);
         }
     }
+    /* animalCharaters : 변경 성격
+       deleteCharaters : 기존 성격 + 변경 성격*/
+    public void editCharacter(int id, List<String> animalCharacters){
+        Map<String,Object> animalCharacter = new HashMap<>();
+
+        for (int i=0;i<animalCharacters.size();i++) {
+            animalCharacter.put("id",id);
+            animalCharacter.put("character",animalCharacters.get(i));
+            System.out.println(animalCharacters.get(i));
+            animalMapper.editCharacter(animalCharacter);
+        }
+    }
+
+    public void deleteOldCharacter(int id, List<String> animalCharacters) {
+        List<String> deleteCharacters = animalMapper.listDelCharacter(id);
+
+        if(animalCharacters.containsAll((deleteCharacters))==false){
+            Collection<String> characters = new ArrayList(animalCharacters);
+            deleteCharacters.removeAll(characters);
+
+
+            Map<String, Object> deleteanimalCharacter = new HashMap<>();
+            for (int i = 0; i < deleteCharacters.size(); i++) {
+                deleteanimalCharacter.put("id", id);
+                deleteanimalCharacter.put("character", deleteCharacters.get(i));
+                animalMapper.deleteOldCharacter(deleteanimalCharacter);
+            }
+        }
+    }
 }
+
