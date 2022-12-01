@@ -68,24 +68,39 @@
         FROM MATINGANIMAL
     </select>
 
-    <!--게시글 상세조회-->
-    <select id="getAnimalMatingDetail" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters, sex, case
-        when YEAR(createDate) = YEAR(now()) then
-        case
-        when (TIMESTAMPDIFF(DAY, createDate, now())) > 1
-        then concat(YEAR(createDate), '년 ', MONTH(createDate), '월 ', DAY(createDate), '일 ',HOUR(createdate),'시 ',MINUTE(createdate),'분')
-        when TIMESTAMPDIFF(minute, createDate, now()) <![CDATA[<]]> 1
-        then concat(TIMESTAMPDIFF(second, createDate, now()),'초 전')
-        when TIMESTAMPDIFF(hour, createDate, now()) > 24
-        then concat(TIMESTAMPDIFF(DAY, createDate, now()), '일 전')
-        when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 1
-        then concat(TIMESTAMPDIFF(minute, createDate, now()), '분 전')
-        when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 24
-        then concat(TIMESTAMPDIFF(hour, createDate, now()), '시간 전')
-        end end as createDate,view,status
+    <select id="getAnimalMattingDetail" resultType="AnimalMating" >
+        select id,
+               MATINGANIMAL.userid,
+               imgurl,
+               title,
+               contents,
+               categoryid,
+               characters,
+               sex,
+               case
+                   when YEAR(createDate) = YEAR(now()) then
+                       case
+                           when (TIMESTAMPDIFF(DAY, createDate, now())) > 1
+                               then concat(YEAR(createDate), '년 ', MONTH(createDate), '월 ', DAY(createDate), '일 ',
+                                           HOUR(createdate), '시 ', MINUTE(createdate), '분')
+                           when TIMESTAMPDIFF(minute, createDate, now()) <![CDATA[<]]> 1
+                               then concat(TIMESTAMPDIFF(second, createDate, now()), '초 전')
+                           when TIMESTAMPDIFF(hour, createDate, now()) > 24
+                               then concat(TIMESTAMPDIFF(DAY, createDate, now()), '일 전')
+                           when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 1
+                               then concat(TIMESTAMPDIFF(minute, createDate, now()), '분 전')
+                           when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 24
+                               then concat(TIMESTAMPDIFF(hour, createDate, now()), '시간 전')
+                           end end as                                                            createDate,
+               view,
+               status,
+               (select count(*) from BOARDLIKE where boardId = id)                               'like_count',
+               (select EXISTS(select *
+                              from BOARDLIKE
+                              where BOARDLIKE.boardId = id and BOARDLIKE.userId = #{userId})) 'like_check'
         from MATINGANIMAL
-        where id=#{id}
+        where id = #{id};
+
     </select>
 
     <select id="getAnimalMatingCha" parameterType="int" resultType="String">

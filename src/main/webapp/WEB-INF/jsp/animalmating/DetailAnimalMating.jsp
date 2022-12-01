@@ -11,6 +11,7 @@
 <head>
   <%--<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />--%>
   <link rel="StyleSheet" href="../css/styles.css" type="text/css" media="screen"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -45,6 +46,23 @@
       상태 : <span style="background-color:#495057; color:white"> <b>Completed</b> </span>
     </c:if>
   </div>
+    상태 : ${actionBean.animalMatingDetail.status}<br>
+    <td id="like">
+      <c:choose>
+        <c:when test="${actionBean.animalMatingDetail.like_check==0}">
+          <button type="button" class="btn btn-light" id="likebtn">좋아요</button>
+            <input type="hidden" id="likecheck" value="${actionBean.animalMatingDetail.like_check}">
+            좋아요 갯수 : ${actionBean.animalMatingDetail.like_count}개
+        </c:when>
+        <c:when test="${actionBean.animalMatingDetail.like_check==1}">
+            <button type="button" class="btn btn-danger" id="likebtn">좋아요취소</button>
+            <input type="hidden" id="likecheck" value="${actionBean.animalMatingDetail.like_check}">
+          좋아요 갯수 : ${actionBean.animalMatingDetail.like_count}개
+          <input type="hidden" id="likecheck" value="${actionBean.animalMatingDetail.like_check}">
+
+        </c:when>
+      </c:choose>
+    </td>
   <div class="article_container">
     성별 : ${actionBean.animalMatingDetail.sex} <br>
     성격 : <c:forEach var="characters" items="${actionBean.animalMatingCha}"> ${characters} | </c:forEach>
@@ -55,9 +73,34 @@
     <img id="deimg" style="height:300px; width: 300px;" src="${actionBean.animalMatingDetail.imgUrl}" alt="..." />
     <br><br>
   </div>
-
-
-</div>
+    <script>
+      $('#likebtn').click(function () {
+        alert("${actionBean.animalMatingDetail.like_check}")
+        const boardId = '${actionBean.animalMatingDetail.id}';
+        const userId = "${sessionScope.accountBean.account.username}";
+        let status=$('#likecheck').value;
+        //ajax url 인식못함
+          $.ajax({
+            url : "/like",
+            type : 'POST',
+            data : JSON.stringify({
+              "boardId" : boardId,
+              "userId" : userId
+            }),
+            success : function(data){
+              if("${actionBean.animalMatingDetail.like_check}"== 1){
+                $('#likecheck').val(0);
+                $('#likebtn').attr('class','btn btn-light');
+              }else if("${actionBean.animalMatingDetail.like_check}"== 0){
+                $('#likecheck').val(1);
+                $('#likebtn').attr('class','btn btn-danger');
+              }
+            }, error : function(result){
+              alert(result.result);
+            }
+          });
+      });
+    </script>
 </body>
 </html>
 

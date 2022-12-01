@@ -172,7 +172,6 @@ public class AnimalActionBean extends AbstractActionBean {
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
-
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
@@ -184,7 +183,8 @@ public class AnimalActionBean extends AbstractActionBean {
         }else if(fileBean==null&&chooseWork.equals("edit")){
             animalMating.setUserId(userId);
         }
-        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null||animalMating.getCharacterList().size()==0){
+        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||
+                animalMating.getSex()==null||animalMating.getCharacterList().isEmpty()){
             setMessage("내용을 모두 입력해주세요");
             return new ForwardResolution(ERROR);
         }else{
@@ -219,7 +219,10 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution editAnimalMatingView(){
-        animalMating = animalService.getAnimalMatingDetail(id);
+        HttpSession session = context.getRequest().getSession();
+        AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
+        String userId=accountBean.getUsername();
+        animalMating = animalService.getAnimalMattingDetail(id,userId);
         setChooseWork("edit");
         return new ForwardResolution(EDIT_ANIMAL_MATING);
     }
@@ -236,8 +239,11 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution getMatingInfo() {
         animalService.plusViewCount(id);
-        animalMatingDetail = animalService.getAnimalMatingDetail(id);
-        animalMatingCha = animalService.getAnimalMatingCha(id);
+        HttpSession session = context.getRequest().getSession();
+        AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
+        String userId=accountBean.getUsername();
+        System.out.println(userId);
+        animalMatingDetail = animalService.getAnimalMattingDetail(id,userId);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 

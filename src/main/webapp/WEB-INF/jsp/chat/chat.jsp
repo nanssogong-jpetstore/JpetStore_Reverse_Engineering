@@ -17,11 +17,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>${actionBean.title} 대화방</title>
     <link rel="stylesheet" href="../css/main.css" />
+
 </head>
 <script>
-
     window.onload = function() {
-
         var id = '${actionBean.username}';
         var title = '${actionBean.title}';
         var name = '${actionBean.name}';
