@@ -28,4 +28,6 @@ public interface AnimalMapper {
     String getUserIdByPostId(int postId);
 
     void editCharacter(Map<String, Object> animalCharacter);
+
+    List<String> getAnimalMatingCha(int id);
 }
