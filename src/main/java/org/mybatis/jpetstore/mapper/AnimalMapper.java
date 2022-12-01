@@ -1,5 +1,6 @@
 package org.mybatis.jpetstore.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.jpetstore.domain.AnimalMating;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface AnimalMapper {
     int insertAnimal(AnimalMating animalMating);
     int editAnimal(AnimalMating animalMating);
     List<AnimalMating> getAnimalMatingList(Map<String, Object> map);
-    AnimalMating getAnimalMattingDetail(@Param("userId")String userId,@Param("id") int id);
+    AnimalMating getAnimalMattingDetail(@Param("userId")String userId, @Param("id") int id);
     Integer getAnimalMatingCount();
     void plusViewCount(int id);
     List<AnimalMating> searchAnimalMatingTitle(Map<String, Object> map);
