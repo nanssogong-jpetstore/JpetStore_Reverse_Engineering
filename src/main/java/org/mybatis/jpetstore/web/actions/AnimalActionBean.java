@@ -67,6 +67,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
 
     private AnimalMating animalMatingDetail;
+    private List<String> animalMatingCha;
 
 
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
@@ -121,6 +122,12 @@ public class AnimalActionBean extends AbstractActionBean {
     public void setAnimalMatingDetail(AnimalMating animalMatingDetail) {
         this.animalMatingDetail = animalMatingDetail;
     }
+    public List<String> getAnimalMatingCha() {
+        return animalMatingCha;
+    }
+    public void setAnimalMatingCha (List<String> animalMatingCha) {
+        this.animalMatingCha = animalMatingCha;
+    }
 
     public void setFileBean(FileBean fileBean) { this.fileBean = fileBean; }
     public FileBean getFileBean() { return fileBean; }
@@ -156,7 +163,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
-        clear();
+
         HttpSession session = context.getRequest().getSession();
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
@@ -192,6 +199,7 @@ public class AnimalActionBean extends AbstractActionBean {
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
 
+        clear();
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
@@ -202,7 +210,7 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public Resolution editAnimalMatingView(){
-        animalMating = animalService.getAnimalMattingDetail(id);
+        animalMating = animalService.getAnimalMatingDetail(id);
         setChooseWork("edit");
         return new ForwardResolution(EDIT_ANIMAL_MATING);
     }
@@ -219,9 +227,11 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution getMatingInfo() {
         animalService.plusViewCount(id);
-        animalMatingDetail = animalService.getAnimalMattingDetail(id);
+        animalMatingDetail = animalService.getAnimalMatingDetail(id);
+        animalMatingCha = animalService.getAnimalMatingCha(id);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
+
 
     public Resolution paging() {
         int temp = getPagingEnd(cpage, searchOption);

@@ -9,7 +9,7 @@ public interface AnimalMapper {
     int insertAnimal(AnimalMating animalMating);
     int editAnimal(AnimalMating animalMating);
     List<AnimalMating> getAnimalMatingList(Map<String, Object> map);
-    AnimalMating getAnimalMattingDetail(int id);
+    AnimalMating getAnimalMatingDetail(int id);
     Integer getAnimalMatingCount();
     void plusViewCount(int id);
     List<AnimalMating> searchAnimalMatingTitle(Map<String, Object> map);
@@ -23,4 +23,6 @@ public interface AnimalMapper {
 
     void addCharacter(Map<String, Object> animalCharacter);
     void editCharacter(Map<String, Object> animalCharacter);
+
+    List<String> getAnimalMatingCha(int id);
 }

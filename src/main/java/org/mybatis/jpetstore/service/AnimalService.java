@@ -47,7 +47,10 @@ public class AnimalService {
         condition.put("end", end);
         return animalMapper.getAnimalMatingList(condition);
     }
-    public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
+
+    /*게시글 상세조회*/
+    public AnimalMating getAnimalMatingDetail(int id) { return animalMapper.getAnimalMatingDetail(id); }
+    public List<String> getAnimalMatingCha(int id) { return animalMapper.getAnimalMatingCha(id); }
 
     public AWSS3 awsS3 = AWSS3.getInstance();
 
