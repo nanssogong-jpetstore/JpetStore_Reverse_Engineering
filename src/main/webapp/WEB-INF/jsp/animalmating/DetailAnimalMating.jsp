@@ -22,7 +22,7 @@
       <c:if test="${sessionScope.accountBean.account.username ne actionBean.animalMating.userId}">
     `  <stripes:link class="Button" onclick="window.open(this.href, '', 'width=400, height=700, left=700, top=100'); return false;"
                                                              beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
-                                                             event="chatStart">
+                                                             event="initChat">
       <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
       <stripes:param name="title" value="${actionBean.animalMating.title}" />
       <stripes:param name="name" value="${actionBean.animalMating.userId}" />

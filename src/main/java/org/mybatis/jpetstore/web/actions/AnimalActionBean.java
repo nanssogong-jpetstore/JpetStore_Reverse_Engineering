@@ -26,6 +26,7 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
     private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
     private static final String EDIT_ANIMAL_MATING="/WEB-INF/jsp/animalmating/EditAnimalForm.jsp";
+    private static final String ALERT="/WEB-INF/jsp/animalmating/alert.jsp";
     private static final List<String> CATEGORY_LIST;
     private static final List<String> SEX_LIST;
     private static final List<String> CHARACTER_LIST;
@@ -78,6 +79,7 @@ public class AnimalActionBean extends AbstractActionBean {
     private int postCount;
     private int preBlock;
     private int nextBlock;
+    private String matingStatusValue;
 
     private String chooseWork;
 
@@ -111,6 +113,9 @@ public class AnimalActionBean extends AbstractActionBean {
     public void setFileBean(FileBean fileBean) { this.fileBean = fileBean; }
     public FileBean getFileBean() { return fileBean; }
 
+    public String getMatingStatusValue() { return matingStatusValue; }
+    public void setMatingStatusValue(String matingStatusValue) { this.matingStatusValue = matingStatusValue; }
+
     private String keyword;
 
 
@@ -139,6 +144,10 @@ public class AnimalActionBean extends AbstractActionBean {
     @Autowired
     public AWSS3 awsS3 = AWSS3.getInstance();
 
+    public ForwardResolution updateStatus() {
+        animalService.updateStatus(id, matingStatusValue);
+        return new ForwardResolution(ALERT);
+    }
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {

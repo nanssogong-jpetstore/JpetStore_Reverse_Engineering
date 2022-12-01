@@ -8,9 +8,13 @@ import net.sourceforge.stripes.validation.Validate;
 import org.mybatis.jpetstore.domain.ChatMessage;
 import org.mybatis.jpetstore.domain.ChatRoom;
 import org.mybatis.jpetstore.service.AccountService;
+import org.mybatis.jpetstore.service.AnimalService;
 import org.mybatis.jpetstore.service.ChatService;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SessionScope
@@ -19,9 +23,12 @@ public class ChatActionBean extends AbstractActionBean {
 
     private static final String CHAT = "/WEB-INF/jsp/chat/chat.jsp";
     private static final String CHATLIST = "/WEB-INF/jsp/chat/chatList.jsp";
-
+    private static List<String> MATING_STATUS;
     @SpringBean
     private transient AccountService accountService;
+
+    @SpringBean
+    private transient AnimalService animalService;
 
     private String username; //로그인한 유저
     private String title; //교배게시판 제목
@@ -31,11 +38,13 @@ public class ChatActionBean extends AbstractActionBean {
     private String roomId;
     private String firstName_sender;
     private String firstName_receiver;
-
+    private String idByPost;
+    private String now_status;
     private ChatRoom chatRoom;
     private List<ChatRoom> chatRoomList;
     private ChatMessage chatMessage;
     private List<ChatMessage> chatMessageList;
+
 
     public String getRoomId() { return roomId; }
     public void setRoomId(String roomId) { this.roomId = roomId; }
@@ -66,6 +75,9 @@ public class ChatActionBean extends AbstractActionBean {
     public String getFirstName_receiver() { return firstName_receiver; }
     public void setFirstName_receiver(String firstName_receiver) { this.firstName_receiver = firstName_receiver; }
 
+    public String getIdByPost() { return idByPost; }
+    public void setIdByPost(String idByPost) { this.idByPost = idByPost; }
+
     public ChatRoom getChatRoom() { return chatRoom; }
     public void setChatRoom(ChatRoom chatRoom) { this.chatRoom = chatRoom; }
 
@@ -78,9 +90,21 @@ public class ChatActionBean extends AbstractActionBean {
     public List<ChatMessage> getChatMessageList() { return chatMessageList; }
     public void setChatMessageList(List<ChatMessage> chatMessageList) { this.chatMessageList = chatMessageList; }
 
+    public List<String> getMatingStatus() { return MATING_STATUS; }
+
+    public String getNow_status() { return now_status; }
+    public void setNow_status(String now_status) { this.now_status = now_status; }
+
     @Validate(required = true, on = { "signon", "newAccount", "editAccount" })
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    static {
+        MATING_STATUS = Collections.unmodifiableList(Arrays.asList("BEFORE_MATCHING", "COMPLETED", "RESERVED"));
+
+
+
     }
 
     @SpringBean
@@ -97,6 +121,8 @@ public class ChatActionBean extends AbstractActionBean {
         }
         firstName_sender = getFirstName(username);
         firstName_receiver = getFirstName(name);
+        now_status = animalService.getMatingStatusValue(Integer.parseInt(id));
+        idByPost = animalService.getUserId(id);
         ChatMessage chatMessage = new ChatMessage(ChatMessage.MessageType.ENTER, chatRoomId, username, name, null);
         //chatService.readMessage(chatMessage);
         chatMessageList = chatService.getMessages(chatRoomId);
@@ -109,6 +135,8 @@ public class ChatActionBean extends AbstractActionBean {
         System.out.println("title " + title);
         firstName_sender = getFirstName(username);
         firstName_receiver = getFirstName(name);
+        now_status = animalService.getMatingStatusValue(Integer.parseInt(id));
+        idByPost = animalService.getUserId(id);
         chatMessageList = chatService.getMessages(roomId);
 
         return new ForwardResolution(CHAT);

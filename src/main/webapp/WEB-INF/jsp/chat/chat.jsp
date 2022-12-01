@@ -71,6 +71,20 @@
             </stripes:link>
         </h5>
     </div>
+    <c:if test="${sessionScope.accountBean.account.username eq actionBean.idByPost}" >
+        <div>
+            <stripes:form style="float: right;margin-top: -42px;margin-right: 10px;"
+                    beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                    focus="">
+                <stripes:select name="matingStatusValue">
+                    <stripes:option value="${actionBean.now_status}" selected="${actionBean.now_status}">${actionBean.now_status}</stripes:option>
+                    <stripes:options-collection collection="${actionBean.matingStatus}"  />
+                </stripes:select>
+                <stripes:param name="id" value="${actionBean.id}" />
+                <stripes:submit name="updateStatus" value="update" />
+            </stripes:form>
+        </div>
+    </c:if>
     <div class="chat-container">
         <div class="chat-header">
             <h2>${actionBean.title} 교배 룸</h2>
