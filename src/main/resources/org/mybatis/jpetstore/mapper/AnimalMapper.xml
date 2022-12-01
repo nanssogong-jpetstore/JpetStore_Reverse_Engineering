@@ -120,4 +120,16 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateStatus" parameterType="hashMap">
+        UPDATE MATINGANIMAL SET
+                                status = #{status}
+        where id = #{id}
+    </update>
+    <select id="getStatus" parameterType="hashMap" resultType="String">
+        SELECT status FROM MATINGANIMAL where id = #{id}
+    </select>
+
+    <select id="getUserIdByPostId" resultType="String">
+        SELECT userid FROM MATINGANIMAL WHERE id = #{id}
+    </select>
 </mapper>

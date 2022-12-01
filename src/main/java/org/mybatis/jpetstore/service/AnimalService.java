@@ -45,6 +45,19 @@ public class AnimalService {
 
     }
 
+    public void updateStatus(int id, String status) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("id", id);
+        condition.put("status", status);
+        animalMapper.updateStatus(condition);
+    }
+
+    public String getMatingStatusValue(int id) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("id", id);
+        return animalMapper.getStatus(condition);
+    }
+
     public List<AnimalMating> getAnimalMatingList(int start, int end) {
         Map<String, Object> condition = new HashMap<>();
         condition.put("start", start - 1);
@@ -177,5 +190,9 @@ public class AnimalService {
             animalCharacter.put("character",animalCharacters.get(i));
             animalMapper.addCharacter(animalCharacter);
         }
+    }
+
+    public String getUserId(String postId) {
+        return animalMapper.getUserIdByPostId(Integer.parseInt(postId));
     }
 }
