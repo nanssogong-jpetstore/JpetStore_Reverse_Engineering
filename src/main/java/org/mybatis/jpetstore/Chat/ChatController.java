@@ -1,19 +1,22 @@
 package org.mybatis.jpetstore.Chat;
 
+import org.mybatis.jpetstore.domain.BoardLike;
 import org.mybatis.jpetstore.domain.ChatMessage;
+import org.mybatis.jpetstore.web.actions.AnimalActionBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class ChatController {
     private final SimpMessageSendingOperations sendingOperations;
     private final ChatService chatService;
+    private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
     public ChatController(SimpMessageSendingOperations sendingOperations, ChatService chatService) {
         this.sendingOperations = sendingOperations;
@@ -53,6 +56,25 @@ public class ChatController {
         }
 
         return chatMessage;
+    }
+
+    @PostMapping("/like")
+    public Map<String, String> likeBoard(@RequestBody BoardLike boardLike){
+        logger.info(boardLike.getUserId());
+        Map<String,String> map=new HashMap<String,String>();
+        try{
+            if(chatService.checkLike(boardLike)==1){
+                chatService.unLike(boardLike);
+            }
+            else{
+                chatService.Like(boardLike);
+            }
+            map.put("result","success");
+        }catch(Exception e){
+            e.printStackTrace();
+            map.put("result","fail");
+        }
+        return map;
     }
 
 }

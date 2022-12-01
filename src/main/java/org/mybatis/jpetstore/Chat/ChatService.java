@@ -1,5 +1,6 @@
 package org.mybatis.jpetstore.Chat;
 
+import org.mybatis.jpetstore.domain.BoardLike;
 import org.mybatis.jpetstore.domain.ChatMessage;
 import org.mybatis.jpetstore.domain.ChatRoomUser;
 import org.mybatis.jpetstore.mapper.ChatMessageMapper;
@@ -53,5 +54,17 @@ public class ChatService {
         chatRoomUser.setUserId(chatMessage.getReceiver());
         chatRoomUser.setRoomId(chatMessage.getRoomId());
         chatMapper.noneReadMessage(chatRoomUser);
+    }
+
+    public int checkLike(BoardLike boardLike) {
+        return chatMapper.checkLike(boardLike);
+    }
+
+    public void unLike(BoardLike boardLike) {
+        chatMapper.unLike(boardLike);
+    }
+
+    public void Like(BoardLike boardLike) {
+        chatMapper.Like(boardLike);
     }
 }
