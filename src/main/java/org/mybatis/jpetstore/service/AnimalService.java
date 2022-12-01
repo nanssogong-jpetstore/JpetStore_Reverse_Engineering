@@ -15,11 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.mybatis.jpetstore.configuration.Constants.BUCKET;
 
@@ -40,9 +36,9 @@ public class AnimalService {
         return animalMating.getId();
     }
 
-    public void editAnimal(AnimalMating animalMating){
+    public int editAnimal(AnimalMating animalMating){
         animalMapper.editAnimal(animalMating);
-
+        return animalMating.getId();
     }
 
     public void updateStatus(int id, String status) {
@@ -64,7 +60,10 @@ public class AnimalService {
         condition.put("end", end);
         return animalMapper.getAnimalMatingList(condition);
     }
-    public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
+
+    /*게시글 상세조회*/
+    public AnimalMating getAnimalMatingDetail(int id) { return animalMapper.getAnimalMatingDetail(id); }
+    public List<String> getAnimalMatingCha(int id) { return animalMapper.getAnimalMatingCha(id); }
 
     public AWSS3 awsS3 = AWSS3.getInstance();
 
@@ -191,8 +190,39 @@ public class AnimalService {
             animalMapper.addCharacter(animalCharacter);
         }
     }
+    /* animalCharaters : 변경 성격
+       deleteCharaters : 기존 성격 + 변경 성격*/
+    public void editCharacter(int id, List<String> animalCharacters){
+        Map<String,Object> animalCharacter = new HashMap<>();
+
+        for (int i=0;i<animalCharacters.size();i++) {
+            animalCharacter.put("id",id);
+            animalCharacter.put("character",animalCharacters.get(i));
+            System.out.println(animalCharacters.get(i));
+            animalMapper.editCharacter(animalCharacter);
+        }
+    }
 
     public String getUserId(String postId) {
         return animalMapper.getUserIdByPostId(Integer.parseInt(postId));
     }
+
+
+    public void deleteOldCharacter(int id, List<String> animalCharacters) {
+        List<String> deleteCharacters = animalMapper.listDelCharacter(id);
+
+        if(animalCharacters.containsAll((deleteCharacters))==false){
+            Collection<String> characters = new ArrayList(animalCharacters);
+            deleteCharacters.removeAll(characters);
+
+
+            Map<String, Object> deleteanimalCharacter = new HashMap<>();
+            for (int i = 0; i < deleteCharacters.size(); i++) {
+                deleteanimalCharacter.put("id", id);
+                deleteanimalCharacter.put("character", deleteCharacters.get(i));
+                animalMapper.deleteOldCharacter(deleteanimalCharacter);
+            }
+        }
+    }
 }
+
