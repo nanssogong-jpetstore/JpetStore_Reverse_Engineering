@@ -37,13 +37,20 @@
     </h6>
     작성일: ${actionBean.animalMatingDetail.createdate} <br>
     조회수 : ${actionBean.animalMatingDetail.view}<br>
-    상태 : ${actionBean.animalMatingDetail.status}
+    <c:set var="status" value="${actionBean.animalMatingDetail.status}" />
+    <c:if test="${status eq 'RESERVED'}">
+      상태 : <span style="background-color:#ffc720; color:black"> <b>Reserved</b> </span>
+    </c:if>
+    <c:if test="${status eq 'COMPLETED'}">
+      상태 : <span style="background-color:#495057; color:white"> <b>Completed</b> </span>
+    </c:if>
   </div>
   <div class="article_container">
     성별 : ${actionBean.animalMatingDetail.sex} <br>
-    성격 : ${actionBean.animalMatingDetail.characters}
+    성격 : <c:forEach var="characters" items="${actionBean.animalMatingCha}"> ${characters} | </c:forEach>
     <hr>
     <br>
+    ${actionBean.animalMatingDetail.characters} <br><br>
     ${actionBean.animalMatingDetail.contents}<br><br>
     <img id="deimg" style="height:300px; width: 300px;" src="${actionBean.animalMatingDetail.imgUrl}" alt="..." />
     <br><br>
