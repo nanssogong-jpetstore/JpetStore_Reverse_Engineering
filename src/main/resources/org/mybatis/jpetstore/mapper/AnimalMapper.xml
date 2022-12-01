@@ -165,4 +165,7 @@
     <select id="getUserIdByPostId" resultType="String">
         SELECT userid FROM MATINGANIMAL WHERE id = #{id}
     </select>
+
+
+
 </mapper>

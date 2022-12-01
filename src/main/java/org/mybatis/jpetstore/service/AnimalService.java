@@ -65,12 +65,12 @@ public class AnimalService {
     public AnimalMating getAnimalMattingDetail(int id, String userId) {
         return animalMapper.getAnimalMattingDetail(userId,id);
     }
-    /*
+
     public List<String> getAnimalMatingCha(int id) {
         return animalMapper.getAnimalMatingCha(id);
     }
-    )
-     */
+
+
 
     public AWSS3 awsS3 = AWSS3.getInstance();
 
