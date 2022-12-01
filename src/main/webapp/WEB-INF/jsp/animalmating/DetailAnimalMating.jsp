@@ -13,7 +13,59 @@
   <link rel="StyleSheet" href="../css/styles.css" type="text/css" media="screen"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
+<script>
+  $(Document).ready(function () {
+    const boardId = '${actionBean.animalMatingDetail.id}';
+    const userId = "${sessionScope.accountBean.account.username}";
 
+    $('#likebtn').click(function(){
+    $.ajax({
+      url : "/jpetstore_war/like",
+      type : 'POST',
+      contentType: 'application/json',
+      data : JSON.stringify({
+        "boardId" : boardId,
+        "userId" : userId
+      }),
+      success : function(data){
+        if("${actionBean.animalMatingDetail.like_check}"== 1){
+          $('#likecheck').val(0);
+          $('#likebtn').attr('class','btn btn-danger');
+
+        }else if("${actionBean.animalMatingDetail.like_check}"== 0){
+          $('#likecheck').val(1);
+          $('#likebtn').attr('class','btn btn-light');
+        }
+      }, error : function(result){
+            alert("좋아요 중 오류 발생");
+      }, complete:function(){
+        reloadDivArea();
+      }
+    });
+    });
+    function reloadDivArea() {
+      $.ajax({
+        url : "/jpetstore_war/likeCheck",
+        type : 'POST',
+        contentType: 'application/json',
+        data : JSON.stringify({
+          "boardId" : boardId,
+          "userId" : userId
+        }),
+        success : function(data){
+          var likeCheck=data.likeCheck;
+          if(likeCheck=="1"){
+            $('#likebtn').attr('class','btn btn-danger');
+          }else if(likeCheck=="0"){
+            $('#likebtn').attr('class','btn btn-light');
+          }
+        }, error : function(result){
+          alert("좋아요 중 오류 발생");
+        }
+  });
+    }
+  });
+</script>
 <body>
 <div class="ArticleContentBox" style="padding: 29px 29px 0;">
   <div class="article_header" style="position: relative; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid gray;">
@@ -46,19 +98,15 @@
       상태 : <span style="background-color:#495057; color:white"> <b>Completed</b> </span>
     </c:if>
   </div>
-    상태 : ${actionBean.animalMatingDetail.status}<br>
     <td id="like">
       <c:choose>
         <c:when test="${actionBean.animalMatingDetail.like_check==0}">
           <button type="button" class="btn btn-light" id="likebtn">좋아요</button>
             <input type="hidden" id="likecheck" value="${actionBean.animalMatingDetail.like_check}">
-            좋아요 갯수 : ${actionBean.animalMatingDetail.like_count}개
         </c:when>
         <c:when test="${actionBean.animalMatingDetail.like_check==1}">
-            <button type="button" class="btn btn-danger" id="likebtn">좋아요취소</button>
+            <button type="button" class="btn btn-danger" id="likebtn">좋아요</button>
             <input type="hidden" id="likecheck" value="${actionBean.animalMatingDetail.like_check}">
-          좋아요 갯수 : ${actionBean.animalMatingDetail.like_count}개
-          <input type="hidden" id="likecheck" value="${actionBean.animalMatingDetail.like_check}">
 
         </c:when>
       </c:choose>
@@ -73,34 +121,6 @@
     <img id="deimg" style="height:300px; width: 300px;" src="${actionBean.animalMatingDetail.imgUrl}" alt="..." />
     <br><br>
   </div>
-    <script>
-      $('#likebtn').click(function () {
-        alert("${actionBean.animalMatingDetail.like_check}")
-        const boardId = '${actionBean.animalMatingDetail.id}';
-        const userId = "${sessionScope.accountBean.account.username}";
-        let status=$('#likecheck').value;
-        //ajax url 인식못함
-          $.ajax({
-            url : "/like",
-            type : 'POST',
-            data : JSON.stringify({
-              "boardId" : boardId,
-              "userId" : userId
-            }),
-            success : function(data){
-              if("${actionBean.animalMatingDetail.like_check}"== 1){
-                $('#likecheck').val(0);
-                $('#likebtn').attr('class','btn btn-light');
-              }else if("${actionBean.animalMatingDetail.like_check}"== 0){
-                $('#likecheck').val(1);
-                $('#likebtn').attr('class','btn btn-danger');
-              }
-            }, error : function(result){
-              alert(result.result);
-            }
-          });
-      });
-    </script>
 </body>
 </html>
 
