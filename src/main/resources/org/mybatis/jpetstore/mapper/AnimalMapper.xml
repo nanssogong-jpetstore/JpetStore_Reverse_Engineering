@@ -57,8 +57,8 @@
     <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
 
 
-        SELECT id, userid, imgurl, title, contents, categoryid, characters,status,sex
-        FROM MATINGANIMAL
+        SELECT id, userid, imgurl, title, contents, categoryid, characters,status,sex,deletestatus
+        FROM MATINGANIMAL where deletestatus=0
         ORDER BY createdate desc limit #{start}, #{end}
 
     </select>
@@ -167,5 +167,14 @@
     </select>
 
 
+
+   <!-- <delete id="userAnimalDelete" parameterType="AnimalMating">
+        delete from jpetstore.MATINGANIMAL where id=#{id}
+    </delete> -->
+
+    <!-- delete로 삭제하는것 대신 update로 상태 변경해줌 -->
+    <update id="userAnimalDelete" parameterType="AnimalMating">
+        UPDATE jpetstore.MATINGANIMAL SET deletestatus = 1 WHERE id = #{id}
+    </update>
 
 </mapper>

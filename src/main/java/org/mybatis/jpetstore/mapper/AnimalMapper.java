@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface AnimalMapper {
     int insertAnimal(AnimalMating animalMating);
-    int editAnimal(AnimalMating animalMating);
+    void editAnimal(AnimalMating animalMating);
     List<AnimalMating> getAnimalMatingList(Map<String, Object> map);
     AnimalMating getAnimalMattingDetail(@Param("userId")String userId, @Param("id") int id);
     Integer getAnimalMatingCount();
@@ -19,6 +19,7 @@ public interface AnimalMapper {
     Integer searchAnimalMatingTitleCount(Map<String, Object> map);
     Integer searchAnimalMatingContentsCount(Map<String, Object> map);
     Integer searchAnimalMatingUserCount(Map<String, Object> map);
+    void userAnimalDelete(int id);
     List<String> listDelCharacter(int id);
     void deleteOldCharacter(Map<String, Object> map);
 

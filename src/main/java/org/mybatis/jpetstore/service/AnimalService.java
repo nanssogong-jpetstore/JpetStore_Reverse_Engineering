@@ -218,7 +218,7 @@ public class AnimalService {
     public void deleteOldCharacter(int id, List<String> animalCharacters) {
         List<String> deleteCharacters = animalMapper.listDelCharacter(id);
 
-        if(animalCharacters.containsAll((deleteCharacters))==false){
+        if (animalCharacters.containsAll((deleteCharacters)) == false) {
             Collection<String> characters = new ArrayList(animalCharacters);
             deleteCharacters.removeAll(characters);
 
@@ -230,6 +230,9 @@ public class AnimalService {
                 animalMapper.deleteOldCharacter(deleteanimalCharacter);
             }
         }
+    }
+    public void userAnimalDelete(int id){
+        animalMapper.userAnimalDelete(id);
     }
 }
 

@@ -85,12 +85,17 @@ public class AnimalActionBean extends AbstractActionBean {
     private int postCount;
     private int preBlock;
     private int nextBlock;
+    //개인게시물 수정,삭제 버튼
+    private int btnUpdate;
+    private int btnDelete;
     private String matingStatusValue;
 
     private String chooseWork;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
+    public void setBtnDelete(int btnDelete){this.btnDelete=btnDelete;}
+    public void setBtnUpdate(int btnUpdate){this.btnUpdate=btnUpdate;}
 
     //테스트
     public int getCpage() { return cpage; }
@@ -309,6 +314,14 @@ public class AnimalActionBean extends AbstractActionBean {
             }
         }
     }
+
+    public ForwardResolution userDeleteBtnSet(){
+        System.out.println("Delete id = "+btnDelete);
+        animalService.userAnimalDelete(id);
+        setMessage("삭제가 완료되었습니다.");
+        return new ForwardResolution(ERROR);
+    }
+
     public void clear(){
         animalMating=new AnimalMating();
     }

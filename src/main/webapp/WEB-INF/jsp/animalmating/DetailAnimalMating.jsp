@@ -73,20 +73,30 @@
     <h6>작성자: ${actionBean.animalMatingDetail.userId}
 
       <c:if test="${sessionScope.accountBean.account.username ne actionBean.animalMatingDetail.userId}">
-    `  <stripes:link class="Button" onclick="window.open(this.href, '', 'width=400, height=700, left=700, top=100'); return false;"
+      <stripes:link class="Button" onclick="window.open(this.href, '', 'width=400, height=700, left=700, top=100'); return false;"
                                                              beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
                                                              event="initChat">
-      <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
-      <stripes:param name="title" value="${actionBean.animalMatingDetail.title}" />
-      <stripes:param name="name" value="${actionBean.animalMatingDetail.userId}" />
-      <stripes:param name="id" value="${actionBean.animalMatingDetail.id}" />
+        <stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
+        <stripes:param name="title" value="${actionBean.animalMatingDetail.title}" />
+        <stripes:param name="name" value="${actionBean.animalMatingDetail.userId}" />
+        <stripes:param name="id" value="${actionBean.animalMatingDetail.id}" />
         <stripes:param name="sex" value="${actionBean.animalMatingDetail.sex}" />
-      <stripes:param name="imgurl" value="${actionBean.animalMatingDetail.imgUrl}" />
-      <stripes:param name="roomId" value="empty" />
+        <stripes:param name="imgurl" value="${actionBean.animalMatingDetail.imgUrl}" />
+        <stripes:param name="roomId" value="empty" />
         <stripes:param name="status" value="${actionBean.animalMatingDetail.status}" />
       Chat Start
-      </stripes:link>`
-    </c:if>
+      </stripes:link>
+      </c:if>
+      <c:if test="${sessionScope.accountBean.account.username eq actionBean.animalMatingDetail.userId}">
+      <stripes:link class="Button" beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                    event="editAnimalMatingView">
+        <stripes:param name="btnUpdete" value="${actionBean.animalMating.id}" />UPDATE
+      </stripes:link>
+        <stripes:link class="Button" beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                    event="userDeleteBtnSet">
+          <stripes:param name="btnDelete" value="${actionBean.animalMating.id}" />DELETE
+        </stripes:link>
+      </c:if>
     </h6>
     작성일: ${actionBean.animalMatingDetail.createdate} <br>
     조회수 : ${actionBean.animalMatingDetail.view}<br>
@@ -121,6 +131,7 @@
     <img id="deimg" style="height:300px; width: 300px;" src="${actionBean.animalMatingDetail.imgUrl}" alt="..." />
     <br><br>
   </div>
+</div>
 </body>
 </html>
 
