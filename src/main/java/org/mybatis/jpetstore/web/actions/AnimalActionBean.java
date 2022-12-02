@@ -327,6 +327,7 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
     public ForwardResolution searchMating() {
+        cpage = 1;
         int temp = getPagingEnd(cpage, searchOption, keyword, code);
         System.out.println("code : " + code);
         int start = getPagingStart(temp);

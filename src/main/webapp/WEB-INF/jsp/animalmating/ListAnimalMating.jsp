@@ -86,7 +86,7 @@
                 <li>
                     <c:choose>
                         <c:when test="${i == actionBean.cpage}">
-                            <stripes:link class="num" style="color : #000;"
+                            <stripes:link class="num" style="color : #000; font-weight: bold;"
                                           beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
                                           event="paging">
                                 <stripes:param name="cpage" value="${i}" />
