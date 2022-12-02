@@ -188,7 +188,7 @@ public class AnimalService {
     }
 
     public void deleteOldCharacter(int id, List<String> animalCharacters) {
-        List<String> deleteCharacters = animalMapper.listDelCharacter(id);
+        List<String> deleteCharacters = animalMapper.getCharacterList(id);
 
         if(animalCharacters.containsAll((deleteCharacters))==false){
             Collection<String> characters = new ArrayList(animalCharacters);
@@ -202,6 +202,10 @@ public class AnimalService {
                 animalMapper.deleteOldCharacter(deleteanimalCharacter);
             }
         }
+    }
+
+    public List<String> getCharacterList(int id){
+        return animalMapper.getCharacterList(id);
     }
 }
 

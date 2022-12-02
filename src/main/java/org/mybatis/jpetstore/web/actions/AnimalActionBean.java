@@ -130,6 +130,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
 
 
+
     @Autowired
     public AWSS3 awsS3 = AWSS3.getInstance();
 
@@ -181,6 +182,7 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution editAnimalMatingView(){
         animalMating = animalService.getAnimalMattingDetail(id);
+        animalMating.setCharacterList(animalService.getCharacterList(id));
         setChooseWork("edit");
         return new ForwardResolution(EDIT_ANIMAL_MATING);
     }
@@ -261,5 +263,7 @@ public class AnimalActionBean extends AbstractActionBean {
             }
         }
     }
+
+
 
 }
