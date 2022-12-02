@@ -17,6 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>${actionBean.title} 대화방</title>
     <link rel="stylesheet" href="../css/main.css" />
+
 </head>
 <script>
     window.onload = function() {
@@ -28,6 +29,7 @@
         if(roomId === 'empty') {
             roomId = title + id;
         }
+        disconnect(id, roomId);
         connect(id, roomId, name);
     }
 
@@ -68,6 +70,20 @@
             </stripes:link>
         </h5>
     </div>
+    <c:if test="${sessionScope.accountBean.account.username eq actionBean.idByPost}" >
+        <div>
+            <stripes:form style="float: right;margin-top: -42px;margin-right: 10px;"
+                    beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                    focus="">
+                <stripes:select name="matingStatusValue">
+                    <stripes:option value="${actionBean.now_status}" selected="${actionBean.now_status}">${actionBean.now_status}</stripes:option>
+                    <stripes:options-collection collection="${actionBean.matingStatus}"  />
+                </stripes:select>
+                <stripes:param name="id" value="${actionBean.id}" />
+                <stripes:submit name="updateStatus" value="update" />
+            </stripes:form>
+        </div>
+    </c:if>
     <div class="chat-container">
         <div class="chat-header">
             <h2>${actionBean.title} 교배 룸</h2>

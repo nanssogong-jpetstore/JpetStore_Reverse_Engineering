@@ -164,7 +164,7 @@
 <c:if test="${sessionScope.accountBean != null}">
 	<c:if test="${sessionScope.accountBean.authenticated}">
 		<img src="../images/separator.gif" />
-		<stripes:link class="Button" onclick="window.open(this.href, '', 'width=400, height=700, left=700, top=100'); return false;"
+		<stripes:link class="Button" onclick="window.open(this.href, '', 'width=470, height=700, left=700, top=100'); return false;"
 					  beanclass="org.mybatis.jpetstore.web.actions.ChatActionBean"
 					  event="chatList">
 			<stripes:param name="username" value="${sessionScope.accountBean.account.username}" />

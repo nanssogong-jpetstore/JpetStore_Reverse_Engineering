@@ -41,8 +41,12 @@
                         <img style="position:absolute;" src="${chat.imgurl}">
 
                         <span>${chat.roomName}</span>
+                        <c:if test="${chat.isRead == 0}">
+                            <img style="width: 31px; height: 31px; float: right;" src="../images/new.gif">
+                        </c:if>
                         <p>[${chat.receiver}]</p>
                         <p>${chat.content}</p>
+
                     </li>
                 </div>
                 </stripes:link>

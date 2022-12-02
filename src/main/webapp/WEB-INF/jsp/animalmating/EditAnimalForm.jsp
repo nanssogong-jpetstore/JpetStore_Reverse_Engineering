@@ -48,7 +48,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Animal Sex</td>
+                    <td>Animal Gender</td>
                     <td>
                         <stripes:select name="animalMating.sex">
                             <stripes:options-collection collection="${actionBean.sex}"  />

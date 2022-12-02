@@ -57,8 +57,8 @@
     <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
 
 
-        SELECT id, userid, imgurl, title, contents, categoryid, characters,sex
-        FROM MATINGANIMAL
+        SELECT id, userid, imgurl, title, contents, categoryid, characters,status,sex,deletestatus
+        FROM MATINGANIMAL where deletestatus=0
         ORDER BY createdate desc limit #{start}, #{end}
 
     </select>
@@ -68,39 +68,59 @@
         FROM MATINGANIMAL
     </select>
 
-    <select id="getAnimalMattingDetail" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters, sex, case
-        when YEAR(createDate) = YEAR(now()) then
-        case
-        when (TIMESTAMPDIFF(DAY, createDate, now())) > 1
-        then concat(YEAR(createDate), '년 ', MONTH(createDate), '월 ', DAY(createDate), '일 ',HOUR(createdate),'시 ',MINUTE(createdate),'분')
-        when TIMESTAMPDIFF(minute, createDate, now()) <![CDATA[<]]> 1
-        then concat(TIMESTAMPDIFF(second, createDate, now()),'초 전')
-        when TIMESTAMPDIFF(hour, createDate, now()) > 24
-        then concat(TIMESTAMPDIFF(DAY, createDate, now()), '일 전')
-        when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 1
-        then concat(TIMESTAMPDIFF(minute, createDate, now()), '분 전')
-        when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 24
-        then concat(TIMESTAMPDIFF(hour, createDate, now()), '시간 전')
-        end end as createDate,view
+    <select id="getAnimalMattingDetail" resultType="AnimalMating" >
+        select id,
+               MATINGANIMAL.userid,
+               imgurl,
+               title,
+               contents,
+               categoryid,
+               characters,
+               sex,
+               case
+                   when YEAR(createDate) = YEAR(now()) then
+                       case
+                           when (TIMESTAMPDIFF(DAY, createDate, now())) > 1
+                               then concat(YEAR(createDate), '년 ', MONTH(createDate), '월 ', DAY(createDate), '일 ',
+                                           HOUR(createdate), '시 ', MINUTE(createdate), '분')
+                           when TIMESTAMPDIFF(minute, createDate, now()) <![CDATA[<]]> 1
+                               then concat(TIMESTAMPDIFF(second, createDate, now()), '초 전')
+                           when TIMESTAMPDIFF(hour, createDate, now()) > 24
+                               then concat(TIMESTAMPDIFF(DAY, createDate, now()), '일 전')
+                           when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 1
+                               then concat(TIMESTAMPDIFF(minute, createDate, now()), '분 전')
+                           when TIMESTAMPDIFF(hour, createDate, now()) <![CDATA[<]]> 24
+                               then concat(TIMESTAMPDIFF(hour, createDate, now()), '시간 전')
+                           end end as                                                            createDate,
+               view,
+               status,
+               (select count(*) from BOARDLIKE where boardId = id)                               'like_count',
+               (select EXISTS(select *
+                              from BOARDLIKE
+                              where BOARDLIKE.boardId = id and BOARDLIKE.userId = #{userId})) 'like_check'
         from MATINGANIMAL
-        where id=#{id}
+        where id = #{id};
+
+    </select>
+
+    <select id="getAnimalMatingCha" parameterType="int" resultType="String">
+        SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
     </select>
 
     <select id="searchAnimalMatingTitle" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(title) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
     <select id="searchAnimalMatingContents" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(contents) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
     <select id="searchAnimalMatingUser" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters
+        select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
         WHERE lower(userid) like #{value} ORDER BY createdate desc limit #{start}, #{end}
     </select>
@@ -131,6 +151,30 @@
                                 characters = #{characters},
                                 sex=#{sex}
         WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="hashMap">
+        UPDATE MATINGANIMAL SET
+                                status = #{status}
+        where id = #{id}
+    </update>
+    <select id="getStatus" parameterType="hashMap" resultType="String">
+        SELECT status FROM MATINGANIMAL where id = #{id}
+    </select>
+
+    <select id="getUserIdByPostId" resultType="String">
+        SELECT userid FROM MATINGANIMAL WHERE id = #{id}
+    </select>
+
+
+
+   <!-- <delete id="userAnimalDelete" parameterType="AnimalMating">
+        delete from jpetstore.MATINGANIMAL where id=#{id}
+    </delete> -->
+
+    <!-- delete로 삭제하는것 대신 update로 상태 변경해줌 -->
+    <update id="userAnimalDelete" parameterType="AnimalMating">
+        UPDATE jpetstore.MATINGANIMAL SET deletestatus = 1 WHERE id = #{id}
     </update>
 
 </mapper>

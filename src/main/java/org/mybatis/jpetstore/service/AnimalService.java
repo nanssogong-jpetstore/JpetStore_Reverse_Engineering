@@ -41,13 +41,36 @@ public class AnimalService {
         return animalMating.getId();
     }
 
+    public void updateStatus(int id, String status) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("id", id);
+        condition.put("status", status);
+        animalMapper.updateStatus(condition);
+    }
+
+    public String getMatingStatusValue(int id) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("id", id);
+        return animalMapper.getStatus(condition);
+    }
+
     public List<AnimalMating> getAnimalMatingList(int start, int end) {
         Map<String, Object> condition = new HashMap<>();
         condition.put("start", start - 1);
         condition.put("end", end);
         return animalMapper.getAnimalMatingList(condition);
     }
-    public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
+
+    /*게시글 상세조회*/
+    public AnimalMating getAnimalMattingDetail(int id, String userId) {
+        return animalMapper.getAnimalMattingDetail(userId,id);
+    }
+
+    public List<String> getAnimalMatingCha(int id) {
+        return animalMapper.getAnimalMatingCha(id);
+    }
+
+
 
     public AWSS3 awsS3 = AWSS3.getInstance();
 
@@ -187,10 +210,15 @@ public class AnimalService {
         }
     }
 
+    public String getUserId(String postId) {
+        return animalMapper.getUserIdByPostId(Integer.parseInt(postId));
+    }
+
+
     public void deleteOldCharacter(int id, List<String> animalCharacters) {
         List<String> deleteCharacters = animalMapper.getCharacterList(id);
 
-        if(animalCharacters.containsAll((deleteCharacters))==false){
+        if (animalCharacters.containsAll((deleteCharacters)) == false) {
             Collection<String> characters = new ArrayList(animalCharacters);
             deleteCharacters.removeAll(characters);
 
@@ -202,6 +230,9 @@ public class AnimalService {
                 animalMapper.deleteOldCharacter(deleteanimalCharacter);
             }
         }
+    }
+    public void userAnimalDelete(int id){
+        animalMapper.userAnimalDelete(id);
     }
 
     public List<String> getCharacterList(int id){

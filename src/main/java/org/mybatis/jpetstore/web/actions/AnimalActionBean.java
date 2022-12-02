@@ -26,9 +26,11 @@ public class AnimalActionBean extends AbstractActionBean {
     private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
     private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
     private static final String EDIT_ANIMAL_MATING="/WEB-INF/jsp/animalmating/EditAnimalForm.jsp";
+    private static final String ALERT="/WEB-INF/jsp/animalmating/alert.jsp";
     private static final List<String> CATEGORY_LIST;
     private static final List<String> SEX_LIST;
     private static final List<String> CHARACTER_LIST;
+    private static final List<String> STATUS_LIST;
 
     private static List<String> searchOptionList;
     private String searchOption;
@@ -42,8 +44,10 @@ public class AnimalActionBean extends AbstractActionBean {
     static {
         CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
         SEX_LIST = Collections.unmodifiableList(Arrays.asList("MALE","FEMALE"));
-        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intellengent","loyal","timid","lazy","troublesome",
-                "fierce","loud","kind","messy","shy","courious","caustious"));
+        CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intelligent","loyal","timid","lazy","troublesome",
+                "fierce","loud","kind","messy","shy","curious","cautious"));
+        searchOptionList = Collections.unmodifiableList(Arrays.asList("Title", "Contents","UserName", "All"));
+        STATUS_LIST=Collections.unmodifiableList(Arrays.asList("RESERVED","COMPLETED"));
     }
     public List<String> getCharacters(){
         return CHARACTER_LIST;
@@ -55,8 +59,17 @@ public class AnimalActionBean extends AbstractActionBean {
     public List<String> getSex(){
         return SEX_LIST;
     }
+    public List<String> getStatus(){
+        return STATUS_LIST;
+    }
 
     private AnimalMating animalMating;
+
+
+
+    private AnimalMating animalMatingDetail;
+    private List<String> animalMatingCha;
+
 
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
 
@@ -72,12 +85,19 @@ public class AnimalActionBean extends AbstractActionBean {
     private int postCount;
     private int preBlock;
     private int nextBlock;
+    //개인게시물 수정,삭제 버튼
+    private int btnUpdate;
+    private int btnDelete;
+    private String matingStatusValue;
 
     private String chooseWork;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
+    public void setBtnDelete(int btnDelete){this.btnDelete=btnDelete;}
+    public void setBtnUpdate(int btnUpdate){this.btnUpdate=btnUpdate;}
 
+    //테스트
     public int getCpage() { return cpage; }
     public void setCpage(int cpage) { this.cpage = cpage; }
 
@@ -102,8 +122,25 @@ public class AnimalActionBean extends AbstractActionBean {
     public AnimalMating getAnimalMating() { return animalMating; }
     public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
 
+    public AnimalMating getAnimalMatingDetail() {
+        return animalMatingDetail;
+    }
+
+    public void setAnimalMatingDetail(AnimalMating animalMatingDetail) {
+        this.animalMatingDetail = animalMatingDetail;
+    }
+    public List<String> getAnimalMatingCha() {
+        return animalMatingCha;
+    }
+    public void setAnimalMatingCha (List<String> animalMatingCha) {
+        this.animalMatingCha = animalMatingCha;
+    }
+
     public void setFileBean(FileBean fileBean) { this.fileBean = fileBean; }
     public FileBean getFileBean() { return fileBean; }
+
+    public String getMatingStatusValue() { return matingStatusValue; }
+    public void setMatingStatusValue(String matingStatusValue) { this.matingStatusValue = matingStatusValue; }
 
     private String keyword;
 
@@ -130,10 +167,13 @@ public class AnimalActionBean extends AbstractActionBean {
 
 
 
-
     @Autowired
     public AWSS3 awsS3 = AWSS3.getInstance();
 
+    public ForwardResolution updateStatus() {
+        animalService.updateStatus(id, matingStatusValue);
+        return new ForwardResolution(ALERT);
+    }
 
     // 파일 업로드 요청
     public Resolution uploadImg() throws Exception {
@@ -148,7 +188,8 @@ public class AnimalActionBean extends AbstractActionBean {
         }else if(fileBean==null&&chooseWork.equals("edit")){
             animalMating.setUserId(userId);
         }
-        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||animalMating.getSex()==null){
+        else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||
+                animalMating.getSex()==null||animalMating.getCharacterList().isEmpty()){
             setMessage("내용을 모두 입력해주세요");
             return new ForwardResolution(ERROR);
         }else{
@@ -172,17 +213,21 @@ public class AnimalActionBean extends AbstractActionBean {
         int start = getPagingStart(temp);
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
 
+        clear();
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
     public Resolution addAnimalMatingView(){
         setChooseWork("add");
+        clear();
         return new ForwardResolution(ADD_ANIMAL_MATING);
     }
 
     public Resolution editAnimalMatingView(){
-        animalMating = animalService.getAnimalMattingDetail(id);
-        animalMating.setCharacterList(animalService.getCharacterList(id));
+        HttpSession session = context.getRequest().getSession();
+        AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
+        String userId=accountBean.getUsername();
+        animalMating = animalService.getAnimalMattingDetail(id,userId);
         setChooseWork("edit");
         return new ForwardResolution(EDIT_ANIMAL_MATING);
     }
@@ -193,6 +238,7 @@ public class AnimalActionBean extends AbstractActionBean {
         int start = getPagingStart(temp);
 
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
+        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
 
 
         return new ForwardResolution(LIST_ANIMAL_MATING);
@@ -200,7 +246,12 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public Resolution getMatingInfo() {
         animalService.plusViewCount(id);
-        animalMating = animalService.getAnimalMattingDetail(id);
+        HttpSession session = context.getRequest().getSession();
+        AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
+        String userId=accountBean.getUsername();
+        System.out.println(userId);
+        animalMatingDetail = animalService.getAnimalMattingDetail(id,userId);
+        animalMatingCha = animalService.getAnimalMatingCha(id);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
@@ -262,6 +313,17 @@ public class AnimalActionBean extends AbstractActionBean {
                 return new ForwardResolution(LIST_ANIMAL_MATING);
             }
         }
+    }
+
+    public ForwardResolution userDeleteBtnSet(){
+        System.out.println("Delete id = "+btnDelete);
+        animalService.userAnimalDelete(id);
+        setMessage("삭제가 완료되었습니다.");
+        return new ForwardResolution(ERROR);
+    }
+
+    public void clear(){
+        animalMating=new AnimalMating();
     }
 
 
