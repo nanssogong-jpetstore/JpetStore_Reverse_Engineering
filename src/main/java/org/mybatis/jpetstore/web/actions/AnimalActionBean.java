@@ -233,6 +233,7 @@ public class AnimalActionBean extends AbstractActionBean {
         int start = getPagingStart(temp);
 
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
+        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
 
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
@@ -244,6 +245,7 @@ public class AnimalActionBean extends AbstractActionBean {
         String userId=accountBean.getUsername();
         System.out.println(userId);
         animalMatingDetail = animalService.getAnimalMattingDetail(id,userId);
+        animalMatingCha = animalService.getAnimalMatingCha(id);
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 
