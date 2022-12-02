@@ -200,4 +200,5 @@
         UPDATE jpetstore.MATINGANIMAL SET deletestatus = 1 WHERE id = #{id}
     </update>
 
+
 </mapper>
