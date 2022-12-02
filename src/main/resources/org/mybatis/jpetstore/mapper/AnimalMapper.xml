@@ -33,7 +33,7 @@
                 SELECT animalId, `character`FROM ANIMALCHARACTER WHERE animalId = #{id} AND `character` = #{character}
             )
     </insert>
-    <select id="listDelCharacter" parameterType="int" resultType="String">
+    <select id="getCharacterList" parameterType="int" resultType="String">
         SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
     </select>
     <delete id="deleteOldCharacter" parameterType="hashMap">

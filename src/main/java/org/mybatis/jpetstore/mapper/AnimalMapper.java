@@ -21,6 +21,7 @@ public interface AnimalMapper {
     Integer searchAnimalMatingUserCount(Map<String, Object> map);
     void userAnimalDelete(int id);
     List<String> listDelCharacter(int id);
+    List<String> getCharacterList(int id);
     void deleteOldCharacter(Map<String, Object> map);
 
     void addCharacter(Map<String, Object> animalCharacter);

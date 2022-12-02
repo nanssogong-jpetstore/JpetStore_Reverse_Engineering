@@ -228,6 +228,8 @@ public class AnimalActionBean extends AbstractActionBean {
         AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
         String userId=accountBean.getUsername();
         animalMating = animalService.getAnimalMattingDetail(id,userId);
+        animalMating = animalService.getAnimalMattingDetail(id);
+        animalMating.setCharacterList(animalService.getCharacterList(id));
         setChooseWork("edit");
         return new ForwardResolution(EDIT_ANIMAL_MATING);
     }
@@ -238,7 +240,7 @@ public class AnimalActionBean extends AbstractActionBean {
         int start = getPagingStart(temp);
 
         animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
-        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
+
 
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }

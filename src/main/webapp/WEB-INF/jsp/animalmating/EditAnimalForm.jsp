@@ -23,7 +23,7 @@
                     <th>Characters</th>
                     <td>
                         <c:forEach var="characters" items="${actionBean.characters}">
-                            <stripes:checkbox name="animalMating.characterList" value="${characters}" checked="checked"/>${characters}
+                            <stripes:checkbox id = "Check" name="animalMating.characterList" value="${characters}"/>${characters}
                         </c:forEach>
                     </td>
                 </tr>
