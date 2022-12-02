@@ -54,6 +54,16 @@
         UPDATE MATINGANIMAL SET view=view+1 where id=#{id}
     </update>
 
+
+    <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
+
+
+        SELECT id, userid, imgurl, title, contents, categoryid, characters,status,sex,deletestatus
+        FROM MATINGANIMAL where deletestatus=0
+        ORDER BY createdate desc limit #{start}, #{end}
+
+    </select>
+
     <select id="getAnimalMattingDetail" resultType="AnimalMating" >
         select id,
                MATINGANIMAL.userid,

@@ -61,10 +61,15 @@ public class AccountActionBean extends AbstractActionBean {
   private List<Product> myList;
   private boolean authenticated;
 
+  private static final List<String> CHARACTER_LIST;
+
   static {
     LANGUAGE_LIST = Collections.unmodifiableList(Arrays.asList("english", "japanese"));
     CATEGORY_LIST = Collections.unmodifiableList(Arrays.asList("FISH", "DOGS", "REPTILES", "CATS", "BIRDS"));
+    CHARACTER_LIST=Collections.unmodifiableList(Arrays.asList("loving","friendly","playful","energetic","adventuresome","intelligent","loyal","timid","lazy","troublesome",
+            "fierce","loud","kind","messy","shy","curious","cautious"));
   }
+  public List<String> getCharacters(){ return CHARACTER_LIST; }
 
   public Account getAccount() {
     return this.account;
@@ -117,6 +122,7 @@ public class AccountActionBean extends AbstractActionBean {
     accountService.insertAccount(account);
     account = accountService.getAccount(account.getUsername());
     myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
+    accountService.insertCharacterPrefer(account.getUsername(),CHARACTER_LIST);
     authenticated = true;
     return new RedirectResolution(CatalogActionBean.class);
   }

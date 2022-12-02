@@ -15,6 +15,9 @@
  */
 package org.mybatis.jpetstore.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.mybatis.jpetstore.domain.Account;
@@ -73,4 +76,10 @@ public class AccountService {
         .ifPresent(password -> accountMapper.updateSignon(account));
   }
 
+  @Transactional
+  public void insertCharacterPrefer(String username, List<String> characterList) {
+    for (String character : characterList) {
+      accountMapper.insertCharacterPrefer(username, character);
+    }
+  }
 }

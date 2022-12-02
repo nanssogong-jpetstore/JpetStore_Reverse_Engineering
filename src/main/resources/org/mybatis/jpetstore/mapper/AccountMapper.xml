@@ -130,4 +130,8 @@
     VALUES (#{password}, #{username})
   </insert>
 
+  <insert id="insertCharacterPrefer" parameterType="Account">
+    INSERT INTO CHARACTERPREFER (userId, characters)
+    VALUES (#{username},#{character})
+  </insert>
 </mapper>
