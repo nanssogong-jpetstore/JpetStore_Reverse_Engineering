@@ -24,6 +24,16 @@ public interface AnimalMapper {
     List<String> getCharacterList(int id);
     void deleteOldCharacter(Map<String, Object> map);
 
+    List<AnimalMating> getRecommendAnimalList(Map<String, Object> map);
+    Integer getRecommendMatingCount(String id);
+    List<AnimalMating> searchRecommendAnimalTitle(Map<String, Object> map);
+    List<AnimalMating> searchRecommendAnimalContents(Map<String, Object> map);
+    List<AnimalMating> searchRecommendAnimalUser(Map<String, Object> map);
+
+    Integer searchRecommendAnimalTitleCount(Map<String, Object> map);
+    Integer searchRecommendAnimalContentsCount(Map<String, Object> map);
+    Integer searchRecommendAnimalUserCount(Map<String, Object> map);
+
     void addCharacter(Map<String, Object> animalCharacter);
     void updateStatus(Map<String, Object> map);
     String getStatus(Map<String, Object> map);
@@ -32,4 +42,5 @@ public interface AnimalMapper {
     void editCharacter(Map<String, Object> animalCharacter);
 
     List<String> getAnimalMatingCha(int id);
+
 }
