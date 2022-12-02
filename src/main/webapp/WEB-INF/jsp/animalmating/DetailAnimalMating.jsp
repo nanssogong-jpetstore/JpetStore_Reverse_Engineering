@@ -67,7 +67,7 @@
   });
 </script>
 <body>
-<div class="ArticleContentBox" style="padding: 29px 29px 0;">
+<div class="ArticleContentBox" style="padding: 29px 29px 0; width: 1000px; margin : 0 auto;">
   <div class="article_header" style="position: relative; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid gray;">
     <h2>${actionBean.animalMatingDetail.title}</h2>
     <h6>작성자: ${actionBean.animalMatingDetail.userId}

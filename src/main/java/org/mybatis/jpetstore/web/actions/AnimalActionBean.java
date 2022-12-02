@@ -220,11 +220,11 @@ public class AnimalActionBean extends AbstractActionBean {
             getMatingInfo();
             return new ForwardResolution(DETAIL_ANIMAL_MATING);
         }
-        int temp = getPagingEnd(1, searchOption, code);
+        int temp = getPagingEnd(1, searchOption, keyword, code);
 
 
         int start = getPagingStart(temp);
-        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
+        animalMatingList = animalService.searchAnimal(start, PAGESIZE, searchOption, keyword);
 
         clear();
         return new ForwardResolution(LIST_ANIMAL_MATING);
@@ -250,24 +250,23 @@ public class AnimalActionBean extends AbstractActionBean {
     public Resolution listAnimalAccount(){
 
         cpage = 1;
-        int temp = getPagingEnd(cpage, searchOption, code);
+        keyword = null;
+        int temp = getPagingEnd(cpage, searchOption, keyword, code);
         int start = getPagingStart(temp);
 
-        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
+        animalMatingList = animalService.searchAnimal(start, PAGESIZE, searchOption, keyword);
 
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
     public Resolution recommendAnimalMating(){
         cpage = 1;
-
-        int temp = getPagingEnd(cpage, searchOption, code);
-        if(temp == 0) {
-            return new ForwardResolution(WARNING);
-        }
+        keyword = null;
+        int temp = getPagingEnd(cpage, searchOption, keyword, code);
+        // TO DO : 처음에 보여줄 추천게시물 없을때 처리
         int start = getPagingStart(temp);
 
-        animalMatingList = animalService.getRecommendAnimalList(username, start, PAGESIZE);
+        animalMatingList = animalService.searchRecommendAnimal(username, start, PAGESIZE, searchOption, keyword);
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
@@ -284,16 +283,7 @@ public class AnimalActionBean extends AbstractActionBean {
     }
 
 
-    public Resolution paging() {
-        int temp = getPagingEnd(cpage, searchOption, code);
-        int start = getPagingStart(temp);
-        animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
-        return new ForwardResolution(LIST_ANIMAL_MATING);
-    }
-
-
-
-    private int getPagingEnd(int cpage, String searchOption, String code) {
+    private int getPagingEnd(int cpage, String searchOption, String keyword, String code) {
         this.cpage = cpage;
 
         psStr = PAGESIZE;
@@ -301,9 +291,9 @@ public class AnimalActionBean extends AbstractActionBean {
             searchOption = "all";
         }
         if(code.equals("all"))
-            postCount = animalService.getCount(searchOption);
+            postCount = animalService.getCount(searchOption, keyword);
         else if(code.equals("recomm")) {
-            postCount = animalService.getRecommendCount(username, searchOption);
+            postCount = animalService.getRecommendCount(username, searchOption, keyword);
             // TO DO : 처음에 보여줄 추천게시물 없을때 처리
         }
 
@@ -321,30 +311,29 @@ public class AnimalActionBean extends AbstractActionBean {
 
     }
 
-
-
-
-
     private int getPagingStart(int end) {
         return end - PAGESIZE + 1;
     }
 
+    public Resolution paging() {
+        int temp = getPagingEnd(cpage, searchOption, keyword, code);
+        int start = getPagingStart(temp);
+        if(code.equals("all"))
+            animalMatingList = animalService.searchAnimal(start, PAGESIZE, searchOption, keyword);
+        else if(code.equals("recomm"))
+            animalMatingList = animalService.searchRecommendAnimal(username, start, PAGESIZE, searchOption, keyword);
 
+            return new ForwardResolution(LIST_ANIMAL_MATING);
+    }
 
     public ForwardResolution searchMating() {
-        int temp = getPagingEnd(cpage, searchOption, code);
+        int temp = getPagingEnd(cpage, searchOption, keyword, code);
         System.out.println("code : " + code);
         int start = getPagingStart(temp);
-        if(code.equals("all")) {
-            System.out.println("all Go");
-            animalMatingList = animalService.searchAnimal(start, PAGESIZE, keyword, searchOption);
-        }
-
-        else if(code.equals("recomm")) {
-            System.out.println("recomm Go");
-            animalMatingList = animalService.searchRecommendAnimal(username, start, PAGESIZE, keyword, searchOption);
-        }
-
+        if(code.equals("all"))
+            animalMatingList = animalService.searchAnimal(start, PAGESIZE, searchOption, keyword);
+        else if(code.equals("recomm"))
+            animalMatingList = animalService.searchRecommendAnimal(username, start, PAGESIZE, searchOption, keyword);
 
         return new ForwardResolution(LIST_ANIMAL_MATING);
     }

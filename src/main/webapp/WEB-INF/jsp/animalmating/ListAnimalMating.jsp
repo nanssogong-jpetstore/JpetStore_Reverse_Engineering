@@ -84,12 +84,25 @@
             </stripes:link></li>
             <c:forEach var="i" begin="1" end="${ actionBean.pageCount }" step="1">
                 <li>
-                    <stripes:link class="num"
-                                  beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                                  event="paging">
-                        <stripes:param name="cpage" value="${i}" />
-                        ${i}
-                    </stripes:link>
+                    <c:choose>
+                        <c:when test="${i == actionBean.cpage}">
+                            <stripes:link class="num" style="color : #000;"
+                                          beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                                          event="paging">
+                                <stripes:param name="cpage" value="${i}" />
+                                ${i}
+                            </stripes:link>
+                        </c:when>
+                        <c:otherwise>
+                            <stripes:link class="num"
+                                          beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                                          event="paging">
+                                <stripes:param name="cpage" value="${i}" />
+                                ${i}
+                            </stripes:link>
+                        </c:otherwise>
+
+                    </c:choose>
                 </li>
             </c:forEach>
             <li> <stripes:link class="arrow right"

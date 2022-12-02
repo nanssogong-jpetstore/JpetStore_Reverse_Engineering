@@ -55,21 +55,6 @@ public class AnimalService {
         return animalMapper.getStatus(condition);
     }
 
-    public List<AnimalMating> getAnimalMatingList(int start, int end) {
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("start", start - 1);
-        condition.put("end", end);
-        return animalMapper.getAnimalMatingList(condition);
-    }
-
-    public List<AnimalMating> getRecommendAnimalList(String id, int start, int end){
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("id", id);
-        condition.put("start", start - 1);
-        condition.put("end", end);
-        return animalMapper.getRecommendAnimalList(condition);
-    }
-
     /*게시글 상세조회*/
     public AnimalMating getAnimalMattingDetail(int id, String userId) {
         return animalMapper.getAnimalMattingDetail(userId,id);
@@ -94,40 +79,6 @@ public class AnimalService {
         return fileBean;
     }
     private Logger logger = LoggerFactory.getLogger(AnimalActionBean.class);
-
-
-    public int getCount(String keyword) {
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("value", "%" + keyword + "%");
-        if(keyword == null) {
-            return animalMapper.getAnimalMatingCount();
-        }else if(keyword.equals("UserName")) {
-            return animalMapper.searchAnimalMatingUserCount(condition);
-        }else if(keyword.equals("Title")) {
-            return animalMapper.searchAnimalMatingTitleCount(condition);
-        }else if(keyword.equals("Contents")) {
-            return animalMapper.searchAnimalMatingContentsCount(condition);
-        }
-        return animalMapper.getAnimalMatingCount();
-    }
-
-    public int getRecommendCount(String id, String keyword) {
-        System.out.println("keyword ASFASFSAF : " + id);
-        System.out.println("keyword ASFASFSAF : " + keyword);
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("id", id);
-        condition.put("value", "%" + keyword + "%");
-        if(keyword == null) {
-            return animalMapper.getRecommendMatingCount(id);
-        } else if(keyword.equals("UserName")) {
-            return animalMapper.searchRecommendAnimalUserCount(condition);
-        }else if(keyword.equals("Title")) {
-            return animalMapper.searchRecommendAnimalTitleCount(condition);
-        }else if(keyword.equals("Contents")) {
-            return animalMapper.searchRecommendAnimalContentsCount(condition);
-        }
-        return animalMapper.getRecommendMatingCount(id);
-    }
 
     public String uploadImgFile(FileBean fileBean) throws IOException {
         try {
@@ -179,51 +130,61 @@ public class AnimalService {
         return null;
     }
 
+    public int getCount(String searchTag, String keyword) {
+        Map<String, Object> condition = new HashMap<>();
+        if(keyword == null)
+            condition.put("value", "%%");
+        else
+            condition.put("value", "%" + keyword + "%");
+        condition.put("searchTag", searchTag);
+
+
+        return animalMapper.getAnimalMatingCount(condition);
+    }
+
+    public int getRecommendCount(String id, String searchTag, String keyword) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("id", id);
+        condition.put("searchTag", searchTag);
+        if(keyword == null)
+            condition.put("value", "%%");
+        else
+            condition.put("value", "%" + keyword + "%");
+
+        return animalMapper.getRecommendAnimalMatingCount(condition);
+    }
+
     public void plusViewCount(int id) {
         animalMapper.plusViewCount(id);
     }
 
-    public List<AnimalMating> searchAnimal(int start, int end, String keyword, String searchOption){
+    //전체 및 검색 keyword 또는 searchTah가 null이면 알아서 전체로 검색
+    public List<AnimalMating> searchAnimal(int start, int end, String searchTag, String keyword){
         Map<String, Object> condition = new HashMap<>();
+        condition.put("searchTag", searchTag);
         condition.put("start", start - 1);
         condition.put("end", end);
-        condition.put("value", "%" + keyword + "%");
+        if(keyword == null)
+            condition.put("value", "%%");
+        else
+            condition.put("value", "%" + keyword + "%");
 
-        if (keyword == null || keyword.length() < 1) {
-            return animalMapper.getAnimalMatingList(condition);
-        }else {
-            if(searchOption.equals("Title")) {
-                return animalMapper.searchAnimalMatingTitle(condition);
-            } else if (searchOption.equals("Contents")) {
-                return animalMapper.searchAnimalMatingContents(condition);
-            } else if (searchOption.equals("UserName")) {
-                return animalMapper.searchAnimalMatingUser(condition);
-            } else {
-                return animalMapper.getAnimalMatingList(condition);
-            }
-        }
+        return animalMapper.getAnimalMating(condition);
     }
 
-    public List<AnimalMating> searchRecommendAnimal(String id, int start, int end, String keyword, String searchOption){
+    //추천 및 추천 검색 keyword 또는 searchTah가 null이면 알아서 전체로 검색
+    public List<AnimalMating> searchRecommendAnimal(String id, int start, int end, String searchTag, String keyword){
         Map<String, Object> condition = new HashMap<>();
         condition.put("id", id);
+        condition.put("searchTag", searchTag);
         condition.put("start", start - 1);
         condition.put("end", end);
-        condition.put("value", "%" + keyword + "%");
+        if(keyword == null)
+            condition.put("value", "%%");
+        else
+            condition.put("value", "%" + keyword + "%");
 
-        if (keyword == null || keyword.length() < 1) {
-            return animalMapper.getRecommendAnimalList(condition);
-        }else {
-            if (searchOption.equals("Title")) {
-                return animalMapper.searchRecommendAnimalTitle(condition);
-            } else if (searchOption.equals("Contents")) {
-                return animalMapper.searchRecommendAnimalContents(condition);
-            } else if (searchOption.equals("UserName")) {
-                return animalMapper.searchRecommendAnimalUser(condition);
-            } else {
-                return animalMapper.getRecommendAnimalList(condition);
-            }
-        }
+        return animalMapper.getRecommendAnimalMating(condition);
     }
 
 
