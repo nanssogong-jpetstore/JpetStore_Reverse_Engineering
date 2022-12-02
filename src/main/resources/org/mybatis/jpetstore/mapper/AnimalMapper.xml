@@ -33,7 +33,7 @@
                 SELECT animalId, `character`FROM ANIMALCHARACTER WHERE animalId = #{id} AND `character` = #{character}
             )
     </insert>
-    <select id="listDelCharacter" parameterType="int" resultType="String">
+    <select id="getCharacterList" parameterType="int" resultType="String">
         SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
     </select>
     <delete id="deleteOldCharacter" parameterType="hashMap">
@@ -49,24 +49,10 @@
             select last_insert_id()
         </selectKey>
     </insert>
+
     <update id="plusViewCount" parameterType="AnimalMating">
         UPDATE MATINGANIMAL SET view=view+1 where id=#{id}
     </update>
-
-
-    <select id="getAnimalMatingList" parameterType="hashMap" resultType="AnimalMating">
-
-
-        SELECT id, userid, imgurl, title, contents, categoryid, characters,status,sex
-        FROM MATINGANIMAL
-        ORDER BY createdate desc limit #{start}, #{end}
-
-    </select>
-
-    <select id="getAnimalMatingCount" resultType="Integer">
-        SELECT  count(*)
-        FROM MATINGANIMAL
-    </select>
 
     <select id="getAnimalMattingDetail" resultType="AnimalMating" >
         select id,
@@ -103,43 +89,80 @@
 
     </select>
 
+
+
     <select id="getAnimalMatingCha" parameterType="int" resultType="String">
         SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
     </select>
 
-    <select id="searchAnimalMatingTitle" parameterType="hashMap" resultType="AnimalMating">
+
+    <!-- all List -->
+    <select id="getAnimalMating" parameterType="hashMap" resultType="AnimalMating">
         select id, userid, imgurl, title, contents, categoryid, characters,status
         FROM MATINGANIMAL
-        WHERE lower(title) like #{value} ORDER BY createdate desc limit #{start}, #{end}
+        WHERE
+        <choose>
+            <when test="searchTag == 'Title'">lower(title) like #{value} AND</when>
+            <when test="searchTag == 'Contents'">lower(contents) like #{value} AND</when>
+            <when test="searchTag == 'UserName'">lower(userid) like #{value} AND</when>
+        </choose>
+         deletestatus = 0 ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
-    <select id="searchAnimalMatingContents" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters,status
-        FROM MATINGANIMAL
-        WHERE lower(contents) like #{value} ORDER BY createdate desc limit #{start}, #{end}
-    </select>
-
-    <select id="searchAnimalMatingUser" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters,status
-        FROM MATINGANIMAL
-        WHERE lower(userid) like #{value} ORDER BY createdate desc limit #{start}, #{end}
-    </select>
-    <select id="searchAnimalMatingTitleCount" parameterType="hashMap" resultType="Integer">
+    <select id="getAnimalMatingCount" parameterType="hashMap" resultType="Integer">
         select count(*)
         FROM MATINGANIMAL
-        WHERE lower(title) like #{value}
+        WHERE
+        <choose>
+            <when test="searchTag == 'Title'">lower(title) like #{value} AND</when>
+            <when test="searchTag == 'Contents'">lower(contents) like #{value} AND</when>
+            <when test="searchTag == 'UserName'">lower(userid) like #{value} AND</when>
+        </choose>
+         deletestatus = 0
     </select>
 
-    <select id="searchAnimalMatingContentsCount" parameterType="hashMap" resultType="Integer">
-        select count(*)
-        FROM MATINGANIMAL
-        WHERE lower(contents) like #{value}
+    <!-- recommend List -->
+
+    <select id="getRecommendAnimalMating" parameterType="hashMap" resultType="AnimalMating">
+        SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex
+        FROM ANIMALCHARACTER AS AC
+        JOIN MATINGANIMAL M on AC.animalId = M.id
+        WHERE AC.`character` IN (
+        select * from (
+        select characters
+        from CHARACTERPREFER
+        where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+        ) as XC
+        )
+        <choose>
+            <when test="searchTag == 'Title'">AND lower(title) like #{value} </when>
+            <when test="searchTag == 'Contents'">AND lower(contents) like #{value} </when>
+            <when test="searchTag == 'UserName'">AND lower(userid) like #{value} </when>
+        </choose>
+        AND deletestatus = 0 ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
-    <select id="searchAnimalMatingUserCount" parameterType="hashMap" resultType="Integer">
-        select count(*)
-        FROM MATINGANIMAL
-        WHERE lower(userid) like #{value}
+
+    <!-- recommend Count List -->
+
+    <select id="getRecommendAnimalMatingCount" parameterType="hashMap" resultType="Integer">
+        SELECT count(distinct M.id)
+        FROM ANIMALCHARACTER AS AC
+                 JOIN MATINGANIMAL M on AC.animalId = M.id
+        WHERE AC.`character` IN (
+            select * from (
+                              select characters
+                              from CHARACTERPREFER
+                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                          ) as XC
+        )
+        <choose>
+            <when test="searchTag == 'Title'">AND lower(title) like #{value} </when>
+            <when test="searchTag == 'Contents'">AND lower(contents) like #{value} </when>
+            <when test="searchTag == 'UserName'">AND lower(userid) like #{value} </when>
+        </choose>
+         AND deletestatus = 0
+
     </select>
 
     <update id="editAnimal" parameterType="AnimalMating">
@@ -167,5 +190,14 @@
     </select>
 
 
+
+   <!-- <delete id="userAnimalDelete" parameterType="AnimalMating">
+        delete from jpetstore.MATINGANIMAL where id=#{id}
+    </delete> -->
+
+    <!-- delete로 삭제하는것 대신 update로 상태 변경해줌 -->
+    <update id="userAnimalDelete" parameterType="AnimalMating">
+        UPDATE jpetstore.MATINGANIMAL SET deletestatus = 1 WHERE id = #{id}
+    </update>
 
 </mapper>

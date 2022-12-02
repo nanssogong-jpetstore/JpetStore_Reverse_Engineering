@@ -70,7 +70,7 @@ xmlns:websocket="http://www.springframework.org/schema/websocket"
         <property name="mapperLocations" value="classpath*:org/mybatis/jpetstore/mapper/*.xml" />
     </bean>
 
-    <bean id="SqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg ref="sqlSessionFactory"/>
     </bean>
 

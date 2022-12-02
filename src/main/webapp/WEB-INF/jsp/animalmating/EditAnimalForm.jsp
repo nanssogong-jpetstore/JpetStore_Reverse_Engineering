@@ -23,7 +23,7 @@
                     <th>Characters</th>
                     <td>
                         <c:forEach var="characters" items="${actionBean.characters}">
-                            <stripes:checkbox name="animalMating.characterList" value="${characters}" checked="checked"/>${characters}
+                            <stripes:checkbox id = "Check" name="animalMating.characterList" value="${characters}"/>${characters}
                         </c:forEach>
                     </td>
                 </tr>
@@ -60,16 +60,13 @@
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <tr>
                     <td>
-                        <details>
-                            <summary>ChangeImg</summary>
-                            <stripes:label for="editFile"/>
-                            <stripes:file name="fileBean" style="text-align: left" id="editFile" />
-                            <stripes:submit name="uploadImg" value="edit"/>
-                        </details>
+                        <stripes:label for="editFile"/>
+                        <stripes:file name="fileBean" style="text-align: left" id="editFile" />
                     </td>
                 </tr>
 
             </table>
+            <stripes:submit name="uploadImg" value="edit" style="center"/>
         </stripes:form>
     </div>
 </div>
