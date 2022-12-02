@@ -15,6 +15,7 @@
  */
 package org.mybatis.jpetstore.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.jpetstore.domain.Account;
 
 /**
@@ -40,4 +41,5 @@ public interface AccountMapper {
 
   void updateSignon(Account account);
 
+  void insertCharacterPrefer(@Param("username") String username, @Param("character") String character);
 }

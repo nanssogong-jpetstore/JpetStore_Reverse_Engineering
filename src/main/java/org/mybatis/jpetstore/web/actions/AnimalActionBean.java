@@ -132,6 +132,7 @@ public class AnimalActionBean extends AbstractActionBean {
     public void setAnimalMating(AnimalMating animalMating) { this.animalMating = animalMating; }
 
     public AnimalMating getAnimalMatingDetail() {
+
         return animalMatingDetail;
     }
 
