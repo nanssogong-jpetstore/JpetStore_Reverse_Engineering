@@ -26,6 +26,10 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/animalMating/"/>
+        <property name="suffix" value="DetailAnimalMating.jsp"/>
+    </bean>
     <!--     WebSocket STOMP S-->
     <!--<websocket:message-broker application-destination-prefix="/app" user-destination-prefix="/user">
         <websocket:stomp-endpoint path="/jpetstore_war/ws/chat">
