@@ -60,16 +60,13 @@
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <tr>
                     <td>
-                        <details>
-                            <summary>ChangeImg</summary>
-                            <stripes:label for="editFile"/>
-                            <stripes:file name="fileBean" style="text-align: left" id="editFile" />
-                            <stripes:submit name="uploadImg" value="edit"/>
-                        </details>
+                        <stripes:label for="editFile"/>
+                        <stripes:file name="fileBean" style="text-align: left" id="editFile" />
                     </td>
                 </tr>
 
             </table>
+            <stripes:submit name="uploadImg" value="edit" style="center"/>
         </stripes:form>
     </div>
 </div>
