@@ -303,10 +303,8 @@ public class AnimalActionBean extends AbstractActionBean {
         if(code.equals("all"))
             postCount = animalService.getCount(searchOption);
         else if(code.equals("recomm")) {
-            System.out.println("UserName = " + username);
             postCount = animalService.getRecommendCount(username, searchOption);
-            if(postCount == 0)
-                return 0;
+            // TO DO : 처음에 보여줄 추천게시물 없을때 처리
         }
 
 
@@ -335,26 +333,20 @@ public class AnimalActionBean extends AbstractActionBean {
 
     public ForwardResolution searchMating() {
         int temp = getPagingEnd(cpage, searchOption, code);
+        System.out.println("code : " + code);
         int start = getPagingStart(temp);
-        if (keyword == null || keyword.length() < 1) {
-            animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
-            return new ForwardResolution(LIST_ANIMAL_MATING);
-        } else {
-            if (searchOption.equals("Title")) {
-                animalMatingList = animalService.searchAnimalMatingTitle(start, PAGESIZE, keyword);
-                return new ForwardResolution(LIST_ANIMAL_MATING);
-            } else if (searchOption.equals("Contents")) {
-                animalMatingList = animalService.searchAnimalMatingContents(start, PAGESIZE, keyword);
-                return new ForwardResolution(LIST_ANIMAL_MATING);
-            } else if (searchOption.equals("UserName")) {
-                animalMatingList = animalService.searchAnimalMatingUser(start, PAGESIZE, keyword);
-                return new ForwardResolution(LIST_ANIMAL_MATING);
-            }
-            else {
-                animalMatingList = animalService.getAnimalMatingList(start, PAGESIZE);
-                return new ForwardResolution(LIST_ANIMAL_MATING);
-            }
+        if(code.equals("all")) {
+            System.out.println("all Go");
+            animalMatingList = animalService.searchAnimal(start, PAGESIZE, keyword, searchOption);
         }
+
+        else if(code.equals("recomm")) {
+            System.out.println("recomm Go");
+            animalMatingList = animalService.searchRecommendAnimal(username, start, PAGESIZE, keyword, searchOption);
+        }
+
+
+        return new ForwardResolution(LIST_ANIMAL_MATING);
     }
 
 
