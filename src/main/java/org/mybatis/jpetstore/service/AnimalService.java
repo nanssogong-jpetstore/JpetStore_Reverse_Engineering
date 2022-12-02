@@ -51,6 +51,14 @@ public class AnimalService {
         condition.put("end", end);
         return animalMapper.getAnimalMatingList(condition);
     }
+
+    public List<AnimalMating> getRecommendAnimalList(String id, int start, int end){
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("id", id);
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        return animalMapper.getRecommendAnimalList(condition);
+    }
     public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
 
     public AWSS3 awsS3 = AWSS3.getInstance();
@@ -71,7 +79,7 @@ public class AnimalService {
     public int getCount(String keyword) {
         Map<String, Object> condition = new HashMap<>();
         condition.put("value", "%" + keyword + "%");
-        if(keyword.equals("All")) {
+        if(keyword.equals(null)) {
             return animalMapper.getAnimalMatingCount();
         }else if(keyword.equals("UserName")) {
             return animalMapper.searchAnimalMatingUserCount(condition);
@@ -79,11 +87,26 @@ public class AnimalService {
             return animalMapper.searchAnimalMatingTitleCount(condition);
         }else if(keyword.equals("Contents")) {
             return animalMapper.searchAnimalMatingContentsCount(condition);
-        }else {
-            return animalMapper.getAnimalMatingCount();
         }
+        return animalMapper.getAnimalMatingCount();
+    }
 
-
+    public int getRecommendCount(String id, String keyword) {
+        System.out.println("keyword ASFASFSAF : " + id);
+        System.out.println("keyword ASFASFSAF : " + keyword);
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("id", id);
+        condition.put("value", "%" + keyword + "%");
+        if(keyword.equals(null)) {
+            return animalMapper.getRecommendMatingCount(id);
+        } else if(keyword.equals("UserName")) {
+            return animalMapper.searchRecommendAnimalUserCount(condition);
+        }else if(keyword.equals("Title")) {
+            return animalMapper.searchRecommendAnimalTitleCount(condition);
+        }else if(keyword.equals("Contents")) {
+            return animalMapper.searchRecommendAnimalContentsCount(condition);
+        }
+        return animalMapper.getRecommendMatingCount(id);
     }
 
     public String uploadImgFile(FileBean fileBean) throws IOException {
@@ -168,6 +191,35 @@ public class AnimalService {
         List<AnimalMating> animalMatings = new ArrayList<>();
 
         return animalMapper.searchAnimalMatingUser(condition);
+    }
+    //추천제목기준 검색
+    public List<AnimalMating> searchRecommendAnimalTitle(int start, int end, String keywords){
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        condition.put("value", "%" + keywords + "%");
+
+        return animalMapper.searchRecommendAnimalTitle(condition);
+    }
+    //추천내용기준 검색
+    public List<AnimalMating> searchRecommendAnimalContents(int start, int end, String keywords){
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        condition.put("value", "%" + keywords + "%");
+
+
+        return animalMapper.searchRecommendAnimalContents(condition);
+    }
+    //추천유저이름으로 검색
+    public List<AnimalMating> searchRecommendAnimalUser(int start, int end, String keywords){
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("start", start - 1);
+        condition.put("end", end);
+        condition.put("value", "%" + keywords + "%");
+        List<AnimalMating> animalMatings = new ArrayList<>();
+
+        return animalMapper.searchRecommendAnimalUser(condition);
     }
 
     public void addCharacter(int id, List<String> animalCharacters) {

@@ -119,6 +119,8 @@
 					<stripes:link
 							beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
 							event="listAnimalAccount">
+						<stripes:param name="username" value="${sessionScope.accountBean.account.username}" />
+						<stripes:param name="code" value="all" />
 						AnimalMating
 					</stripes:link>
 				</c:if>

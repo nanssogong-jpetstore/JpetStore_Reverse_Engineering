@@ -1,20 +1,20 @@
 <%@ include file="../common/IncludeTop.jsp"%>
 <head>
-<%--<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />--%>
-<link rel="StyleSheet" href="../css/styles.css" type="text/css" media="screen"/>
+    <%--<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />--%>
+    <link rel="StyleSheet" href="../css/styles.css" type="text/css" media="screen"/>
 </head>
 <div id="Catalog">
     <div class="container px-4 px-lg-5 mt-5">
         <h2>Animal Mating</h2>
         <hr>
-            <div id = "SearchMating"><stripes:form
+        <div id = "SearchMating"><stripes:form
                 beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean">
-                <stripes:select name="searchOption" value="${searchOption}">
-                    <stripes:options-collection collection="${actionBean.searchOptionList}"  />
-                </stripes:select>
-                <stripes:text name="keyword" size="14" />
-                <stripes:submit name="searchMating" value="Search" />
-                </stripes:form>
+            <stripes:select name="searchOption" value="${searchOption}">
+                <stripes:options-collection collection="${actionBean.searchOptionList}"  />
+            </stripes:select>
+            <stripes:text name="keyword" size="14" />
+            <stripes:submit name="searchMating" value="Search" />
+        </stripes:form>
         </div>
         <br/>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -57,12 +57,12 @@
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
                                 <stripes:link class="btn btn-outline-dark mt-auto" href="#"
-                                        beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                                        event="getMatingInfo">
-                                <stripes:param name="id" value="${mating.id}" />
-                                INFORMATION
+                                              beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
+                                              event="getMatingInfo">
+                                    <stripes:param name="id" value="${mating.id}" />
+                                    INFORMATION
                                 </stripes:link>
-                                <%--<a class="btn btn-outline-dark mt-auto" href="#">INFOMATION</a>--%>
+                                    <%--<a class="btn btn-outline-dark mt-auto" href="#">INFOMATION</a>--%>
                                 <c:if test = "${sessionScope.accountBean.username == mating.userId}">
                                     <stripes:link
                                             beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
@@ -77,7 +77,7 @@
                 </div>
             </c:forEach>
 
-                    <!-- Product actions-->
+            <!-- Product actions-->
         </div>
     </div>
 
@@ -86,7 +86,7 @@
 
             <li> <stripes:link class="arrow left"
                                beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                               event="paging">
+                               event="RecommendPaging">
                 <stripes:param name="cpage" value="${actionBean.preBlock}" />
                 &lt;&lt;
             </stripes:link></li>
@@ -94,7 +94,7 @@
                 <li>
                     <stripes:link class="num"
                                   beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                                  event="paging">
+                                  event="RecommendPaging">
                         <stripes:param name="cpage" value="${i}" />
                         ${i}
                     </stripes:link>
@@ -102,46 +102,13 @@
             </c:forEach>
             <li> <stripes:link class="arrow right"
                                beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                               event="paging">
+                               event="RecommendPaging">
                 <stripes:param name="cpage" value="${actionBean.nextBlock}" />
                 &gt;&gt;
             </stripes:link></li>
 
         </ul>
     </div>
-
-    <div style="position: absolute; top:75px; right: 40%;">
-        <stripes:link class="Button"
-                      beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                      event="addAnimalMatingView">
-            AddAnimal
-        </stripes:link>
-    </div>
-    <c:choose>
-      <c:when test="${actionBean.code eq 'all'}">
-            <div style="position: absolute; top:75px; left: 40%;">
-                <stripes:link class="Button"
-                              beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                              event="recommendAnimalMating">
-                    <stripes:param name="code" value="recomm" />
-                    RecommendAnimal
-                </stripes:link>
-            </div>
-      </c:when>
-      <c:otherwise>
-          <div style="position: absolute; top:75px; left: 40%;">
-              <stripes:link class="Button"
-                            beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
-                            event="listAnimalAccount">
-                  <stripes:param name="code" value="all" />
-                  AllAnimal
-              </stripes:link>
-          </div>
-      </c:otherwise>
-
-    </c:choose>
-
-
 
 </div>
 

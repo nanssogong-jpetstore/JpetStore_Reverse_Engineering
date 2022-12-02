@@ -55,6 +55,35 @@
         FROM MATINGANIMAL
     </select>
 
+    <select id="getRecommendMatingCount" resultType="Integer">
+        SELECT count(distinct M.id)
+        FROM ANIMALCHARACTER AS AC
+                 JOIN MATINGANIMAL M on AC.animalId = M.id
+        WHERE AC.`character` IN (
+            select * from (
+                              select characters
+                              from CHARACTERPREFER
+                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                          ) as XC
+        )
+    </select>
+
+    <select id="getRecommendAnimalList" parameterType="hashMap" resultType="AnimalMating">
+
+
+        SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex
+        FROM ANIMALCHARACTER AS AC
+                 JOIN MATINGANIMAL M on AC.animalId = M.id
+        WHERE AC.`character` IN (
+            select * from (
+                              select characters
+                              from CHARACTERPREFER
+                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                          ) as XC
+        ) ORDER BY createdate desc limit #{start}, #{end}
+
+    </select>
+
     <select id="getAnimalMattingDetail" resultType="AnimalMating">
         select id, userid, imgurl, title, contents, categoryid, characters, sex, case
         when YEAR(createDate) = YEAR(now()) then
@@ -108,6 +137,66 @@
         FROM MATINGANIMAL
         WHERE lower(userid) like #{value}
     </select>
+
+    <select id="searchRecommendAnimalTitle" parameterType="hashMap" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters,status
+        FROM MATINGANIMAL
+        WHERE lower(title) like #{value} ORDER BY createdate desc limit #{start}, #{end}
+    </select>
+
+    <select id="searchRecommendAnimalContents" parameterType="hashMap" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters,status
+        FROM MATINGANIMAL
+        WHERE lower(contents) like #{value} ORDER BY createdate desc limit #{start}, #{end}
+    </select>
+
+    <select id="searchRecommendAnimalUser" parameterType="hashMap" resultType="AnimalMating">
+        select id, userid, imgurl, title, contents, categoryid, characters,status
+        FROM MATINGANIMAL
+        WHERE lower(userid) like #{value} ORDER BY createdate desc limit #{start}, #{end}
+    </select>
+
+    <select id="searchRecommendAnimalTitleCount" parameterType="hashMap" resultType="Integer">
+        SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex
+        FROM ANIMALCHARACTER AS AC
+                 JOIN MATINGANIMAL M on AC.animalId = M.id
+        WHERE AC.`character` IN (
+            select * from (
+                              select characters
+                              from CHARACTERPREFER
+                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                          ) as XC
+        )  AND lower(title) like #{value}
+
+    </select>
+
+    <select id="searchRecommendAnimalContentsCount" parameterType="hashMap" resultType="Integer">
+        SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex
+        FROM ANIMALCHARACTER AS AC
+                 JOIN MATINGANIMAL M on AC.animalId = M.id
+        WHERE AC.`character` IN (
+            select * from (
+                              select characters
+                              from CHARACTERPREFER
+                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                          ) as XC
+        )  AND lower(contents) like #{value}
+    </select>
+
+    <select id="searchRecommendAnimalUserCount" parameterType="hashMap" resultType="Integer">
+        SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex
+        FROM ANIMALCHARACTER AS AC
+                 JOIN MATINGANIMAL M on AC.animalId = M.id
+        WHERE AC.`character` IN (
+            select * from (
+                              select characters
+                              from CHARACTERPREFER
+                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                          ) as XC
+        )  AND lower(userid) like #{value}
+
+    </select>
+
 
     <update id="editAnimal" parameterType="AnimalMating">
         UPDATE MATINGANIMAL SET
