@@ -68,7 +68,6 @@ public class AnimalService {
         condition.put("end", end);
         return animalMapper.getRecommendAnimalList(condition);
     }
-    public AnimalMating getAnimalMattingDetail(int id) { return animalMapper.getAnimalMattingDetail(id); }
 
     /*게시글 상세조회*/
     public AnimalMating getAnimalMattingDetail(int id, String userId) {
@@ -292,4 +291,3 @@ public class AnimalService {
         return animalMapper.getCharacterList(id);
     }
 }
-

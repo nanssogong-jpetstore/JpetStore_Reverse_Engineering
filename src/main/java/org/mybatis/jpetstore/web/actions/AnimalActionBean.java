@@ -151,7 +151,6 @@ public class AnimalActionBean extends AbstractActionBean {
     public String getMatingStatusValue() { return matingStatusValue; }
     public void setMatingStatusValue(String matingStatusValue) { this.matingStatusValue = matingStatusValue; }
 
-    private String keyword;
 
 
     public String getKeyword() {

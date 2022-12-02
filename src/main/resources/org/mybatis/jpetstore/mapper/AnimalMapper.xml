@@ -99,6 +99,8 @@
                (select EXISTS(select *
                               from BOARDLIKE
                               where BOARDLIKE.boardId = id and BOARDLIKE.userId = #{userId})) 'like_check'
+    </select>
+
     <select id="getRecommendMatingCount" resultType="Integer">
         SELECT count(distinct M.id)
         FROM ANIMALCHARACTER AS AC
