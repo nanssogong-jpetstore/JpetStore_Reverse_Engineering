@@ -207,6 +207,8 @@ public class AnimalActionBean extends AbstractActionBean {
             int id = animalService.editAnimal(animalMating);
             animalService.editCharacter(id,animalMating.getCharacterList());
             animalService.deleteOldCharacter(id,animalMating.getCharacterList());
+            getMatingInfo();
+            return new ForwardResolution(DETAIL_ANIMAL_MATING);
         }
 
         int temp = getPagingEnd(1, searchOption);
@@ -318,8 +320,8 @@ public class AnimalActionBean extends AbstractActionBean {
     public ForwardResolution userDeleteBtnSet(){
         System.out.println("Delete id = "+btnDelete);
         animalService.userAnimalDelete(id);
-        setMessage("삭제가 완료되었습니다.");
-        return new ForwardResolution(ERROR);
+        listAnimalAccount();
+        return new ForwardResolution("/WEB-INF/jsp/animalmating/ListAnimalMating.jsp");
     }
 
     public void clear(){
