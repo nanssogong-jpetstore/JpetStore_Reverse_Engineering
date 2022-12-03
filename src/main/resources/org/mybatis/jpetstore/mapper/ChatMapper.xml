@@ -104,5 +104,17 @@
         DELETE FROM BOARDLIKE where boardId=#{boardId} and userId=#{userId}
     </delete>
 
+    <select id="getAnimalCha" parameterType="int" resultType="String">
+        SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
+    </select>
+
+    <update id="plusPreferCount" parameterType="hashMap">
+        UPDATE CHARACTERPREFER SET cnt=cnt+1 where userId=#{userId} and characters=#{character}
+    </update>
+
+    <update id="minusPreferCount" parameterType="hashMap">
+        UPDATE CHARACTERPREFER SET cnt=cnt-1 where userId=#{userId} and characters=#{character}
+    </update>
+
 
 </mapper>

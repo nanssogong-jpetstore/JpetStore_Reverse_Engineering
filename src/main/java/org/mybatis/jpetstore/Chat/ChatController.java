@@ -2,6 +2,7 @@ package org.mybatis.jpetstore.Chat;
 
 import org.mybatis.jpetstore.domain.BoardLike;
 import org.mybatis.jpetstore.domain.ChatMessage;
+import org.mybatis.jpetstore.service.AnimalService;
 import org.mybatis.jpetstore.web.actions.AnimalActionBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,6 +19,8 @@ public class ChatController {
     private final SimpMessageSendingOperations sendingOperations;
     private final ChatService chatService;
     private Logger logger = LoggerFactory.getLogger(ChatController.class);
+
+    private List<String> animalCha;
 
     public ChatController(SimpMessageSendingOperations sendingOperations, ChatService chatService) {
         this.sendingOperations = sendingOperations;
@@ -63,11 +67,23 @@ public class ChatController {
         logger.info(boardLike.getUserId());
         Map<String,String> map = new HashMap<String, String>();
         try{
+            //해당 게시글 성격 리스트로 가져오기
+            animalCha=chatService.getAnimalCha(boardLike.getBoardId());
+            String uID = boardLike.getUserId();
+
             if(chatService.checkLike(boardLike)==1){
                 chatService.unLike(boardLike);
+                //좋아요 취소하면 성격 선호도 감소
+                for (int i = 0; i < animalCha.size(); i++) {
+                    chatService.minusPrefer(uID, animalCha.get(i));
+                }
             }
             else{
                 chatService.Like(boardLike);
+                //좋아요 클릭시 성격 선호도 증가
+                for (int i = 0; i < animalCha.size(); i++) {
+                    chatService.plusPrefer(uID, animalCha.get(i));
+                }
             }
             map.put("result","success");
         }catch(Exception e){
