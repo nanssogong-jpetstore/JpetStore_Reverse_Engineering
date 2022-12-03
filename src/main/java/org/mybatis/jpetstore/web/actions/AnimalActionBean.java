@@ -24,7 +24,6 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private static final String ADD_ANIMAL_MATING="/WEB-INF/jsp/animalmating/AddAnimalForm.jsp";
     private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
-    private static final String LIST_RECOMMENDANIMAL_MATING="/WEB-INF/jsp/animalmating/RecommendMating.jsp";
     private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
     private static final String EDIT_ANIMAL_MATING="/WEB-INF/jsp/animalmating/EditAnimalForm.jsp";
     private static final String ALERT="/WEB-INF/jsp/animalmating/alert.jsp";
