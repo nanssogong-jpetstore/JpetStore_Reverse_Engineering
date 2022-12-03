@@ -141,7 +141,7 @@
         select * from (
         select characters
         from CHARACTERPREFER
-        where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+        where CHARACTERPREFER.userId=#{id} and cnt>0 order by cnt desc limit 3
         ) as XC
         )
         <choose>
@@ -163,7 +163,7 @@
             select * from (
                               select characters
                               from CHARACTERPREFER
-                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                              where CHARACTERPREFER.userId=#{id} and cnt>0 order by cnt desc limit 3
                           ) as XC
         )
         <choose>
