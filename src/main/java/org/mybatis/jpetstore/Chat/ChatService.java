@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 public class ChatService {
 
@@ -67,4 +70,21 @@ public class ChatService {
     public void Like(BoardLike boardLike) {
         chatMapper.Like(boardLike);
     }
+
+    public List<String> getAnimalCha(int id) {
+        return chatMapper.getAnimalCha(id);
+    }
+    public void plusPrefer(String id, String character) {
+        HashMap<String, Object> map = new HashMap();
+        map.put("userId", id);
+        map.put("character",character);
+        chatMapper.plusPreferCount(map);
+    }
+    public void minusPrefer(String id, String character) {
+        HashMap<String, Object> map = new HashMap();
+        map.put("userId", id);
+        map.put("character",character);
+        chatMapper.minusPreferCount(map);
+    }
+
 }

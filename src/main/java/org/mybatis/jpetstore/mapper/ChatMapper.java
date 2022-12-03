@@ -5,6 +5,7 @@ import org.mybatis.jpetstore.domain.ChatMessage;
 import org.mybatis.jpetstore.domain.ChatRoom;
 import org.mybatis.jpetstore.domain.ChatRoomUser;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface ChatMapper {
@@ -25,4 +26,10 @@ public interface ChatMapper {
     void Like(BoardLike boardLike);
 
     void unLike(BoardLike boardLike);
+
+    void plusPreferCount(HashMap<String,Object> map);
+
+    List<String> getAnimalCha(int id);
+
+    void minusPreferCount(HashMap<String, Object> map);
 }
