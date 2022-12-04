@@ -99,11 +99,13 @@
 
     </select>
 
-
-
     <select id="getAnimalMatingCha" parameterType="int" resultType="String">
         SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
     </select>
+
+    <update id="plusPreferView" parameterType="hashMap">
+        UPDATE CHARACTERPREFER SET cnt = cnt+0.5 where userId=#{userId} and characters=#{character}
+    </update>
 
 
     <!-- all List -->

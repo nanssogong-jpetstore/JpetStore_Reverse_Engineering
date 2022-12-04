@@ -158,6 +158,13 @@ public class AnimalService {
         animalMapper.plusViewCount(id);
     }
 
+    public void plusPreferView(String id, String character) {
+        HashMap<String, Object> map = new HashMap();
+        map.put("userId", id);
+        map.put("character",character);
+        animalMapper.plusPreferView(map);
+    }
+
     //전체 및 검색 keyword 또는 searchTah가 null이면 알아서 전체로 검색
     public List<AnimalMating> searchAnimal(int start, int end, String searchTag, String keyword){
         Map<String, Object> condition = new HashMap<>();

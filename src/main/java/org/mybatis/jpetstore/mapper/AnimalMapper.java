@@ -3,6 +3,7 @@ package org.mybatis.jpetstore.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.jpetstore.domain.AnimalMating;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +29,5 @@ public interface AnimalMapper {
     Integer getAnimalMatingCount(Map<String, Object> map);
     List<AnimalMating> getRecommendAnimalMating(Map<String, Object> map);
     Integer getRecommendAnimalMatingCount(Map<String, Object> map);
-
+    void plusPreferView(HashMap<String, Object> map);
 }
