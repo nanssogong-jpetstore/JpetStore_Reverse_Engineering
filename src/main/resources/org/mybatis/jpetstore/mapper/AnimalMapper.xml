@@ -110,7 +110,7 @@
 
     <!-- all List -->
     <select id="getAnimalMating" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters,status
+        select id, userid, imgurl, title, contents, categoryid, characters,status, sex
         FROM MATINGANIMAL
         WHERE
         <choose>
