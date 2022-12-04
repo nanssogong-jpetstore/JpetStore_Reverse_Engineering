@@ -24,7 +24,6 @@ public class AnimalActionBean extends AbstractActionBean {
 
     private static final String ADD_ANIMAL_MATING="/WEB-INF/jsp/animalmating/AddAnimalForm.jsp";
     private static final String LIST_ANIMAL_MATING="/WEB-INF/jsp/animalmating/ListAnimalMating.jsp";
-    private static final String LIST_RECOMMENDANIMAL_MATING="/WEB-INF/jsp/animalmating/RecommendMating.jsp";
     private static final String DETAIL_ANIMAL_MATING="/WEB-INF/jsp/animalmating/DetailAnimalMating.jsp";
     private static final String EDIT_ANIMAL_MATING="/WEB-INF/jsp/animalmating/EditAnimalForm.jsp";
     private static final String ALERT="/WEB-INF/jsp/animalmating/alert.jsp";
@@ -279,6 +278,11 @@ public class AnimalActionBean extends AbstractActionBean {
         System.out.println(userId);
         animalMatingDetail = animalService.getAnimalMattingDetail(id,userId);
         animalMatingCha = animalService.getAnimalMatingCha(id);
+        //상세페이지 조회시 해당 성격 선호도 0.5만큼씩 증가
+        for (int i = 0; i < animalMatingCha.size(); i++) {
+            animalService.plusPreferView(userId, animalMatingCha.get(i));
+        }
+
         return new ForwardResolution(DETAIL_ANIMAL_MATING);
     }
 

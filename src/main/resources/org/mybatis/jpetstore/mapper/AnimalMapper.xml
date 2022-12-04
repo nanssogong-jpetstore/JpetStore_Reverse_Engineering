@@ -99,11 +99,13 @@
 
     </select>
 
-
-
     <select id="getAnimalMatingCha" parameterType="int" resultType="String">
         SELECT `character`FROM ANIMALCHARACTER WHERE animalId = #{id};
     </select>
+
+    <update id="plusPreferView" parameterType="hashMap">
+        UPDATE CHARACTERPREFER SET cnt = cnt+0.5 where userId=#{userId} and characters=#{character}
+    </update>
 
 
     <!-- all List -->
@@ -141,7 +143,7 @@
         select * from (
         select characters
         from CHARACTERPREFER
-        where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+        where CHARACTERPREFER.userId=#{id} and cnt>0 order by cnt desc limit 3
         ) as XC
         )
         <choose>
@@ -163,7 +165,7 @@
             select * from (
                               select characters
                               from CHARACTERPREFER
-                              where CHARACTERPREFER.userId=#{id} order by cnt desc limit 3
+                              where CHARACTERPREFER.userId=#{id} and cnt>0 order by cnt desc limit 3
                           ) as XC
         )
         <choose>
