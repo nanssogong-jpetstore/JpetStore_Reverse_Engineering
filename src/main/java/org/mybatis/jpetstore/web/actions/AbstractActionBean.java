@@ -28,6 +28,7 @@ import net.sourceforge.stripes.action.SimpleMessage;
  */
 public abstract class AbstractActionBean implements ActionBean, Serializable {
 
+
   private static final long serialVersionUID = -1767714708233127983L;
 
   protected static final String ERROR = "/WEB-INF/jsp/common/Error.jsp";
@@ -37,6 +38,7 @@ public abstract class AbstractActionBean implements ActionBean, Serializable {
   protected void setMessage(String value) {
     context.getMessages().add(new SimpleMessage(value));
   }
+
 
   @Override
   public ActionBeanContext getContext() {

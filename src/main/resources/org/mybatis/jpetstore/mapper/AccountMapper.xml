@@ -37,6 +37,7 @@
           ACCOUNT.ZIP,
           ACCOUNT.COUNTRY,
           ACCOUNT.PHONE,
+          ACCOUNT.`rank`,
           PROFILE.LANGPREF AS languagePreference,
           PROFILE.FAVCATEGORY AS favouriteCategoryId,
           PROFILE.MYLISTOPT AS listOption,

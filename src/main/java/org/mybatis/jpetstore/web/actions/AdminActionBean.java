@@ -5,11 +5,14 @@ import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.SessionScope;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import org.mybatis.jpetstore.domain.Account;
 import org.mybatis.jpetstore.domain.Category;
 import org.mybatis.jpetstore.domain.Item;
 import org.mybatis.jpetstore.domain.Product;
+import org.mybatis.jpetstore.service.AccountService;
 import org.mybatis.jpetstore.service.CatalogService;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @SessionScope
@@ -22,7 +25,9 @@ public class AdminActionBean extends AbstractActionBean {
     private static final String EDIT_PRODUCT = "/WEB-INF/jsp/management/EditItem.jsp";
     private static final String UPDATEITEMFORM = "/WEB-INF/jsp/management/UpdateItemForm.jsp";
     private static final String ADDITEMFORM = "/WEB-INF/jsp/management/AddItemForm.jsp";
+    private static final String MANAGEMENTALERT = "/WEB-INF/jsp/management/ManagementAlert.jsp";
 
+    private String username;
     private String categoryId;
     private Category category;
     private List<Category> categoryList;
@@ -35,10 +40,12 @@ public class AdminActionBean extends AbstractActionBean {
     private Item item;
     private List<Item> itemList;
 
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
     public String getCategoryId() {
         return categoryId;
     }
-
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
@@ -46,7 +53,6 @@ public class AdminActionBean extends AbstractActionBean {
     public String getProductId() {
         return productId;
     }
-
     public void setProductId(String productId) {
         this.productId = productId;
     }
@@ -54,7 +60,6 @@ public class AdminActionBean extends AbstractActionBean {
     public String getItemId() {
         return itemId;
     }
-
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
@@ -62,7 +67,6 @@ public class AdminActionBean extends AbstractActionBean {
     public Category getCategory() {
         return category;
     }
-
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -70,7 +74,6 @@ public class AdminActionBean extends AbstractActionBean {
     public Product getProduct() {
         return product;
     }
-
     public void setProduct(Product product) {
         this.product = product;
     }
@@ -78,7 +81,6 @@ public class AdminActionBean extends AbstractActionBean {
     public Item getItem() {
         return item;
     }
-
     public void setItem(Item item) {
         this.item = item;
     }
@@ -86,7 +88,6 @@ public class AdminActionBean extends AbstractActionBean {
     public List<Category> getCategoryList() {
         return categoryList;
     }
-
     public void setCategoryList(List<Category> categoryList) {
         this.categoryList = categoryList;
     }
@@ -94,7 +95,6 @@ public class AdminActionBean extends AbstractActionBean {
     public List<Product> getProductList() {
         return productList;
     }
-
     public void setProductList(List<Product> productList) {
         this.productList = productList;
     }
@@ -102,15 +102,16 @@ public class AdminActionBean extends AbstractActionBean {
     public List<Item> getItemList() {
         return itemList;
     }
-
     public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
     }
 
 
-
     @SpringBean
     private transient CatalogService catalogService;
+
+    @SpringBean
+    private transient AccountService accountService;
 
 
     public AdminActionBean() {
@@ -118,46 +119,73 @@ public class AdminActionBean extends AbstractActionBean {
     }
 
     public ForwardResolution viewAllProduct() {
-        productList = catalogService.getAllProductList();
-
-        return new ForwardResolution(M_PRODUCT);
+        if(isAdmin(username)) {
+            productList = catalogService.getAllProductList();
+            return new ForwardResolution(M_PRODUCT);
+        }
+        return new ForwardResolution(MANAGEMENTALERT);
     }
 
     public ForwardResolution editItem() {
-        itemList = catalogService.getItemListByProduct(productId);
-        product = catalogService.getProduct(productId);
-        return new ForwardResolution(EDIT_PRODUCT);
+        if(isAdmin(username)) {
+            itemList = catalogService.getItemListByProduct(productId);
+            product = catalogService.getProduct(productId);
+            return new ForwardResolution(EDIT_PRODUCT);
+        }
+        return new ForwardResolution(MANAGEMENTALERT);
     }
 
     public ForwardResolution updateItemView() {
-        item = catalogService.getItem(itemId);
-        return new ForwardResolution(UPDATEITEMFORM);
+        if(isAdmin(username)) {
+            item = catalogService.getItem(itemId);
+            return new ForwardResolution(UPDATEITEMFORM);
+        }
+        return new ForwardResolution(MANAGEMENTALERT);
     }
 
     public Resolution updateItem() {
-        catalogService.updateItem(item);
-        itemList = catalogService.getItemListByProduct(productId);
-        return new ForwardResolution(EDIT_PRODUCT);
+        if(isAdmin(username)) {
+            catalogService.updateItem(item);
+            itemList = catalogService.getItemListByProduct(productId);
+            return new ForwardResolution(EDIT_PRODUCT);
+        }
+        return new ForwardResolution(MANAGEMENTALERT);
     }
 
     public Resolution addItemView() {
-        product = catalogService.getProduct(productId);
-        return new ForwardResolution(ADDITEMFORM);
+        if(isAdmin(username)) {
+            product = catalogService.getProduct(productId);
+            return new ForwardResolution(ADDITEMFORM);
+        }
+        return new ForwardResolution(MANAGEMENTALERT);
     }
 
     public Resolution addItem() {
-        item.setProductId(productId);
-        catalogService.insertItem(item);
-        itemList = catalogService.getItemListByProduct(productId);
-        product = catalogService.getProduct(productId);
-        return new ForwardResolution(EDIT_PRODUCT);
+        if(isAdmin(username)) {
+            item.setProductId(productId);
+            catalogService.insertItem(item);
+            itemList = catalogService.getItemListByProduct(productId);
+            product = catalogService.getProduct(productId);
+            return new ForwardResolution(EDIT_PRODUCT);
+        }
+        return new ForwardResolution(MANAGEMENTALERT);
     }
 
     public Resolution deleteItem() {
-        catalogService.deleteItem(itemId);
-        itemList = catalogService.getItemListByProduct(productId);
-        product = catalogService.getProduct(productId);
-        return new ForwardResolution(EDIT_PRODUCT);
+        if(isAdmin(username)) {
+            catalogService.deleteItem(itemId);
+            itemList = catalogService.getItemListByProduct(productId);
+            product = catalogService.getProduct(productId);
+            return new ForwardResolution(EDIT_PRODUCT);
+        }
+        return new ForwardResolution(MANAGEMENTALERT);
+    }
+
+    private boolean isAdmin(String username) {
+        HttpSession httpSession = context.getRequest().getSession();
+        AccountActionBean accountActionBean = (AccountActionBean) httpSession.getAttribute("accountBean");
+
+        return accountService.getAccount(accountActionBean.getUsername()).getRank().equals("MANAGEMENT");
     }
 }
 
