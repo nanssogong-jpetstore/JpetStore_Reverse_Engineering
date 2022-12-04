@@ -107,13 +107,13 @@
 <div class="ArticleContentBox" style="width: 1000px; margin : 0 auto;">
 
   <div class="article_header">
-    <div id="BackLink">
+    <%--<div id="BackLink">
       <stripes:link
               beanclass="org.mybatis.jpetstore.web.actions.AnimalActionBean"
               event="listAnimalAccount">
         BackLink
       </stripes:link>
-    </div>
+    </div>--%>
     <h2>${actionBean.animalMatingDetail.title}</h2>
     <h6>작성자: ${actionBean.animalMatingDetail.userId}
 
