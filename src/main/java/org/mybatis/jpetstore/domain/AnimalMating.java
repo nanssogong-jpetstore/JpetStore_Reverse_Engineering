@@ -29,6 +29,7 @@ public class AnimalMating implements Serializable {
     private int like_check;
     private List<String> characterList;
     private int deletestatus;
+    private String animal_characters;
 
 
 }
