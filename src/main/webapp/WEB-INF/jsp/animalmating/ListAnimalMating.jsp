@@ -47,11 +47,11 @@
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">CATEGORY <br> ${mating.categoryid}</h5>
+                                <h5 class="fw-bolder">${mating.categoryid}</h5>
                                 <h6 class="fw-bolder">TITLE : ${mating.title}</h6>
                                 <!-- Product price-->
                                 <b>GENDER:</b>${mating.sex}
-                                <b>CHARACTER:</b>${mating.animal_characters}
+                                <b>	&#60;CHARACTER&#62;<br></b> ${mating.animal_characters}
                             </div>
                         </div>
                         <!-- Product actions-->
