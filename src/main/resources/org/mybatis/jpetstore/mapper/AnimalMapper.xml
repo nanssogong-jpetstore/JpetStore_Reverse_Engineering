@@ -110,15 +110,21 @@
 
     <!-- all List -->
     <select id="getAnimalMating" parameterType="hashMap" resultType="AnimalMating">
-        select id, userid, imgurl, title, contents, categoryid, characters,status, sex
-        FROM MATINGANIMAL
+        select M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex, ANI.animal_characters
+        FROM MATINGANIMAL as M
+        JOIN (
+            SELECT
+            animalId, GROUP_CONCAT(`character`separator ', ') as animal_characters
+            FROM ANIMALCHARACTER GROUP BY animalId
+        ) as ANI
+        ON ANI.animalId = M.id
         WHERE
         <choose>
             <when test="searchTag == 'Title'">lower(title) like #{value} AND</when>
             <when test="searchTag == 'Contents'">lower(contents) like #{value} AND</when>
             <when test="searchTag == 'UserName'">lower(userid) like #{value} AND</when>
         </choose>
-         deletestatus = 0 ORDER BY createdate desc limit #{start}, #{end}
+        deletestatus = 0 ORDER BY createdate desc limit #{start}, #{end}
     </select>
 
     <select id="getAnimalMatingCount" parameterType="hashMap" resultType="Integer">
@@ -136,9 +142,15 @@
     <!-- recommend List -->
 
     <select id="getRecommendAnimalMating" parameterType="hashMap" resultType="AnimalMating">
-        SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex
+        SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex, ANI.animal_characters
         FROM ANIMALCHARACTER AS AC
         JOIN MATINGANIMAL M on AC.animalId = M.id
+        JOIN (
+        SELECT
+        animalId, GROUP_CONCAT(`character`separator ', ') as animal_characters
+        FROM ANIMALCHARACTER GROUP BY animalId
+        ) as ANI
+        ON ANI.animalId = M.id
         WHERE AC.`character` IN (
         select * from (
         select characters

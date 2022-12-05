@@ -51,6 +51,7 @@
                                 <h6 class="fw-bolder">TITLE : ${mating.title}</h6>
                                 <!-- Product price-->
                                 <b>GENDER:</b>${mating.sex}
+                                <b>CHARACTER:</b>${mating.animal_characters}
                             </div>
                         </div>
                         <!-- Product actions-->

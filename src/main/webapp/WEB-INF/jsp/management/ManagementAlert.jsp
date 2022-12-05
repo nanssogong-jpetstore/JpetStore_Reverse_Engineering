@@ -12,7 +12,7 @@
 </head>
 <script>
     alert("관리자 계정이 아닙니다.\n 메인화면으로 이동합니다.");
-    window.location.href='http://localhost:8080/jpetstore_war/actions/Catalog.action';
+    window.location.href='https://www.semtle-cuk.site/jpetstore_war/actions/Catalog.action';
 </script>
 <body>
 
