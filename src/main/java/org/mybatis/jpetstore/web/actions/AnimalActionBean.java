@@ -300,7 +300,7 @@ public class AnimalActionBean extends AbstractActionBean {
             postCount = animalService.getRecommendCount(username, searchOption, keyword);
             // TO DO : 처음에 보여줄 추천게시물 없을때 처리
         }
-
+        System.out.println("postCount = " + postCount);
 
         pageCount = (postCount - 1) / PAGESIZE + 1;
         if(cpage < 1)

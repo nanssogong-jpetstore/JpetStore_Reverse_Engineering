@@ -112,7 +112,7 @@
     <select id="getAnimalMating" parameterType="hashMap" resultType="AnimalMating">
         select M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex, ANI.animal_characters
         FROM MATINGANIMAL as M
-        JOIN (
+        LEFT JOIN (
             SELECT
             animalId, GROUP_CONCAT(`character`separator ', ') as animal_characters
             FROM ANIMALCHARACTER GROUP BY animalId
@@ -145,7 +145,7 @@
         SELECT distinct M.id, M.userid, M.imgurl, M.title, M.contents, M.categoryid, M.characters, M.status, M.sex, ANI.animal_characters
         FROM ANIMALCHARACTER AS AC
         JOIN MATINGANIMAL M on AC.animalId = M.id
-        JOIN (
+        LEFT JOIN (
         SELECT
         animalId, GROUP_CONCAT(`character`separator ', ') as animal_characters
         FROM ANIMALCHARACTER GROUP BY animalId
