@@ -20,7 +20,6 @@ public class ChatController {
     private final ChatService chatService;
     private Logger logger = LoggerFactory.getLogger(ChatController.class);
 
-    private List<String> animalCha;
 
     public ChatController(SimpMessageSendingOperations sendingOperations, ChatService chatService) {
         this.sendingOperations = sendingOperations;
@@ -62,51 +61,6 @@ public class ChatController {
         return chatMessage;
     }
 
-    @PostMapping("/like")
-    public Map<String, String> likeBoard(@RequestBody BoardLike boardLike){
-        logger.info(boardLike.getUserId());
-        Map<String,String> map = new HashMap<String, String>();
-        try{
-            //해당 게시글 성격 리스트로 가져오기
-            animalCha=chatService.getAnimalCha(boardLike.getBoardId());
-            String uID = boardLike.getUserId();
 
-            if(chatService.checkLike(boardLike)==1){
-                chatService.unLike(boardLike);
-                //좋아요 취소하면 성격 선호도 감소
-                for (int i = 0; i < animalCha.size(); i++) {
-                    chatService.minusPrefer(uID, animalCha.get(i));
-                }
-            }
-            else{
-                chatService.Like(boardLike);
-                //좋아요 클릭시 성격 선호도 증가
-                for (int i = 0; i < animalCha.size(); i++) {
-                    chatService.plusPrefer(uID, animalCha.get(i));
-                }
-            }
-            map.put("result","success");
-        }catch(Exception e){
-            e.printStackTrace();
-            map.put("result","fail");
-        }
-        return map;
-    }
-
-    @PostMapping("/likeCheck")
-    public Map<String, String> likeCheck(@RequestBody BoardLike boardLike){
-        Map<String, String> map = new HashMap<String, String>();
-        try {
-            logger.info("get");
-            map.put("result", "success");
-            map.put("likeCheck", String.valueOf(chatService.checkLike(boardLike)));
-        }catch (Exception e){
-            logger.info("fail");
-            e.printStackTrace();
-            map.put("result","fail");
-            map.put("likeCheck","2");
-        }
-        return map;
-    }
 
 }

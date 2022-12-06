@@ -59,32 +59,6 @@ public class ChatService {
         chatMapper.noneReadMessage(chatRoomUser);
     }
 
-    public int checkLike(BoardLike boardLike) {
-        return chatMapper.checkLike(boardLike);
-    }
 
-    public void unLike(BoardLike boardLike) {
-        chatMapper.unLike(boardLike);
-    }
-
-    public void Like(BoardLike boardLike) {
-        chatMapper.Like(boardLike);
-    }
-
-    public List<String> getAnimalCha(int id) {
-        return chatMapper.getAnimalCha(id);
-    }
-    public void plusPrefer(String id, String character) {
-        HashMap<String, Object> map = new HashMap();
-        map.put("userId", id);
-        map.put("character",character);
-        chatMapper.plusPreferCount(map);
-    }
-    public void minusPrefer(String id, String character) {
-        HashMap<String, Object> map = new HashMap();
-        map.put("userId", id);
-        map.put("character",character);
-        chatMapper.minusPreferCount(map);
-    }
 
 }

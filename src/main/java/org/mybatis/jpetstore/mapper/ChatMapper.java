@@ -21,15 +21,6 @@ public interface ChatMapper {
     void exitRoom(ChatRoomUser chatRoomUser);
     ChatRoomUser getChatRoomUser(ChatMessage chatMessage);
 
-    int checkLike(BoardLike boardLike);
 
-    void Like(BoardLike boardLike);
 
-    void unLike(BoardLike boardLike);
-
-    void plusPreferCount(HashMap<String,Object> map);
-
-    List<String> getAnimalCha(int id);
-
-    void minusPreferCount(HashMap<String, Object> map);
 }
