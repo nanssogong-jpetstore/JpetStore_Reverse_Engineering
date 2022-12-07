@@ -31,7 +31,7 @@ public class ChatController {
         System.out.println("enter method");
         chatService.enterRoom(chatMessage);
         chatService.readMessage(chatMessage);
-        sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
+        sendingOperations.convertAndSend("/queue/chat/room/"+ chatMessage.getRoomId(), chatMessage);
 
         return chatMessage;
     }
@@ -46,7 +46,7 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public ChatMessage sendMessage(ChatMessage chatMessage) {
         chatService.insertMessage(chatMessage);
-        sendingOperations.convertAndSend("/topic/chat/room/"+ chatMessage.getRoomId(), chatMessage);
+        sendingOperations.convertAndSend("/queue/chat/room/"+ chatMessage.getRoomId(), chatMessage);
         return chatMessage;
     }
 

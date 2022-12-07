@@ -147,10 +147,6 @@ public class ChatActionBean extends AbstractActionBean {
         return new ForwardResolution(CHATLIST);
     }
 
-    @GetMapping("hello")
-    public void hello() {
-        System.out.println("hello");
-    }
 
     private String getFirstName(String name) {
         return String.valueOf(name.toUpperCase().charAt(0));

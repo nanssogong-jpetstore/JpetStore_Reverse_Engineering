@@ -198,7 +198,7 @@ public class AnimalActionBean extends AbstractActionBean {
             animalMating.setUserId(userId);
         }
         else if(animalMating.getTitle()==null||animalMating.getCharacters()==null||animalMating.getContents()==null||
-                animalMating.getSex()==null||animalMating.getCharacterList().isEmpty()){
+                animalMating.getSex()==null|| animalMating.getCharacterList() == null){
             setMessage("내용을 모두 입력해주세요");
             return new ForwardResolution(ERROR);
         }else{

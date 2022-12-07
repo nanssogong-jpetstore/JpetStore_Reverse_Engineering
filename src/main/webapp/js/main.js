@@ -61,7 +61,7 @@ function connect(myId, roomId, name) {
 
 function onConnected() {
     console.log("Hello My")
-    stompClient.subscribe('/topic/chat/room/'+ getRoomId(), onMessageReceived);
+    stompClient.subscribe('/queue/chat/room/'+ getRoomId(), onMessageReceived);
     stompClient.send("/app/chat/enter",
         {},
         JSON.stringify({sender: username, receiver: getTarget(), type: 'ENTER', content: "", roomId: getRoomId() })
